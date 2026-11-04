@@ -669,6 +669,26 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .btn,.chip,.preset,.lang-opt,.pcard{position:relative}
 .btn{box-shadow:0 0 0 1px rgba(120,195,255,.08), 0 0 22px -16px var(--glow)}
 .btn:hover{box-shadow:0 0 0 1px rgba(120,195,255,.25), 0 0 28px -8px var(--glow)}
+
+.apply-card{
+  margin:0 0 18px;border-radius:16px;padding:16px;
+  background:linear-gradient(160deg, rgba(47,125,255,.14), rgba(4,7,15,.72) 62%);
+  border:1px solid rgba(79,195,255,.28);
+  box-shadow:0 0 0 1px rgba(120,195,255,.10), 0 30px 60px -44px #000, 0 0 50px -26px var(--glow);
+}
+.apply-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.apply-top .at{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6cc4ff}
+.apply-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px}
+.apply-cell{border:1px solid rgba(120,195,255,.18);border-radius:11px;padding:10px 12px;background:rgba(6,14,26,.7)}
+.apply-cell .k{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim-2);display:block}
+.apply-cell .v{font-family:var(--font-mono);font-size:16px;color:#9ed8ff;text-shadow:0 0 18px rgba(79,195,255,.45)}
+.apply-actions{display:flex;gap:9px;flex-wrap:wrap}
+.apply-actions .btn{flex:1 1 180px;justify-content:center}
+.modal-card.wide{max-width:520px}
+.steps-list{display:grid;gap:8px;margin:0 0 16px;padding:0;list-style:none}
+.steps-list li{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--dim)}
+.steps-list li b{color:#9ed8ff;font-family:var(--font-mono);font-size:11px;flex:none;padding-top:2px}
+.modal-note{font-size:11.5px;color:var(--dim-2);text-align:center;margin:12px 0 0;line-height:1.6}
 </style>
 </head>
 <body>
@@ -939,6 +959,25 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
         <p data-i18n="fps.desc">Correct settings give you the highest frame rate your phone can actually hold.</p>
       </div>
 
+
+      <div class="apply-card">
+        <div class="apply-top">
+          <span class="at">Apply &amp; Play</span>
+          <span class="badge hot" id="applyBadge">144 FPS</span>
+        </div>
+        <div class="apply-grid">
+          <div class="apply-cell"><span class="k">Phone</span><span class="v" id="applyPhone" style="font-size:13px">—</span></div>
+          <div class="apply-cell"><span class="k">Target</span><span class="v" id="applyFps">144</span></div>
+          <div class="apply-cell"><span class="k">Graphics</span><span class="v" id="applyGfx" style="font-size:13px">Smooth</span></div>
+          <div class="apply-cell"><span class="k">General</span><span class="v" id="applySens">—</span></div>
+        </div>
+        <div class="apply-actions">
+          <button class="btn primary" id="applyPlayBtn">Play Now</button>
+          <button class="btn" id="applyOpenBtn">Open game</button>
+        </div>
+        <p class="play-hint">Play Now saves this setup, shows the exact in-game path, then opens the game.</p>
+      </div>
+
       <div class="callout" style="margin-top:0">
         <b data-i18n="nav.fps">FPS Boost</b> — <span data-i18n="fps.reality">No website can add frames to your phone. What works: the right graphics settings, High FPS on, and a phone that is not overheating.</span>
       </div>
@@ -1081,6 +1120,26 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     <p data-i18n="lang.p">The site opens in the language you pick.</p>
     <div class="lang-grid" id="langGrid"></div>
     <button class="btn primary" id="langContinue" data-i18n="lang.btn" style="width:100%;justify-content:center">Continue</button>
+  </div>
+</div>
+
+
+<div class="modal" id="applyModal" role="dialog" aria-modal="true" aria-labelledby="applyTitle">
+  <div class="modal-card wide">
+    <button class="close-x" id="applyClose" aria-label="Close">×</button>
+    <h3 id="applyTitle">Your setup is ready</h3>
+    <p id="applySummary" style="text-align:left;color:var(--dim)"></p>
+    <ol class="steps-list">
+      <li><b>01</b><span>Open the game, tap the gear icon, go to <b>Settings</b>.</span></li>
+      <li><b>02</b><span>Open <b>Graphics</b> and pick the preset shown above.</span></li>
+      <li><b>03</b><span>Turn <b>High FPS</b> on and choose the highest option your device shows.</span></li>
+      <li><b>04</b><span>Go to <b>Sensitivity</b> and enter the values from this site.</span></li>
+    </ol>
+    <div class="mact">
+      <a class="btn primary" id="applyFF" href="https://play.google.com/store/apps/details?id=com.dts.freefiremax" target="_blank" rel="noopener">Open Free Fire MAX</a>
+      <a class="btn" href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" rel="noopener">Open Free Fire</a>
+    </div>
+    <p class="modal-note">Free Fire shows only the FPS options your device supports. This site cannot add frames or unlock an option the game does not offer.</p>
   </div>
 </div>
 
@@ -2419,6 +2478,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     });
 
     if (typeof refreshVerdict === 'function') refreshVerdict();
+    if (typeof syncApply === 'function') syncApply();
     var tc = document.querySelectorAll('.tier-card');
     Array.prototype.forEach.call(tc, function(c){
       c.classList.toggle('on', c.getAttribute('data-tier') === String(p.tier));
@@ -2807,6 +2867,53 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') setSidebar(false); });
 
 
+
+  /* ---------- Apply & Play ---------- */
+  var applyModal = document.getElementById('applyModal');
+  var applyBtn = document.getElementById('applyPlayBtn');
+  var applyOpen = document.getElementById('applyOpenBtn');
+
+  function syncApply(){
+    var p = state.phone;
+    var setTxt = function(id, v){ var el = document.getElementById(id); if (el) el.textContent = v; };
+    setTxt('applyPhone', p ? p.name : '—');
+    setTxt('applyFps', String(fpsHz));
+    setTxt('applyGfx', fpsGfx);
+    setTxt('applySens', state.sens ? String(state.sens.general) : '—');
+    setTxt('applyBadge', fpsHz + ' FPS · ' + fpsGfx);
+  }
+
+  function openApply(){
+    syncApply();
+    var p = state.phone, s = state.sens;
+    var box = document.getElementById('applySummary');
+    if (box && p && s){
+      box.innerHTML = '<b>' + p.name + '</b> · ' + p.screen + '" ' + p.refresh + 'Hz<br>' +
+        'Target: <b>' + fpsHz + ' FPS</b> · Graphics: <b>' + fpsGfx + '</b><br>' +
+        'General <b>' + s.general + '</b> · Red Dot <b>' + s.reddot + '</b> · 2x <b>' + s.scope2 +
+        '</b> · 4x <b>' + s.scope4 + '</b> · AWM <b>' + s.awm + '</b> · Fire <b>' + s.fire + '%</b>';
+    }
+    applyModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  if (applyBtn) applyBtn.addEventListener('click', openApply);
+  if (applyOpen) applyOpen.addEventListener('click', function(){
+    var a = document.getElementById('applyFF');
+    if (a) a.click();
+  });
+  var applyClose = document.getElementById('applyClose');
+  if (applyClose) applyClose.addEventListener('click', function(){
+    applyModal.classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  if (applyModal) applyModal.addEventListener('click', function(e){
+    if (e.target === applyModal){
+      applyModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
   /* ---------- FPS target + graphics verdict ---------- */
   var fpsHz = 120, fpsGfx = "Smooth";
   var fpsSeg = document.getElementById('fpsSeg');
@@ -2847,8 +2954,8 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     });
   }
 
-  bindSeg(fpsSeg, 'data-hz', function(v){ fpsHz = parseInt(v, 10); refreshVerdict(); });
-  bindSeg(gfxSeg, 'data-gfx', function(v){ fpsGfx = v; refreshVerdict(); });
+  bindSeg(fpsSeg, 'data-hz', function(v){ fpsHz = parseInt(v, 10); refreshVerdict(); syncApply(); });
+  bindSeg(gfxSeg, 'data-gfx', function(v){ fpsGfx = v; refreshVerdict(); syncApply(); });
 
   Array.prototype.forEach.call(document.querySelectorAll('.play-btn'), function(a){
     a.addEventListener('click', function(e){
