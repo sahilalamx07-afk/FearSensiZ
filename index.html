@@ -844,6 +844,9 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 }
 .dpi-card.on .dc-k{color:#8fd0ff}
 .sub-cta{width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#2f7dff,#4fc3ff);border-color:transparent;color:#03121f;font-weight:700}
+
+.suggest{z-index:80;border-color:rgba(79,195,255,.35);box-shadow:0 30px 60px -28px #000, 0 0 40px -22px var(--glow)}
+.suggest button.hl{background:rgba(58,160,255,.18)}
 </style>
 </head>
 <body>
@@ -2965,16 +2968,23 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     suggest.innerHTML = "";
     if (!q){ suggest.hidden = true; searchInput.setAttribute('aria-expanded','false'); return; }
 
-    var list = matchList(q).slice(0, 7);
-    list.forEach(function(p){
+    var list = matchList(q).slice(0, 8);
+    list.forEach(function(p, idx){
       var b = document.createElement('button');
       b.type = 'button';
+      b.setAttribute('data-idx', String(idx));
+      b.setAttribute('role', 'option');
       var nm = document.createElement('span');
       nm.className = 'sname'; nm.textContent = p.name;
       var mt = document.createElement('span');
-      mt.className = 'smeta'; mt.textContent = p.screen + '" · ' + p.refresh + 'Hz';
+      mt.className = 'smeta'; mt.textContent = p.brand + ' · ' + p.screen + '" · ' + p.refresh + 'Hz';
       b.appendChild(nm); b.appendChild(mt);
-      b.addEventListener('click', function(){ selectExact(p); suggest.hidden = true; });
+      b.addEventListener('mousedown', function(ev){ ev.preventDefault(); });
+      b.addEventListener('click', function(){
+        selectExact(p);
+        suggest.hidden = true;
+        searchInput.blur();
+      });
       suggest.appendChild(b);
     });
 
@@ -3800,13 +3810,37 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   /* ============================================================
      EVENTS + INIT
      ============================================================ */
+  var hlIdx = -1;
+
+  function moveHl(delta){
+    var items = suggest.querySelectorAll('button');
+    if (!items.length) return;
+    hlIdx = (hlIdx + delta + items.length) % items.length;
+    Array.prototype.forEach.call(items, function(el, i){ el.classList.toggle('hl', i === hlIdx); });
+    var cur = items[hlIdx];
+    if (cur && cur.scrollIntoView) cur.scrollIntoView({ block: 'nearest' });
+  }
+
   searchInput.addEventListener('input', function(){
+    hlIdx = -1;
     drawSuggest();
     drawGrid();
   });
 
+  searchInput.addEventListener('focus', function(){
+    if ((searchInput.value || '').trim()) drawSuggest();
+  });
+
   searchInput.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowDown'){ e.preventDefault(); moveHl(1); return; }
+    if (e.key === 'ArrowUp'){ e.preventDefault(); moveHl(-1); return; }
     if (e.key === 'Enter'){
+      var items = suggest.querySelectorAll('button');
+      if (!suggest.hidden && items.length && hlIdx >= 0 && items[hlIdx]){
+        e.preventDefault();
+        items[hlIdx].click();
+        return;
+      }
       e.preventDefault();
       var q = (searchInput.value || "").trim();
       if (!q) return;
