@@ -819,6 +819,11 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   30%,50%,70%{transform:translateX(-6px)}
   40%,60%{transform:translateX(6px)}
 }
+
+.dpi-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px}
+.dpi-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim-2)}
+.dpi-row .seg{flex:1 1 200px;max-width:320px}
+.dpi-row .seg button{font-size:11px;padding:8px 6px}
 </style>
 </head>
 <body>
@@ -1008,6 +1013,14 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
             <span class="match-badge est" id="matchBadge">—</span>
           </div>
           <p class="sel-sub" id="selSub"></p>
+
+          <div class="dpi-row">
+            <span class="dpi-label">DPI MODE</span>
+            <div class="seg" id="dpiSeg">
+              <button type="button" data-dpi="with" class="on">DPI ON</button>
+              <button type="button" data-dpi="without">DPI OFF</button>
+            </div>
+          </div>
 
           <div class="spec-grid">
             <div class="field">
@@ -2649,6 +2662,25 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     ["Infinix Zero 8","Infinix",6.6,60,1,1],
     ["Infinix Zero Flip","Infinix",6.6,60,1,1],
     ["Infinix GT 20 Pro","Infinix",6.6,60,1,1],
+    ["iQOO","iQOO",6.4,60,3,1],
+    ["iQOO Pro","iQOO",6.41,60,3,1],
+    ["iQOO 5 Pro","iQOO",6.56,120,4,1],
+    ["iQOO 8 Pro","iQOO",6.78,120,4,1],
+    ["iQOO 10 Pro","iQOO",6.78,120,4,1],
+    ["iQOO Neo 7 Pro","iQOO",6.78,120,4,1],
+    ["iQOO Z7x","iQOO",6.64,120,2,1],
+    ["iQOO 15","iQOO",6.85,144,4,1],
+    ["iQOO Neo 11","iQOO",6.78,144,4,1],
+    ["iQOO 13 Pro","iQOO",6.82,144,4,1],
+    ["iQOO Z10 Turbo","iQOO",6.78,120,3,1],
+    ["iQOO Z10 Turbo Pro","iQOO",6.78,144,3,1],
+    ["iQOO Neo 10 Pro","iQOO",6.78,144,4,1],
+    ["iQOO Neo 12","iQOO",6.78,144,4,1],
+    ["iQOO 16 Pro","iQOO",6.85,144,4,1],
+    ["iQOO Z12","iQOO",6.72,120,3,1],
+    ["iQOO Z12x","iQOO",6.72,120,2,1],
+    ["iQOO 17","iQOO",6.85,165,4,1],
+    ["iQOO Neo 12R","iQOO",6.78,120,4,1],
   ];
 
   var PHONES = DB.map(function(r, i){
@@ -2687,6 +2719,15 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       "High/Ultra + High FPS on (60–90)",
       "Ultra + 90 FPS mode"
     ][p.tier];
+
+    if (typeof state !== 'undefined' && state && state.dpiMode === 'without'){
+      general = clamp(general + 7, 130, 200);
+      reddot  = clamp(reddot + 6, 130, 200);
+      scope2  = clamp(scope2 + 6, 110, 195);
+      scope4  = clamp(scope4 + 5, 90, 190);
+      awm     = clamp(awm + 4, 55, 130);
+      free    = clamp(free + 5, 55, 160);
+    }
 
     return {general:general, reddot:reddot, scope2:scope2, scope4:scope4,
             awm:awm, free:free, fire:fire, dpi:dpi, fps:fpsTxt};
@@ -2785,7 +2826,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
      ============================================================ */
   var STORE_KEY = "fearsensiz_unlocked_v1";
   var LAST_KEY  = "fearsensiz_last_phone_v1";
-  var state = {phone:null, sens:null, unlocked:false};
+  var state = {phone:null, sens:null, unlocked:false, dpiMode:'with'};
   try { state.unlocked = localStorage.getItem(STORE_KEY) === "1"; } catch(e){ state.unlocked = false; }
 
   var grid = document.getElementById('phoneGrid');
@@ -2978,6 +3019,19 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     });
   });
 
+  var dpiSeg = document.getElementById('dpiSeg');
+  if (dpiSeg){
+    Array.prototype.forEach.call(dpiSeg.querySelectorAll('button'), function(b){
+      b.addEventListener('click', function(){
+        Array.prototype.forEach.call(dpiSeg.querySelectorAll('button'), function(x){ x.classList.remove('on'); });
+        b.classList.add('on');
+        state.dpiMode = b.getAttribute('data-dpi');
+        if (state.phone) state.sens = buildSens(state.phone);
+        drawResult();
+      });
+    });
+  }
+
   spStyle.addEventListener('change', function(){
     if (!state.phone) return;
     state.phone.style = parseInt(spStyle.value, 10);
@@ -3047,7 +3101,9 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
     var metas = [
       [t("misc.fps"), "<b>" + s.fps + "</b> — " + t("misc.fpsNote")],
-      [t("misc.dpi"), "<b>" + s.dpi + "</b> — " + t("misc.dpiNote")],
+      [t("misc.dpi"), (state.dpiMode === 'without')
+        ? "<b>DPI OFF</b> — no custom DPI set, so sensitivity is raised a little to compensate."
+        : "<b>" + s.dpi + "</b> — " + t("misc.dpiNote")],
       [t("misc.hud"), t("misc.hudNote")],
       ["Fire Button", t("misc.fireNote")],
       [t("misc.ladder"), "General <b>" + s.general + "</b> → 2x <b>" + s.scope2 + "</b> → 4x <b>" + s.scope4 + "</b> → AWM <b>" + s.awm + "</b> · " + t("misc.ladderNote")]
@@ -3107,7 +3163,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       "Fire Button  : " + s.fire + "%",
       "",
       "FPS setting  : " + s.fps,
-      "DPI range    : " + s.dpi,
+      "DPI mode     : " + (state.dpiMode === "without" ? "DPI OFF (no custom DPI)" : "DPI ON") + "\nDPI range    : " + s.dpi,
       "HUD tip      : " + s.hud,
       "",
       "Tip: 2-3 match khel ke General ko +/-5 adjust karo. Ek waqt me ek hi slider badlo.",
