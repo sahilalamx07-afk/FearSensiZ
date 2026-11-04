@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FearSensiZ — Phone-wise Free Fire India &amp; MAX Sensitivity</title>
+<meta name="description" content="Apne phone ka model chuno aur Free Fire India / Free Fire MAX ke liye tested sensitivity settings paao. Headshot-friendly preset, TXT aur PNG me download karo.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;800&family=Azeret+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b1216;
+  --bg-2:#0f181d;
+  --surface:#121e24;
+  --surface-2:#16252c;
+  --surface-3:#1c2f37;
+  --border:rgba(255,255,255,.09);
+  --border-strong:rgba(255,255,255,.17);
+  --text:#eaf2f4;
+  --dim:#93a7ae;
+  --dim-2:#6b818a;
+  --signal:#e8622c;
+  --signal-soft:rgba(232,98,44,.13);
+  --mint:#4fb286;
+  --mint-soft:rgba(79,178,134,.13);
+  --sky:#5aa9d6;
+  --sky-soft:rgba(90,169,214,.13);
+  --gold:#d8a13a;
+  --gold-soft:rgba(216,161,58,.13);
+  --font-display:"Plus Jakarta Sans","Segoe UI",sans-serif;
+  --font-body:"Plus Jakarta Sans","Segoe UI",sans-serif;
+  --font-mono:"Azeret Mono","Courier New",monospace;
+  --r:14px;
+  --shadow:0 22px 46px -28px rgba(0,0,0,.95);
+}
+@media (prefers-color-scheme: light){
+  :root{
+    --bg:#eef3f5;
+    --bg-2:#e6edf0;
+    --surface:#ffffff;
+    --surface-2:#f4f8f9;
+    --surface-3:#e7eef1;
+    --border:rgba(12,32,40,.12);
+    --border-strong:rgba(12,32,40,.25);
+    --text:#0d2229;
+    --dim:#4d6570;
+    --dim-2:#708890;
+    --signal:#c94a18;
+    --signal-soft:rgba(201,74,24,.1);
+    --mint:#2c7f5e;
+    --mint-soft:rgba(44,127,94,.1);
+    --sky:#1f6f9c;
+    --sky-soft:rgba(31,111,156,.1);
+    --gold:#a2761c;
+    --gold-soft:rgba(162,118,28,.1);
+    --shadow:0 18px 38px -28px rgba(10,30,40,.45);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--font-body);font-size:16px;line-height:1.6;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(820px 460px at 8% -6%, var(--signal-soft), transparent 66%),
+    radial-gradient(760px 420px at 96% 2%, var(--sky-soft), transparent 68%),
+    linear-gradient(180deg,transparent 55%,rgba(0,0,0,.22));
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.3;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:58px 58px;
+  mask-image:radial-gradient(circle at 50% 0%,#000,transparent 70%);
+  -webkit-mask-image:radial-gradient(circle at 50% 0%,#000,transparent 70%);
+}
+.wrap{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:0 20px 70px}
+.mono{font-family:var(--font-mono)}
+
+/* ---------- topbar ---------- */
+.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 84%,transparent);border-bottom:1px solid var(--border)}
+.topbar-in{max-width:1200px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:-.01em;font-size:16px}
+.brand .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--signal),var(--gold));display:grid;place-items:center;font-family:var(--font-mono);font-size:12px;color:#101a1e;font-weight:700}
+.brand small{display:block;font-family:var(--font-mono);font-size:9.5px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--dim-2);line-height:1.1}
+.topnav{margin-left:auto;display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.topnav a{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);text-decoration:none;padding:6px 9px;border-radius:8px;border:1px solid transparent}
+.topnav a:hover{color:var(--text);border-color:var(--border);background:var(--surface)}
+.sub-pill{
+  display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+  background:var(--signal);color:#12181b;font-weight:700;font-size:12.5px;
+  padding:8px 13px;border-radius:999px;border:1px solid var(--signal);
+}
+.sub-pill:hover{filter:brightness(1.08)}
+.sub-pill .play{width:0;height:0;border-left:8px solid #12181b;border-top:5px solid transparent;border-bottom:5px solid transparent}
+
+/* ---------- hero ---------- */
+.hero{padding:56px 0 34px;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:34px;align-items:center}
+@media (max-width:920px){.hero{grid-template-columns:1fr;padding-top:38px}}
+.eyebrow{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--signal);display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.eyebrow::before{content:"";width:24px;height:1px;background:var(--signal)}
+h1{font-family:var(--font-display);font-weight:800;font-size:clamp(34px,5vw,58px);line-height:1.03;letter-spacing:-.03em;margin:0 0 16px}
+h1 em{font-style:normal;color:var(--signal)}
+.lead{font-size:17px;color:var(--dim);max-width:54ch;margin:0}
+.lead b{color:var(--text);font-weight:600}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px;align-items:center}
+.btn{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;
+  padding:11px 14px;border-radius:10px;border:1px solid var(--border-strong);background:var(--surface);color:var(--text);
+  transition:background .16s,border-color .16s,transform .16s;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+}
+.btn:hover{background:var(--surface-3);transform:translateY(-1px)}
+.btn.primary{background:var(--signal);border-color:var(--signal);color:#12181b;font-weight:700}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.55;cursor:not-allowed;transform:none}
+
+.phone-mock{
+  border:1px solid var(--border-strong);border-radius:26px;background:linear-gradient(160deg,var(--surface-2),var(--surface));
+  padding:16px;box-shadow:var(--shadow);
+}
+.phone-mock .bar{display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim-2);margin-bottom:12px}
+.phone-mock .rows{display:grid;gap:9px}
+.mrow{display:grid;grid-template-columns:76px 1fr 34px;align-items:center;gap:9px;font-size:12px;color:var(--dim)}
+.mrow span:first-child{font-size:11.5px}
+.mrow .track{height:6px;border-radius:4px;background:var(--surface-3);overflow:hidden}
+.mrow .track i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--signal),var(--gold))}
+.mrow b{font-family:var(--font-mono);font-weight:400;color:var(--text);font-size:12px;text-align:right}
+
+/* ---------- sections ---------- */
+section{padding:50px 0;border-top:1px solid var(--border)}
+.sec-head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.sec-num{font-family:var(--font-mono);font-size:10.5px;color:var(--signal);border:1px solid rgba(232,98,44,.42);background:var(--signal-soft);border-radius:6px;padding:3px 7px;letter-spacing:.08em}
+h2{font-family:var(--font-display);font-size:clamp(23px,2.9vw,32px);line-height:1.12;letter-spacing:-.025em;margin:0;font-weight:800}
+.sec-head p{margin:0;color:var(--dim);font-size:14px;max-width:56ch;flex:1 1 300px;min-width:0}
+
+/* ---------- finder ---------- */
+.finder-tools{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.search-box{position:relative;flex:1 1 260px;min-width:0}
+.search-box input{
+  width:100%;padding:12px 14px 12px 38px;border-radius:11px;border:1px solid var(--border-strong);
+  background:var(--surface);color:var(--text);font-family:var(--font-body);font-size:14.5px;
+}
+.search-box input:focus{outline:2px solid var(--signal);outline-offset:1px}
+.search-box::before{content:"⌕";position:absolute;left:13px;top:50%;transform:translateY(-52%);color:var(--dim-2);font-size:17px}
+.brand-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  padding:7px 10px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--dim);
+}
+.chip[aria-pressed="true"]{background:var(--signal-soft);border-color:rgba(232,98,44,.45);color:var(--signal)}
+.chip:hover{border-color:var(--border-strong);color:var(--text)}
+
+.phone-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(196px,1fr));gap:9px;max-height:420px;overflow-y:auto;padding:4px 6px 4px 0;scrollbar-width:thin}
+.phone-grid::-webkit-scrollbar{width:8px}
+.phone-grid::-webkit-scrollbar-thumb{background:var(--surface-3);border-radius:4px}
+.pcard{
+  text-align:left;cursor:pointer;font-family:inherit;color:var(--text);
+  border:1px solid var(--border);background:var(--surface);border-radius:11px;padding:11px 12px;
+  transition:border-color .16s,background .16s,transform .16s;min-width:0;
+}
+.pcard:hover{border-color:var(--border-strong);transform:translateY(-2px);background:var(--surface-2)}
+.pcard[aria-pressed="true"]{border-color:var(--signal);background:var(--signal-soft)}
+.pcard .pn{display:block;font-weight:600;font-size:13.5px;letter-spacing:-.01em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pcard .ps{display:block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim-2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.empty-note{color:var(--dim-2);font-size:13px;padding:14px 2px}
+
+/* ---------- result ---------- */
+.result{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:14px;align-items:start}
+@media (max-width:900px){.result{grid-template-columns:1fr}}
+.panel{border:1px solid var(--border);background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid var(--border);background:var(--surface-2);flex-wrap:wrap}
+.panel-head .t{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.panel-head .right{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--dim-2);letter-spacing:.05em}
+.panel-body{padding:15px}
+.sel-phone{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:4px}
+.sel-phone h3{font-family:var(--font-display);font-size:19px;margin:0;letter-spacing:-.02em;font-weight:800}
+.sel-phone .spec{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim-2)}
+.sel-sub{color:var(--dim);font-size:13px;margin:0 0 14px}
+.srows{display:grid;gap:2px}
+.srow{display:grid;grid-template-columns:88px 1fr 40px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px dashed var(--border)}
+.srow:last-child{border-bottom:0}
+.srow .l{font-size:13px;font-weight:600;letter-spacing:-.01em}
+.srow .l small{display:block;font-family:var(--font-mono);font-size:9px;font-weight:400;letter-spacing:.04em;color:var(--dim-2);text-transform:uppercase}
+.srow .track{height:7px;border-radius:4px;background:var(--surface-3);overflow:hidden;min-width:0}
+.srow .track i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--signal),var(--gold));transition:width .3s ease}
+.srow .v{font-family:var(--font-mono);font-size:14px;text-align:right;color:var(--text)}
+.meta-cards{display:grid;gap:8px;margin-top:14px}
+.meta{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;border:1px solid var(--border);background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.meta .mk{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--signal);white-space:nowrap;padding-top:2px}
+.meta .mv{font-size:12.5px;color:var(--dim)}
+.meta .mv b{color:var(--text);font-weight:600}
+
+/* download card */
+.dl-card{border:1px solid var(--border-strong);background:var(--surface-2);border-radius:var(--r);padding:15px;box-shadow:var(--shadow);position:sticky;top:76px}
+@media (max-width:900px){.dl-card{position:static}}
+.dl-card .dt{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim-2);margin-bottom:10px}
+.dl-card .dv{display:flex;justify-content:space-between;font-size:13px;color:var(--dim);padding:5px 0;border-bottom:1px dashed var(--border)}
+.dl-card .dv b{font-family:var(--font-mono);font-weight:400;color:var(--text)}
+.dl-actions{display:grid;gap:8px;margin-top:14px}
+.dl-actions .btn{justify-content:center;width:100%}
+.lock-note{font-family:var(--font-mono);font-size:10px;letter-spacing:.05em;color:var(--gold);margin-top:9px;min-height:13px;text-align:center}
+.locked .btn.dl{position:relative;color:var(--dim)}
+.locked .btn.dl::after{content:"LOCKED";font-size:9px;letter-spacing:.1em;color:var(--gold);border:1px solid var(--gold);border-radius:5px;padding:1px 5px;margin-left:6px}
+
+/* ---------- fallback ---------- */
+.fb{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.field{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:13px}
+.field label{display:block;font-family:var(--font-mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim-2);margin-bottom:7px}
+.field select{width:100%;padding:9px 10px;border-radius:9px;border:1px solid var(--border-strong);background:var(--surface-2);color:var(--text);font-family:var(--font-body);font-size:13.5px}
+
+/* ---------- steps/cards ---------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:11px}
+.step{border:1px solid var(--border);background:var(--surface);border-radius:12px;padding:16px}
+.step .n{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;color:var(--signal);display:block;margin-bottom:7px}
+.step h3{font-family:var(--font-display);font-size:15px;margin:0 0 5px;font-weight:600;letter-spacing:-.01em}
+.step p{margin:0;font-size:13px;color:var(--dim)}
+.callout{border-left:3px solid var(--signal);background:var(--signal-soft);border-radius:0 11px 11px 0;padding:14px 16px;margin-top:20px;font-size:13.5px}
+.callout b{color:var(--signal)}
+
+/* ---------- faq ---------- */
+details{border:1px solid var(--border);background:var(--surface);border-radius:11px;margin-bottom:8px;overflow:hidden}
+summary{cursor:pointer;padding:13px 15px;font-weight:600;font-size:14px;list-style:none;display:flex;gap:10px;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;font-family:var(--font-mono);color:var(--signal);font-size:15px}
+details[open] summary::after{content:"–"}
+details p{margin:0;padding:0 15px 15px;color:var(--dim);font-size:13px;max-width:82ch}
+
+footer{border-top:1px solid var(--border);padding:24px 0 0;margin-top:16px;color:var(--dim-2);font-size:12px;display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between;align-items:center}
+footer a{color:var(--signal);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ---------- modal ---------- */
+.modal{
+  position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:18px;
+  background:rgba(6,12,15,.82);backdrop-filter:blur(7px);
+}
+.modal.open{display:grid}
+.modal-card{
+  width:100%;max-width:430px;background:var(--surface);border:1px solid var(--border-strong);
+  border-radius:20px;padding:24px;box-shadow:0 40px 90px -30px #000;position:relative;
+  animation:pop .32s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.modal-card .avatar{
+  width:62px;height:62px;border-radius:50%;margin:0 auto 14px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--signal),var(--gold));color:#12181b;font-weight:800;font-size:22px;
+  font-family:var(--font-display);
+}
+.modal-card h3{font-family:var(--font-display);text-align:center;font-size:20px;margin:0 0 4px;letter-spacing:-.02em}
+.modal-card .handle{text-align:center;font-family:var(--font-mono);font-size:11.5px;color:var(--dim-2);letter-spacing:.06em;margin-bottom:12px}
+.modal-card p{text-align:center;color:var(--dim);font-size:13.5px;margin:0 0 18px}
+.modal-card .mact{display:grid;gap:8px}
+.modal-card .btn{justify-content:center}
+.modal-card .tiny{font-family:var(--font-mono);font-size:9.5px;color:var(--dim-2);text-align:center;margin-top:12px;letter-spacing:.04em;line-height:1.6}
+.progress{height:4px;border-radius:3px;background:var(--surface-3);overflow:hidden;margin-top:12px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--signal),var(--mint));transition:width .25s linear}
+.close-x{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--dim-2);font-size:20px;cursor:pointer;line-height:1}
+.close-x:hover{color:var(--text)}
+
+.reveal{opacity:0;transform:translateY(12px);animation:fadeUp .6s cubic-bezier(.2,.7,.3,1) forwards}
+.reveal:nth-child(2){animation-delay:.07s}
+.reveal:nth-child(3){animation-delay:.14s}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  .reveal{animation:none;opacity:1;transform:none}
+  html{scroll-behavior:auto}
+  *{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <span class="mark">FZ</span>
+      <span>FearSensiZ<small>Phone-wise FF sens</small></span>
+    </div>
+    <nav class="topnav">
+      <a href="#finder">Find phone</a>
+      <a href="#result">Sens</a>
+      <a href="#how">How</a>
+      <a href="#tune">Tuning</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="sub-pill" id="subTop" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener"><span class="play"></span>Subscribe</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <div class="eyebrow reveal">Free Fire India &amp; Free Fire MAX</div>
+      <h1 class="reveal">Apne phone ka<br>sensitivity — <em>headshot</em><br>ke liye tuned.</h1>
+      <p class="lead reveal">Phone ka model chuno, aur uske <b>screen size, refresh rate aur chipset</b> ke hisaab se banaya gaya sensitivity preset paao. Har value Free Fire ke asli 0–100 slider scale par hai — seedha game me daalo, ya TXT/PNG me download karo.</p>
+      <div class="hero-cta reveal">
+        <a class="btn primary" href="#finder">Phone chuno</a>
+        <a class="btn ghost" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">YouTube: @Crownxv2</a>
+      </div>
+    </div>
+    <div class="phone-mock reveal">
+      <div class="bar"><span>Preview · mid-range 6.6"</span><span>FF / MAX</span></div>
+      <div class="rows">
+        <div class="mrow"><span>General</span><span class="track"><i style="width:90%"></i></span><b>90</b></div>
+        <div class="mrow"><span>Red Dot</span><span class="track"><i style="width:85%"></i></span><b>85</b></div>
+        <div class="mrow"><span>2x Scope</span><span class="track"><i style="width:75%"></i></span><b>75</b></div>
+        <div class="mrow"><span>4x Scope</span><span class="track"><i style="width:60%"></i></span><b>60</b></div>
+        <div class="mrow"><span>AWM</span><span class="track"><i style="width:27%"></i></span><b>27</b></div>
+        <div class="mrow"><span>Free Look</span><span class="track"><i style="width:54%"></i></span><b>54</b></div>
+        <div class="mrow"><span>Fire btn</span><span class="track"><i style="width:58%"></i></span><b>58%</b></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- FINDER -->
+  <section id="finder">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <h2>Apna phone chuno</h2>
+      <p>79 popular phones listed hain. Search me model ka naam type karo, ya brand chip dabao. Neeche wali list se phone select karte hi uski sensitivity ban jaati hai.</p>
+    </div>
+
+    <div class="finder-tools">
+      <div class="search-box">
+        <input type="search" id="searchInput" placeholder="Search: Redmi Note 13, iQOO Z9, iPhone 13…" autocomplete="off" aria-label="Search phone model">
+      </div>
+      <div class="brand-chips" id="brandChips" role="group" aria-label="Brand filter"></div>
+    </div>
+
+    <div class="phone-grid" id="phoneGrid"></div>
+    <div class="empty-note" id="gridNote" hidden>Is naam se koi phone nahi mila. Neeche “Phone list me nahi hai?” wale option se manual settings banao.</div>
+  </section>
+
+  <!-- RESULT -->
+  <section id="result">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <h2>Aapki sensitivity</h2>
+      <p>Ye values chune gaye phone ke screen size, refresh rate aur performance tier se generate hoti hain. Neeche se copy karo ya download karo.</p>
+    </div>
+
+    <div class="result">
+      <div class="panel">
+        <div class="panel-head">
+          <span class="t">Sensitivity output</span>
+          <span class="right" id="engineTag">engine v1 · 0–100 scale</span>
+        </div>
+        <div class="panel-body" id="resultBody">
+          <div class="sel-phone"><h3 id="selName">Koi phone select nahi kiya</h3></div>
+          <p class="sel-sub" id="selSub">Upar list se apna phone chuno — uske hisaab se preset yahan ban jayega.</p>
+          <div class="srows" id="srows"></div>
+          <div class="meta-cards" id="metaCards"></div>
+        </div>
+      </div>
+
+      <aside class="dl-card" id="dlCard">
+        <div class="dt">Download &amp; copy</div>
+        <div class="dv"><span>Game</span><b>FF India + MAX</b></div>
+        <div class="dv"><span>Phone</span><b id="dlPhone">—</b></div>
+        <div class="dv"><span>General</span><b id="dlGeneral">—</b></div>
+        <div class="dl-actions">
+          <button class="btn dl" id="copyBtn">Copy settings</button>
+          <button class="btn dl" id="txtBtn" aria-disabled="true">Download .txt</button>
+          <button class="btn dl" id="pngBtn" aria-disabled="true">Download .png</button>
+        </div>
+        <div class="lock-note" id="lockNote">Downloads unlock karne ke liye subscribe karo</div>
+      </aside>
+    </div>
+
+    <div class="callout">
+      <b>Note:</b> Ye ek calculated starting point hai, final truth nahi. 2–3 match khel ke General ko ±5 adjust karo — bas ek hi cheez badalna, warna pata nahi chalega kya kaam kar raha hai.
+    </div>
+  </section>
+
+  <!-- FALLBACK -->
+  <section id="fallback">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <h2>Phone list me nahi hai?</h2>
+      <p>Apne phone ka screen size aur FPS band chuno — engine usi tarah preset bana dega. Naya phone market me aaya ho to ye fastest raasta hai.</p>
+    </div>
+    <div class="fb">
+      <div class="field">
+        <label for="fbScreen">Screen size</label>
+        <select id="fbScreen">
+          <option value="6.1">Chhota (6.1" se kam)</option>
+          <option value="6.4">Medium (6.3" – 6.6")</option>
+          <option value="6.6" selected>Bada (6.6" – 6.75")</option>
+          <option value="6.8">Bahut bada (6.75" se zyada)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fbFps">Game FPS</label>
+        <select id="fbFps">
+          <option value="30">30–40 FPS (entry phone)</option>
+          <option value="60" selected>45–60 FPS (mid-range)</option>
+          <option value="90">60–90 FPS (upper mid)</option>
+          <option value="120">90–120 FPS (flagship)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fbStyle">Playstyle</label>
+        <select id="fbStyle">
+          <option value="0" selected>Balanced</option>
+          <option value="6">Rusher (close range)</option>
+          <option value="-6">Sniper (scope control)</option>
+        </select>
+      </div>
+      <div class="field" style="display:flex;align-items:flex-end">
+        <button class="btn primary" id="fbBtn" style="width:100%;justify-content:center">Preset banao</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section id="how">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <h2>Ye values kaise nikalti hain</h2>
+      <p>Random numbers nahi — ek simple rule set hai jo teen cheezon par chalta hai. Isliye har phone ka preset thoda different hota hai.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <span class="n">FACTOR 01</span>
+        <h3>Screen size</h3>
+        <p>Chhoti screen par thumb ka ek swipe zyada angle cover karta hai, isliye sens thodi kam chahiye. Badi screen par same swipe kam ghumta hai — isliye General upar jaata hai.</p>
+      </div>
+      <div class="step">
+        <span class="n">FACTOR 02</span>
+        <h3>Refresh rate</h3>
+        <p>120Hz+ screen par frame zyada smooth aate hain, drag predictable hota hai, to thoda kam sens par bhi control milta hai. 60Hz par chhoti galtiyan zyada dikhti hain.</p>
+      </div>
+      <div class="step">
+        <span class="n">FACTOR 03</span>
+        <h3>Chipset tier</h3>
+        <p>Entry-level phone par FPS girta rehta hai — usme high sens se drag “skippy” lagta hai, isliye base sens upar rakhi jaati hai. Flagship par base sens neeche.</p>
+      </div>
+      <div class="step">
+        <span class="n">DERIVED</span>
+        <h3>Scope ladder</h3>
+        <p>Red Dot = General −5, 2x = General −15, 4x = General −30, AWM ≈ General × 0.3, Free Look ≈ General × 0.6. Isse close se long range tak control girta nahi.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TUNE -->
+  <section id="tune">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <h2>Preset lagane ke baad</h2>
+      <p>Download karne ke baad ye 4 cheezein karo — headshot consistency isi se aati hai.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">STEP 01</span><h3>FPS lock karo</h3><p>Graphics smooth/low, High FPS on. Frame girta rahega to koi bhi sens consistent nahi lagegi.</p></div>
+      <div class="step"><span class="n">STEP 02</span><h3>Fire button set karo</h3><p>Button ko thumb ke natural reach par rakho aur uske thoda upar khali jagah chhodo — one-tap headshot ke liye drag space zaroori hai.</p></div>
+      <div class="step"><span class="n">STEP 03</span><h3>Training me 10 min</h3><p>Dummy ke around circle maaro. Crosshair target se aage nikalta hai to General −5, peeche rehta hai to +5.</p></div>
+      <div class="step"><span class="n">STEP 04</span><h3>10–15 match tak na badlo</h3><p>Muscle memory isi se banti hai. Har match me badalna sabse bada time waste hai.</p></div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <h2>Chhote sawaal</h2>
+    </div>
+    <details>
+      <summary>Free Fire India aur Free Fire MAX me same preset chalega?</summary>
+      <p>Haan. Dono games me sensitivity system same hai — 6 sliders, 0 se 100. Ek hi preset dono me daal sakte ho. Farq sirf app ke weight ka hai: MAX me graphics heavy hone se FPS kam girta hai, to kamzor phone par General 5 point upar rakhna comfortable lagta hai.</p>
+    </details>
+    <details>
+      <summary>Ye sensitivity headshot guarantee karti hai?</summary>
+      <p>Nahi — koi bhi sens headshot guarantee nahi karti. Sens sirf aapke haath ki speed ko game ke saath match karti hai. Headshot ka asli kaam HUD layout, fire button ki jagah aur drag ki practice karti hai. Isliye download ke saath HUD tips bhi diye jaate hain.</p>
+    </details>
+    <details>
+      <summary>DPI kitna rakhna chahiye?</summary>
+      <p>Free Fire ke andar DPI slider nahi hota — DPI aapke phone/emulator level ki setting hai. Is site me har phone ke liye ek suggested DPI range di gayi hai. Pehle in-game sliders se khelo, DPI sabse last me chhedo.</p>
+    </details>
+    <details>
+      <summary>Gyroscope se aim kar sakte hain?</summary>
+      <p>Nahi. Free Fire India aur MAX dono me gyroscope aiming support nahi hai. Aim poora thumb/finger drag se hota hai, isliye sensitivity aur HUD hi aapke main tools hain.</p>
+    </details>
+    <details>
+      <summary>Mera phone list me nahi hai, kya karun?</summary>
+      <p>“Phone list me nahi hai?” section use karo — screen size aur FPS band chun ke preset bana lo. Ye un phones ke liye bhi kaam karta hai jo naye launch hue hain.</p>
+    </details>
+    <details>
+      <summary>Subscribe karne ke baad dobara popup aayega?</summary>
+      <p>Nahi, ek baar unlock karne ke baad isi browser me dobara nahi aayega. Agar browser ka data clear kar doge to popup phir aa sakta hai.</p>
+    </details>
+  </section>
+
+  <footer>
+    <span>FearSensiZ — fan-made sensitivity tool. Garena / Free Fire se affiliated nahi.</span>
+    <span class="mono">Made for <a href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">@Crownxv2</a></span>
+  </footer>
+</div>
+
+<!-- SUBSCRIBE GATE -->
+<div class="modal" id="gate" role="dialog" aria-modal="true" aria-labelledby="gateTitle">
+  <div class="modal-card">
+    <button class="close-x" id="gateClose" aria-label="Close">×</button>
+    <div class="avatar">C</div>
+    <h3 id="gateTitle">Pehle subscribe karo</h3>
+    <div class="handle">youtube.com/@Crownxv2</div>
+    <p>Sensitivity preset download karne ke liye channel subscribe karo. Ye 10 second ka kaam hai — aur naye sens updates sabse pehle wahin aate hain.</p>
+    <div class="mact">
+      <a class="btn primary" id="gateSub" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">Subscribe on YouTube</a>
+      <button class="btn" id="gateUnlock" aria-disabled="true" disabled>Subscribe ke baad unlock</button>
+    </div>
+    <div class="progress"><i id="gateBar"></i></div>
+    <div class="tiny" id="gateHint">Button dabao, YouTube khulega — wapas aake unlock karo.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ============ PHONE DATABASE ============ */
+  /* [name, brand, screen(inch), refresh(Hz), tier(1 entry / 2 mid / 3 upper-mid / 4 flagship)] */
+  var DB = [
+    ["Redmi 9A","Xiaomi",6.53,60,1],
+    ["Redmi 10","Xiaomi",6.5,90,1],
+    ["Redmi 12","Xiaomi",6.79,90,1],
+    ["Redmi 13C","Xiaomi",6.74,90,1],
+    ["Redmi Note 10","Xiaomi",6.43,60,2],
+    ["Redmi Note 11","Xiaomi",6.43,90,2],
+    ["Redmi Note 12","Xiaomi",6.67,120,2],
+    ["Redmi Note 13","Xiaomi",6.67,120,2],
+    ["Redmi Note 13 Pro","Xiaomi",6.67,120,3],
+    ["Redmi Note 12 Pro","Xiaomi",6.67,120,3],
+    ["Redmi K50i","Xiaomi",6.6,144,3],
+    ["Poco M5","Xiaomi",6.58,90,1],
+    ["Poco M6","Xiaomi",6.79,90,1],
+    ["Poco X5","Xiaomi",6.67,120,3],
+    ["Poco X6 Pro","Xiaomi",6.67,120,4],
+    ["Poco F5","Xiaomi",6.67,120,4],
+    ["Poco X3 Pro","Xiaomi",6.67,120,3],
+    ["Xiaomi 13","Xiaomi",6.36,120,4],
+    ["Xiaomi 14","Xiaomi",6.36,120,4],
+    ["Realme C33","Realme",6.5,60,1],
+    ["Realme C53","Realme",6.74,90,1],
+    ["Realme C55","Realme",6.72,90,1],
+    ["Realme 8","Realme",6.4,60,2],
+    ["Realme 9","Realme",6.4,90,2],
+    ["Realme 11","Realme",6.72,120,2],
+    ["Realme 12","Realme",6.72,120,2],
+    ["Realme Narzo 50","Realme",6.6,120,2],
+    ["Realme Narzo 60","Realme",6.43,120,2],
+    ["Realme P1","Realme",6.67,120,3],
+    ["Realme GT Neo 3","Realme",6.7,120,4],
+    ["iQOO Z7","iQOO",6.64,120,3],
+    ["iQOO Z9","iQOO",6.67,120,3],
+    ["iQOO Neo 6","iQOO",6.62,120,4],
+    ["iQOO Neo 9 Pro","iQOO",6.78,144,4],
+    ["iQOO 12","iQOO",6.78,144,4],
+    ["OnePlus Nord CE 2","OnePlus",6.43,90,3],
+    ["OnePlus Nord CE 3","OnePlus",6.7,120,3],
+    ["OnePlus Nord 3","OnePlus",6.74,120,4],
+    ["OnePlus 11","OnePlus",6.7,120,4],
+    ["OnePlus 12R","OnePlus",6.78,120,4],
+    ["Samsung Galaxy M14","Samsung",6.6,90,1],
+    ["Samsung Galaxy A14","Samsung",6.6,90,1],
+    ["Samsung Galaxy F14","Samsung",6.6,90,1],
+    ["Samsung Galaxy M34","Samsung",6.5,120,2],
+    ["Samsung Galaxy A34","Samsung",6.6,120,2],
+    ["Samsung Galaxy M35","Samsung",6.6,120,2],
+    ["Samsung Galaxy A54","Samsung",6.4,120,3],
+    ["Samsung Galaxy S21 FE","Samsung",6.4,120,3],
+    ["Samsung Galaxy S22","Samsung",6.1,120,4],
+    ["Samsung Galaxy S23","Samsung",6.1,120,4],
+    ["Samsung Galaxy S24 Ultra","Samsung",6.8,120,4],
+    ["Vivo Y16","Vivo",6.51,60,1],
+    ["Vivo Y27","Vivo",6.64,90,1],
+    ["Vivo T2x","Vivo",6.58,120,2],
+    ["Vivo V29","Vivo",6.78,120,3],
+    ["Vivo X100","Vivo",6.78,120,4],
+    ["Oppo A17","Oppo",6.56,60,1],
+    ["Oppo A78","Oppo",6.43,90,1],
+    ["Oppo F23","Oppo",6.72,120,2],
+    ["Oppo Reno 11","Oppo",6.7,120,3],
+    ["Moto G34","Motorola",6.5,120,2],
+    ["Moto G54","Motorola",6.5,120,2],
+    ["Moto G84","Motorola",6.55,120,3],
+    ["Moto Edge 40","Motorola",6.55,144,4],
+    ["Infinix Smart 8","Infinix",6.6,90,1],
+    ["Infinix Hot 30","Infinix",6.78,120,1],
+    ["Infinix Note 30","Infinix",6.78,120,2],
+    ["Infinix Zero 30","Infinix",6.78,144,3],
+    ["Tecno Spark 20","Tecno",6.6,90,1],
+    ["Tecno Camon 20","Tecno",6.67,120,2],
+    ["Tecno Pova 5","Tecno",6.78,120,2],
+    ["Nothing Phone 2a","Nothing",6.7,120,3],
+    ["Nothing Phone 2","Nothing",6.7,120,4],
+    ["iPhone SE 3","Apple",4.7,60,3],
+    ["iPhone 11","Apple",6.1,60,3],
+    ["iPhone 12","Apple",6.1,60,4],
+    ["iPhone 13","Apple",6.1,60,4],
+    ["iPhone 14","Apple",6.1,60,4],
+    ["iPhone 15","Apple",6.1,60,4]
+  ];
+
+  var PHONES = DB.map(function(r,i){
+    return {id:i, name:r[0], brand:r[1], screen:r[2], refresh:r[3], tier:r[4]};
+  });
+
+  /* ============ ENGINE ============ */
+  function clamp(v,lo,hi){ return Math.max(lo, Math.min(hi, Math.round(v))); }
+
+  function buildSens(p){
+    var base = [0, 95, 90, 85, 80][p.tier] || 90;
+    var s = p.screen, r = p.refresh;
+
+    if (s < 6.25) base += 3;
+    else if (s > 6.75) base -= 3;
+
+    if (r >= 120) base -= 2;
+
+    if (p.style) base += p.style; /* playstyle offset */
+
+    var general = clamp(base, 58, 100);
+    var reddot  = clamp(general - 5, 50, 100);
+    var scope2  = clamp(general - 15, 42, 100);
+    var scope4  = clamp(general - 30, 28, 100);
+    var awm     = clamp(general * 0.30, 18, 42);
+    var free    = clamp(general * 0.60, 38, 70);
+    var fire    = clamp(s < 6.25 ? 52 : (s > 6.75 ? 62 : 58), 44, 72);
+
+    var dpi = p.tier === 1 ? "400 – 440" : (p.tier === 2 ? "440 – 480" : "480 – 520");
+    var fpsTxt = ["",
+      "Smooth + High FPS off (stable 30–40)",
+      "Standard + High FPS on (45–60)",
+      "High/Ultra + High FPS on (60–90)",
+      "Ultra + 90 FPS mode"
+    ][p.tier];
+
+    var hud = general >= 92
+      ? "Fire button 60–65% rakho aur uske upar kam se kam 1cm khali jagah chhodo — short drag me headshot lock hoga."
+      : "Fire button 55–60% rakho, thumb rest position se ek line me. Drag lamba rakho, aim snap nahi.";
+
+    return {
+      general:general, reddot:reddot, scope2:scope2, scope4:scope4, awm:awm, free:free, fire:fire,
+      dpi:dpi, fps:fpsTxt, hud:hud
+    };
+  }
+
+  var ROWS = [
+    ["general","General","hip-fire drag"],
+    ["reddot","Red Dot","close ADS"],
+    ["scope2","2x Scope","mid range"],
+    ["scope4","4x Scope","long range"],
+    ["awm","AWM Scope","sniper flick"],
+    ["free","Free Look","head glance"],
+    ["fire","Fire Button","HUD size"]
+  ];
+
+  /* ============ STATE ============ */
+  var state = { phone:null, sens:null, unlocked:false };
+  var STORE_KEY = "fearsensiz_unlocked_v1";
+
+  try { state.unlocked = localStorage.getItem(STORE_KEY) === "1"; } catch(e){ state.unlocked = false; }
+
+  /* ============ RENDER GRID ============ */
+  var grid = document.getElementById('phoneGrid');
+  var gridNote = document.getElementById('gridNote');
+  var searchInput = document.getElementById('searchInput');
+  var brandChips = document.getElementById('brandChips');
+  var activeBrand = "all";
+
+  var brands = ["all"].concat(PHONES.map(function(p){return p.brand;}).filter(function(b,i,a){return a.indexOf(b)===i;}).sort());
+
+  brands.forEach(function(b){
+    var el = document.createElement('button');
+    el.className = 'chip';
+    el.type = 'button';
+    el.textContent = b === "all" ? "All" : b;
+    el.setAttribute('aria-pressed', b === 'all' ? 'true' : 'false');
+    el.addEventListener('click', function(){
+      activeBrand = b;
+      Array.prototype.forEach.call(brandChips.children, function(c){ c.setAttribute('aria-pressed','false'); });
+      el.setAttribute('aria-pressed','true');
+      drawGrid();
+    });
+    brandChips.appendChild(el);
+  });
+
+  function drawGrid(){
+    var q = (searchInput.value || "").toLowerCase().trim();
+    grid.innerHTML = "";
+    var shown = 0;
+    PHONES.forEach(function(p){
+      if (activeBrand !== "all" && p.brand !== activeBrand) return;
+      if (q && p.name.toLowerCase().indexOf(q) === -1) return;
+      shown++;
+      var btn = document.createElement('button');
+      btn.className = 'pcard';
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', state.phone && state.phone.id === p.id ? 'true' : 'false');
+      var n = document.createElement('span');
+      n.className = 'pn'; n.textContent = p.name;
+      var s = document.createElement('span');
+      s.className = 'ps'; s.textContent = p.screen + '" · ' + p.refresh + 'Hz · T' + p.tier;
+      btn.appendChild(n); btn.appendChild(s);
+      btn.addEventListener('click', function(){ selectPhone(p); });
+      grid.appendChild(btn);
+    });
+    gridNote.hidden = shown > 0;
+  }
+
+  /* ============ RENDER RESULT ============ */
+  function selectPhone(p){
+    state.phone = p;
+    state.sens = buildSens(p);
+    Array.prototype.forEach.call(grid.children, function(c){ c.setAttribute('aria-pressed','false'); });
+    drawResult();
+    drawGrid();
+    var el = document.getElementById('result');
+    if (el && el.scrollIntoView) el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  function drawResult(){
+    var p = state.phone, s = state.sens;
+    var nameEl = document.getElementById('selName');
+    var subEl = document.getElementById('selSub');
+    var rowsEl = document.getElementById('srows');
+    var metaEl = document.getElementById('metaCards');
+
+    document.getElementById('dlPhone').textContent = p ? p.name : "—";
+    document.getElementById('dlGeneral').textContent = s ? s.general : "—";
+
+    if (!p){
+      nameEl.textContent = "Koi phone select nahi kiya";
+      subEl.textContent = "Upar list se apna phone chuno — uske hisaab se preset yahan ban jayega.";
+      rowsEl.innerHTML = ""; metaEl.innerHTML = "";
+      return;
+    }
+
+    nameEl.textContent = p.name;
+    subEl.textContent = p.brand + " · " + p.screen + '" screen · ' + p.refresh + "Hz · performance tier " + p.tier + " — Free Fire India aur MAX dono ke liye.";
+
+    rowsEl.innerHTML = "";
+    ROWS.forEach(function(r){
+      var k = r[0];
+      var row = document.createElement('div');
+      row.className = 'srow';
+      var l = document.createElement('div');
+      l.className = 'l'; l.innerHTML = r[1] + '<small>' + r[2] + '</small>';
+      var track = document.createElement('div');
+      track.className = 'track';
+      var fill = document.createElement('i');
+      fill.style.width = s[k] + '%';
+      track.appendChild(fill);
+      var v = document.createElement('div');
+      v.className = 'v'; v.textContent = k === 'fire' ? s[k] + '%' : s[k];
+      row.appendChild(l); row.appendChild(track); row.appendChild(v);
+      rowsEl.appendChild(row);
+    });
+
+    var metas = [
+      ["FPS", "<b>" + s.fps + "</b> — is setting par hi sens consistent lagegi."],
+      ["DPI", "<b>" + s.dpi + "</b> (phone/emulator level; game ke andar DPI slider nahi hota)."],
+      ["HUD", s.hud],
+      ["Range", "Close range ke liye General <b>" + s.general + "</b>, long range ke liye 4x <b>" + s.scope4 + "</b> aur AWM <b>" + s.awm + "</b> — yahi ladder balance rakhta hai."]
+    ];
+    metaEl.innerHTML = "";
+    metas.forEach(function(m){
+      var d = document.createElement('div');
+      d.className = 'meta';
+      var mk = document.createElement('span'); mk.className = 'mk'; mk.textContent = m[0];
+      var mv = document.createElement('span'); mv.className = 'mv'; mv.innerHTML = m[1];
+      d.appendChild(mk); d.appendChild(mv);
+      metaEl.appendChild(d);
+    });
+
+    refreshLock();
+  }
+
+  /* ============ LOCK / DOWNLOADS ============ */
+  var lockNote = document.getElementById('lockNote');
+  var copyBtn = document.getElementById('copyBtn');
+  var txtBtn = document.getElementById('txtBtn');
+  var pngBtn = document.getElementById('pngBtn');
+
+  function refreshLock(){
+    var unlocked = state.unlocked;
+    [copyBtn, txtBtn, pngBtn].forEach(function(b){
+      b.setAttribute('aria-disabled', unlocked ? 'false' : 'true');
+      b.disabled = !unlocked;
+    });
+    document.getElementById('dlCard').classList.toggle('locked', !unlocked);
+    lockNote.textContent = unlocked
+      ? "Unlocked — thanks for subscribing"
+      : "Downloads unlock karne ke liye subscribe karo";
+  }
+
+  /* ============ EXPORT: TEXT ============ */
+  function settingsText(){
+    var p = state.phone, s = state.sens;
+    if (!p || !s) return "";
+    return [
+      "FEARSENSI Z — FREE FIRE INDIA / FREE FIRE MAX SENSITIVITY",
+      "Phone: " + p.name + " (" + p.brand + ")",
+      "Screen: " + p.screen + '" · Refresh: ' + p.refresh + "Hz · Tier: " + p.tier,
+      "",
+      "General      : " + s.general,
+      "Red Dot      : " + s.reddot,
+      "2x Scope     : " + s.scope2,
+      "4x Scope     : " + s.scope4,
+      "AWM Scope    : " + s.awm,
+      "Free Look    : " + s.free,
+      "Fire Button  : " + s.fire + "%",
+      "",
+      "FPS setting  : " + s.fps,
+      "DPI range    : " + s.dpi,
+      "HUD tip      : " + s.hud,
+      "",
+      "Tip: 2-3 match khel ke General ko +/-5 adjust karo. Ek waqt me ek hi slider badlo.",
+      "Channel: youtube.com/@Crownxv2"
+    ].join("\n");
+  }
+
+  function download(blob, filename){
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+  }
+
+  function slug(t){ return t.replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase(); }
+
+  txtBtn.addEventListener('click', function(){
+    if (!state.unlocked){ openGate(); return; }
+    if (!state.phone){ alert("Pehle phone select karo."); return; }
+    download(new Blob([settingsText()], {type:'text/plain;charset=utf-8'}), "fearsensiz-" + slug(state.phone.name) + ".txt");
+  });
+
+  /* ============ EXPORT: PNG ============ */
+  pngBtn.addEventListener('click', function(){
+    if (!state.unlocked){ openGate(); return; }
+    if (!state.phone){ alert("Pehle phone select karo."); return; }
+    renderPNG();
+  });
+
+  function renderPNG(){
+    var p = state.phone, s = state.sens;
+    var W = 1080, H = 1350;
+    var c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    var x = c.getContext('2d');
+
+    /* background */
+    var g = x.createLinearGradient(0,0,W,H);
+    g.addColorStop(0,'#0b1216'); g.addColorStop(1,'#122630');
+    x.fillStyle = g; x.fillRect(0,0,W,H);
+
+    /* grid lines */
+    x.strokeStyle = 'rgba(255,255,255,0.045)'; x.lineWidth = 2;
+    for (var i=0;i<W;i+=72){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,H); x.stroke(); }
+    for (var j=0;j<H;j+=72){ x.beginPath(); x.moveTo(0,j); x.lineTo(W,j); x.stroke(); }
+
+    /* header */
+    x.fillStyle = '#e8622c';
+    x.fillRect(80, 84, 8, 56);
+    x.fillStyle = '#eaf2f4';
+    x.font = '800 58px "Plus Jakarta Sans", sans-serif';
+    x.fillText('FearSensiZ', 112, 132);
+    x.fillStyle = '#93a7ae';
+    x.font = '400 24px "Azeret Mono", monospace';
+    x.fillText('FREE FIRE INDIA + FREE FIRE MAX', 112, 172);
+
+    /* phone card */
+    x.fillStyle = 'rgba(255,255,255,0.05)';
+    roundRect(x, 80, 230, W-160, 168, 22); x.fill();
+    x.strokeStyle = 'rgba(255,255,255,0.13)'; x.lineWidth = 2;
+    roundRect(x, 80, 230, W-160, 168, 22); x.stroke();
+
+    x.fillStyle = '#eaf2f4';
+    x.font = '800 46px "Plus Jakarta Sans", sans-serif';
+    x.fillText(p.name, 112, 300);
+    x.fillStyle = '#93a7ae';
+    x.font = '400 24px "Azeret Mono", monospace';
+    x.fillText(p.brand.toUpperCase() + '  ·  ' + p.screen + '"  ·  ' + p.refresh + 'Hz  ·  TIER ' + p.tier, 112, 346);
+
+    /* sensitivity rows */
+    var y = 452;
+    ROWS.forEach(function(r){
+      var k = r[0], val = s[k];
+      x.fillStyle = '#eaf2f4';
+      x.font = '600 30px "Plus Jakarta Sans", sans-serif';
+      x.fillText(r[1], 80, y);
+
+      var barX = 400, barW = 520;
+      x.fillStyle = 'rgba(255,255,255,0.09)';
+      roundRect(x, barX, y-22, barW, 18, 9); x.fill();
+
+      var gg = x.createLinearGradient(barX, 0, barX+barW, 0);
+      gg.addColorStop(0,'#e8622c'); gg.addColorStop(1,'#d8a13a');
+      x.fillStyle = gg;
+      roundRect(x, barX, y-22, Math.max(18, barW*val/100), 18, 9); x.fill();
+
+      x.fillStyle = '#eaf2f4';
+      x.font = '700 32px "Azeret Mono", monospace';
+      x.textAlign = 'right';
+      x.fillText(k === 'fire' ? val + '%' : String(val), W-80, y);
+      x.textAlign = 'left';
+
+      y += 84;
+    });
+
+    /* footer notes */
+    x.fillStyle = 'rgba(255,255,255,0.05)';
+    roundRect(x, 80, 1110, W-160, 120, 18); x.fill();
+    x.fillStyle = '#93a7ae';
+    x.font = '400 22px "Azeret Mono", monospace';
+    x.fillText('FPS: ' + s.fps, 108, 1156);
+    x.fillText('DPI: ' + s.dpi + '   ·   0–100 slider scale', 108, 1196);
+
+    x.fillStyle = '#e8622c';
+    x.font = '700 24px "Azeret Mono", monospace';
+    x.fillText('youtube.com/@Crownxv2', 80, 1290);
+
+    x.fillStyle = '#6b818a';
+    x.font = '400 20px "Azeret Mono", monospace';
+    x.textAlign = 'right';
+    x.fillText('starting point — tune on your phone', W-80, 1290);
+    x.textAlign = 'left';
+
+    c.toBlob(function(blob){
+      if (blob) download(blob, "fearsensiz-" + slug(p.name) + ".png");
+    }, 'image/png');
+  }
+
+  function roundRect(ctx, x0, y0, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x0+r, y0);
+    ctx.arcTo(x0+w, y0, x0+w, y0+h, r);
+    ctx.arcTo(x0+w, y0+h, x0, y0+h, r);
+    ctx.arcTo(x0, y0+h, x0, y0, r);
+    ctx.arcTo(x0, y0, x0+w, y0, r);
+    ctx.closePath();
+  }
+
+  /* ============ COPY ============ */
+  copyBtn.addEventListener('click', function(){
+    if (!state.unlocked){ openGate(); return; }
+    if (!state.phone){ lockNote.textContent = "Pehle phone select karo"; return; }
+    var text = settingsText();
+    function ok(){ lockNote.textContent = "Copied — game me paste karo"; }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok).catch(fb);
+    } else { fb(); }
+    function fb(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch(e){ lockNote.textContent = "Copy fail — manually likh lo"; }
+      document.body.removeChild(ta);
+    }
+  });
+
+  /* ============ FALLBACK BUILDER ============ */
+  document.getElementById('fbBtn').addEventListener('click', function(){
+    var sc = parseFloat(document.getElementById('fbScreen').value);
+    var fps = parseInt(document.getElementById('fbFps').value, 10);
+    var style = parseInt(document.getElementById('fbStyle').value, 10);
+    var tier = fps <= 40 ? 1 : (fps <= 60 ? 2 : (fps <= 90 ? 3 : 4));
+    var fake = {id:-1, name:'Custom (' + sc + '" · ' + fps + ' FPS)', brand:'Custom', screen:sc, refresh:fps, tier:tier, style:style};
+    selectPhone(fake);
+  });
+
+  /* ============ SUBSCRIBE GATE ============ */
+  var gate = document.getElementById('gate');
+  var gateBar = document.getElementById('gateBar');
+  var gateUnlock = document.getElementById('gateUnlock');
+  var gateHint = document.getElementById('gateHint');
+  var timer = null, elapsed = 0, WAIT = 6;
+
+  function openGate(){
+    gate.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeGate(){
+    gate.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function unlock(){
+    state.unlocked = true;
+    try { localStorage.setItem(STORE_KEY, "1"); } catch(e){}
+    refreshLock();
+    closeGate();
+    lockNote.textContent = "Unlocked — downloads ready";
+  }
+
+  document.getElementById('gateSub').addEventListener('click', function(){
+    elapsed = 0;
+    gateUnlock.disabled = true;
+    gateUnlock.setAttribute('aria-disabled','true');
+    gateHint.textContent = "YouTube khul gaya — subscribe karke yahan wapas aao.";
+    if (timer) clearInterval(timer);
+    timer = setInterval(function(){
+      elapsed += 0.25;
+      gateBar.style.width = Math.min(100, (elapsed/WAIT)*100) + '%';
+      if (elapsed >= WAIT){
+        clearInterval(timer); timer = null;
+        gateUnlock.disabled = false;
+        gateUnlock.setAttribute('aria-disabled','false');
+        gateHint.textContent = "Ab unlock kar sakte ho.";
+      }
+    }, 250);
+  });
+
+  gateUnlock.addEventListener('click', function(){
+    if (gateUnlock.disabled) return;
+    unlock();
+  });
+
+  document.getElementById('gateClose').addEventListener('click', function(){
+    if (state.unlocked){ closeGate(); return; }
+    gateHint.textContent = "Download ke liye subscribe zaroori hai — popup dobara khulega.";
+    closeGate();
+  });
+
+  gate.addEventListener('click', function(e){
+    if (e.target === gate && state.unlocked) closeGate();
+  });
+
+  /* ============ INIT ============ */
+  drawGrid();
+  refreshLock();
+  if (!state.unlocked) { setTimeout(openGate, 600); }
+
+  /* default: pick mid-range phone so page is never empty */
+  var def = PHONES.filter(function(p){ return p.name === 'Redmi Note 13'; })[0] || PHONES[0];
+  state.phone = def;
+  state.sens = buildSens(def);
+  drawResult();
+  drawGrid();
+
+  /* search */
+  searchInput.addEventListener('input', drawGrid);
+})();
+</script>
+</body>
+</html>
