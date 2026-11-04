@@ -271,6 +271,33 @@ footer a:hover{text-decoration:underline}
   html{scroll-behavior:auto}
   *{transition:none!important}
 }
+/* ---- v2 additions: suggest, badge, spec grid ---- */
+.search-box{position:relative}
+.suggest{
+  position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:40;
+  background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;
+  box-shadow:0 26px 50px -24px rgba(0,0,0,.9);padding:6px;max-height:330px;overflow:auto;
+}
+.suggest button{
+  display:flex;width:100%;gap:10px;align-items:center;justify-content:space-between;
+  background:none;border:0;color:var(--text);padding:9px 10px;border-radius:8px;cursor:pointer;
+  font-family:inherit;font-size:13.5px;text-align:left;min-width:0;
+}
+.suggest button:hover,.suggest button.hl{background:var(--signal-soft)}
+.suggest .sname{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.suggest .smeta{font-family:var(--font-mono);font-size:9.5px;color:var(--dim-2);letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
+.suggest .snew{color:var(--signal);font-weight:600}
+.suggest .snew small{display:block;font-weight:400;color:var(--dim-2);font-size:9.5px;letter-spacing:.05em;text-transform:uppercase}
+.match-badge{
+  font-family:var(--font-mono);font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:3px 8px;border-radius:999px;border:1px solid;white-space:nowrap;
+}
+.match-badge.exact{color:var(--mint);border-color:rgba(79,178,134,.45);background:var(--mint-soft)}
+.match-badge.est{color:var(--gold);border-color:rgba(216,161,58,.45);background:var(--gold-soft)}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(136px,1fr));gap:8px;margin:4px 0 16px}
+.spec-grid .field{padding:9px 10px;border-radius:10px}
+.spec-grid .field label{font-size:8.5px;margin-bottom:5px;letter-spacing:.09em}
+.spec-grid .field select{font-size:12.5px;padding:6px 7px;border-radius:7px}
 </style>
 </head>
 <body>
@@ -323,19 +350,20 @@ footer a:hover{text-decoration:underline}
   <section id="finder">
     <div class="sec-head">
       <span class="sec-num">01</span>
-      <h2>Apna phone chuno</h2>
-      <p>79 popular phones listed hain. Search me model ka naam type karo, ya brand chip dabao. Neeche wali list se phone select karte hi uski sensitivity ban jaati hai.</p>
+      <h2>Apne phone ka naam likho</h2>
+      <p>Database me 340+ models hain — aur jo model list me nahi hai, uska sens naam se estimate ho jaata hai. Type karte hi suggestion khulega, select karo ya seedha Enter dabao.</p>
     </div>
 
     <div class="finder-tools">
       <div class="search-box">
-        <input type="search" id="searchInput" placeholder="Search: Redmi Note 13, iQOO Z9, iPhone 13…" autocomplete="off" aria-label="Search phone model">
+        <input type="search" id="searchInput" placeholder="Apne phone ka naam likho — Redmi Note 13, iQOO Z9, iPhone 12, Galaxy M34…" autocomplete="off" aria-label="Apne phone ka naam likho" aria-expanded="false" aria-controls="suggest">
+        <div class="suggest" id="suggest" hidden role="listbox"></div>
       </div>
       <div class="brand-chips" id="brandChips" role="group" aria-label="Brand filter"></div>
     </div>
 
     <div class="phone-grid" id="phoneGrid"></div>
-    <div class="empty-note" id="gridNote" hidden>Is naam se koi phone nahi mila. Neeche “Phone list me nahi hai?” wale option se manual settings banao.</div>
+    <div class="empty-note" id="gridNote" hidden>Is naam se exact model nahi mila — par ghabrao mat. Enter dabao ya neeche wali line par click karo, hum naam se specs nikaal ke sens bana denge.</div>
   </section>
 
   <!-- RESULT -->
@@ -343,18 +371,41 @@ footer a:hover{text-decoration:underline}
     <div class="sec-head">
       <span class="sec-num">02</span>
       <h2>Aapki sensitivity</h2>
-      <p>Ye values chune gaye phone ke screen size, refresh rate aur performance tier se generate hoti hain. Neeche se copy karo ya download karo.</p>
+      <p>Ye values aapke phone ke screen size, refresh rate aur power tier se banti hain. Neeche ke dropdown se apne phone ki specs confirm ya correct kar sakte ho — sens turant update ho jayegi.</p>
     </div>
 
     <div class="result">
       <div class="panel">
         <div class="panel-head">
           <span class="t">Sensitivity output</span>
-          <span class="right" id="engineTag">engine v1 · 0–100 scale</span>
+          <span class="right" id="engineTag">engine v2 · 0–100 scale</span>
         </div>
         <div class="panel-body" id="resultBody">
-          <div class="sel-phone"><h3 id="selName">Koi phone select nahi kiya</h3></div>
-          <p class="sel-sub" id="selSub">Upar list se apna phone chuno — uske hisaab se preset yahan ban jayega.</p>
+          <div class="sel-phone">
+            <h3 id="selName">Koi phone select nahi kiya</h3>
+            <span class="match-badge est" id="matchBadge">waiting</span>
+          </div>
+          <p class="sel-sub" id="selSub">Upar apne phone ka naam likho — uske hisaab se preset yahan ban jayega.</p>
+
+          <div class="spec-grid">
+            <div class="field">
+              <label for="spScreen">Screen size</label>
+              <select id="spScreen"></select>
+            </div>
+            <div class="field">
+              <label for="spRefresh">Refresh rate</label>
+              <select id="spRefresh"></select>
+            </div>
+            <div class="field">
+              <label for="spTier">Phone power</label>
+              <select id="spTier"></select>
+            </div>
+            <div class="field">
+              <label for="spStyle">Playstyle</label>
+              <select id="spStyle"></select>
+            </div>
+          </div>
+
           <div class="srows" id="srows"></div>
           <div class="meta-cards" id="metaCards"></div>
         </div>
@@ -379,42 +430,33 @@ footer a:hover{text-decoration:underline}
     </div>
   </section>
 
-  <!-- FALLBACK -->
+  <!-- FALLBACK / EXPLAINER -->
   <section id="fallback">
     <div class="sec-head">
       <span class="sec-num">03</span>
-      <h2>Phone list me nahi hai?</h2>
-      <p>Apne phone ka screen size aur FPS band chuno — engine usi tarah preset bana dega. Naya phone market me aaya ho to ye fastest raasta hai.</p>
+      <h2>List me nahi mila? Naam se hi ban jayega</h2>
+      <p>Har naye phone ke liye database update karna possible nahi. Isliye engine model ke naam ko padh kar brand, series aur suffix se specs nikaal leta hai — phir wahi formula chalta hai.</p>
     </div>
-    <div class="fb">
-      <div class="field">
-        <label for="fbScreen">Screen size</label>
-        <select id="fbScreen">
-          <option value="6.1">Chhota (6.1" se kam)</option>
-          <option value="6.4">Medium (6.3" – 6.6")</option>
-          <option value="6.6" selected>Bada (6.6" – 6.75")</option>
-          <option value="6.8">Bahut bada (6.75" se zyada)</option>
-        </select>
+    <div class="steps">
+      <div class="step">
+        <span class="n">NAAM SE PADHTA HAI</span>
+        <h3>Brand aur series</h3>
+        <p>“Redmi Note”, “Realme Narzo”, “Galaxy M”, “iQOO Z” — har series ka apna class hai. Engine naam se series pakadta hai aur usi class ka base sens deta hai.</p>
       </div>
-      <div class="field">
-        <label for="fbFps">Game FPS</label>
-        <select id="fbFps">
-          <option value="30">30–40 FPS (entry phone)</option>
-          <option value="60" selected>45–60 FPS (mid-range)</option>
-          <option value="90">60–90 FPS (upper mid)</option>
-          <option value="120">90–120 FPS (flagship)</option>
-        </select>
+      <div class="step">
+        <span class="n">SUFFIX</span>
+        <h3>Pro, Ultra, Neo, Plus</h3>
+        <p>“Pro” ya “Ultra” dikha to phone ko upar ke tier me rakha jaata hai — zyada FPS, isliye base sens thodi neeche. “Smart”, “Spark”, “Hot”, “C-series” entry tier me jaate hain.</p>
       </div>
-      <div class="field">
-        <label for="fbStyle">Playstyle</label>
-        <select id="fbStyle">
-          <option value="0" selected>Balanced</option>
-          <option value="6">Rusher (close range)</option>
-          <option value="-6">Sniper (scope control)</option>
-        </select>
+      <div class="step">
+        <span class="n">CONFIRM</span>
+        <h3>Aap check kar lo</h3>
+        <p>Estimate ke baad screen size, refresh rate aur power tier ke dropdown aapke saamne hote hain. Ek nazar dekh lo — galat lage to badal do, sens turant naya ho jayega.</p>
       </div>
-      <div class="field" style="display:flex;align-items:flex-end">
-        <button class="btn primary" id="fbBtn" style="width:100%;justify-content:center">Preset banao</button>
+      <div class="step">
+        <span class="n">HAMESHA</span>
+        <h3>Ek phone, ek sens</h3>
+        <p>Do players ka same phone ho, phir bhi thumb speed alag hoti hai — isliye har phone ke liye alag preset hai, par last 5–10 point tuning aapko khud karni padegi.</p>
       </div>
     </div>
   </section>
@@ -488,8 +530,8 @@ footer a:hover{text-decoration:underline}
       <p>Nahi. Free Fire India aur MAX dono me gyroscope aiming support nahi hai. Aim poora thumb/finger drag se hota hai, isliye sensitivity aur HUD hi aapke main tools hain.</p>
     </details>
     <details>
-      <summary>Mera phone list me nahi hai, kya karun?</summary>
-      <p>“Phone list me nahi hai?” section use karo — screen size aur FPS band chun ke preset bana lo. Ye un phones ke liye bhi kaam karta hai jo naye launch hue hain.</p>
+      <summary>Mera phone list me nahi hai, phir bhi sens milegi?</summary>
+      <p>Search box me apne phone ka naam likh ke Enter dabao. Agar model database me nahi hai to engine naam se brand, series aur suffix padh kar specs estimate kar leta hai, aur uske hisaab se sens bana deta hai. Result panel me screen size, refresh rate aur power tier ke dropdown se aap use correct bhi kar sakte ho.</p>
     </details>
     <details>
       <summary>Subscribe karne ke baad dobara popup aayega?</summary>
@@ -524,96 +566,372 @@ footer a:hover{text-decoration:underline}
 (function(){
   "use strict";
 
-  /* ============ PHONE DATABASE ============ */
-  /* [name, brand, screen(inch), refresh(Hz), tier(1 entry / 2 mid / 3 upper-mid / 4 flagship)] */
+  /* ============================================================
+     PHONE DATABASE
+     [name, brand, screen(inch), refresh(Hz), tier]
+     tier: 1 = entry (30-45 FPS) · 2 = mid (45-60) · 3 = upper-mid (60-90) · 4 = flagship (90+)
+     Specs approximate hain — user result panel se correct kar sakta hai.
+     ============================================================ */
   var DB = [
     ["Redmi 9A","Xiaomi",6.53,60,1],
+    ["Redmi 9C","Xiaomi",6.53,60,1],
+    ["Redmi 9 Power","Xiaomi",6.53,60,1],
     ["Redmi 10","Xiaomi",6.5,90,1],
+    ["Redmi 10A","Xiaomi",6.53,60,1],
+    ["Redmi 10 Power","Xiaomi",6.5,60,1],
     ["Redmi 12","Xiaomi",6.79,90,1],
+    ["Redmi 12C","Xiaomi",6.71,60,1],
+    ["Redmi 12 5G","Xiaomi",6.79,90,2],
+    ["Redmi 13","Xiaomi",6.79,90,1],
     ["Redmi 13C","Xiaomi",6.74,90,1],
+    ["Redmi 14C","Xiaomi",6.88,120,1],
+    ["Redmi A1","Xiaomi",6.52,60,1],
+    ["Redmi A2","Xiaomi",6.52,60,1],
+    ["Redmi A3","Xiaomi",6.71,90,1],
+    ["Redmi A4","Xiaomi",6.88,120,1],
+    ["Redmi Note 8","Xiaomi",6.3,60,2],
+    ["Redmi Note 9","Xiaomi",6.53,60,2],
     ["Redmi Note 10","Xiaomi",6.43,60,2],
+    ["Redmi Note 10 Pro","Xiaomi",6.67,120,3],
     ["Redmi Note 11","Xiaomi",6.43,90,2],
+    ["Redmi Note 11 Pro","Xiaomi",6.67,120,3],
     ["Redmi Note 12","Xiaomi",6.67,120,2],
-    ["Redmi Note 13","Xiaomi",6.67,120,2],
-    ["Redmi Note 13 Pro","Xiaomi",6.67,120,3],
     ["Redmi Note 12 Pro","Xiaomi",6.67,120,3],
+    ["Redmi Note 13","Xiaomi",6.67,120,2],
+    ["Redmi Note 13 5G","Xiaomi",6.67,120,3],
+    ["Redmi Note 13 Pro","Xiaomi",6.67,120,3],
+    ["Redmi Note 14","Xiaomi",6.67,120,3],
+    ["Redmi Note 14 Pro","Xiaomi",6.67,120,3],
+    ["Redmi K20 Pro","Xiaomi",6.39,60,3],
     ["Redmi K50i","Xiaomi",6.6,144,3],
+    ["Poco C50","Xiaomi",6.52,60,1],
+    ["Poco C55","Xiaomi",6.71,60,1],
+    ["Poco M2","Xiaomi",6.53,60,2],
+    ["Poco M3","Xiaomi",6.53,60,2],
+    ["Poco M4","Xiaomi",6.58,90,2],
     ["Poco M5","Xiaomi",6.58,90,1],
     ["Poco M6","Xiaomi",6.79,90,1],
-    ["Poco X5","Xiaomi",6.67,120,3],
-    ["Poco X6 Pro","Xiaomi",6.67,120,4],
-    ["Poco F5","Xiaomi",6.67,120,4],
+    ["Poco M6 Pro","Xiaomi",6.79,120,2],
+    ["Poco X2","Xiaomi",6.67,120,2],
+    ["Poco X3","Xiaomi",6.67,120,2],
     ["Poco X3 Pro","Xiaomi",6.67,120,3],
+    ["Poco X4 Pro","Xiaomi",6.67,120,3],
+    ["Poco X5","Xiaomi",6.67,120,3],
+    ["Poco X5 Pro","Xiaomi",6.67,120,3],
+    ["Poco X6","Xiaomi",6.67,120,3],
+    ["Poco X6 Pro","Xiaomi",6.67,120,4],
+    ["Poco F1","Xiaomi",6.18,60,3],
+    ["Poco F3 GT","Xiaomi",6.43,120,3],
+    ["Poco F4","Xiaomi",6.67,120,3],
+    ["Poco F5","Xiaomi",6.67,120,4],
+    ["Poco F6","Xiaomi",6.67,120,4],
+    ["Xiaomi 11i","Xiaomi",6.67,120,3],
+    ["Xiaomi 11 Lite","Xiaomi",6.55,90,3],
+    ["Xiaomi 12 Pro","Xiaomi",6.73,120,4],
     ["Xiaomi 13","Xiaomi",6.36,120,4],
+    ["Xiaomi 13 Pro","Xiaomi",6.73,120,4],
     ["Xiaomi 14","Xiaomi",6.36,120,4],
+    ["Xiaomi 14 Civi","Xiaomi",6.55,120,4],
+    ["Mi 10T","Xiaomi",6.67,144,4],
+    ["Mi 11X","Xiaomi",6.67,120,4],
+    ["Realme C1","Realme",6.2,60,1],
+    ["Realme C11","Realme",6.5,60,1],
+    ["Realme C12","Realme",6.5,60,1],
+    ["Realme C15","Realme",6.5,60,1],
+    ["Realme C21","Realme",6.5,60,1],
+    ["Realme C25","Realme",6.5,60,1],
+    ["Realme C30","Realme",6.5,60,1],
+    ["Realme C31","Realme",6.5,60,1],
     ["Realme C33","Realme",6.5,60,1],
+    ["Realme C35","Realme",6.6,60,1],
+    ["Realme C51","Realme",6.74,90,1],
     ["Realme C53","Realme",6.74,90,1],
     ["Realme C55","Realme",6.72,90,1],
-    ["Realme 8","Realme",6.4,60,2],
-    ["Realme 9","Realme",6.4,90,2],
-    ["Realme 11","Realme",6.72,120,2],
-    ["Realme 12","Realme",6.72,120,2],
+    ["Realme C61","Realme",6.74,90,1],
+    ["Realme C63","Realme",6.74,90,1],
+    ["Realme C67","Realme",6.72,120,2],
+    ["Realme Narzo 20","Realme",6.5,60,2],
+    ["Realme Narzo 30","Realme",6.5,90,2],
     ["Realme Narzo 50","Realme",6.6,120,2],
+    ["Realme Narzo 50A","Realme",6.5,60,2],
     ["Realme Narzo 60","Realme",6.43,120,2],
+    ["Realme Narzo 70","Realme",6.67,120,3],
+    ["Realme 5","Realme",6.5,60,1],
+    ["Realme 6","Realme",6.5,90,2],
+    ["Realme 7","Realme",6.5,90,2],
+    ["Realme 8","Realme",6.4,60,2],
+    ["Realme 8 5G","Realme",6.5,90,2],
+    ["Realme 9","Realme",6.4,90,2],
+    ["Realme 9 Pro","Realme",6.6,120,3],
+    ["Realme 10","Realme",6.4,90,2],
+    ["Realme 11","Realme",6.72,120,2],
+    ["Realme 11 Pro","Realme",6.7,120,3],
+    ["Realme 12","Realme",6.72,120,2],
+    ["Realme 12 Pro","Realme",6.7,120,3],
+    ["Realme 13","Realme",6.72,120,3],
     ["Realme P1","Realme",6.67,120,3],
+    ["Realme P1 Pro","Realme",6.7,120,3],
+    ["Realme P2 Pro","Realme",6.7,120,3],
+    ["Realme GT 2","Realme",6.62,120,4],
+    ["Realme GT 6","Realme",6.78,120,4],
     ["Realme GT Neo 3","Realme",6.7,120,4],
+    ["Realme X2 Pro","Realme",6.5,90,4],
+    ["iQOO Z3","iQOO",6.58,120,2],
+    ["iQOO Z5","iQOO",6.67,120,3],
+    ["iQOO Z6","iQOO",6.58,120,3],
     ["iQOO Z7","iQOO",6.64,120,3],
     ["iQOO Z9","iQOO",6.67,120,3],
+    ["iQOO Z9s","iQOO",6.77,120,3],
+    ["iQOO Z9x","iQOO",6.72,120,2],
     ["iQOO Neo 6","iQOO",6.62,120,4],
+    ["iQOO Neo 7","iQOO",6.78,120,4],
     ["iQOO Neo 9 Pro","iQOO",6.78,144,4],
+    ["iQOO 9 SE","iQOO",6.62,120,4],
+    ["iQOO 11","iQOO",6.78,144,4],
     ["iQOO 12","iQOO",6.78,144,4],
+    ["iQOO 13","iQOO",6.82,144,4],
+    ["OnePlus 7T","OnePlus",6.55,90,3],
+    ["OnePlus 8","OnePlus",6.55,90,4],
+    ["OnePlus 9R","OnePlus",6.55,120,4],
+    ["OnePlus 10R","OnePlus",6.7,120,4],
+    ["OnePlus 11","OnePlus",6.7,120,4],
+    ["OnePlus 12","OnePlus",6.82,120,4],
+    ["OnePlus 12R","OnePlus",6.78,120,4],
+    ["OnePlus Nord","OnePlus",6.44,90,3],
+    ["OnePlus Nord 2","OnePlus",6.43,90,3],
+    ["OnePlus Nord 3","OnePlus",6.74,120,4],
+    ["OnePlus Nord 4","OnePlus",6.74,120,4],
     ["OnePlus Nord CE 2","OnePlus",6.43,90,3],
     ["OnePlus Nord CE 3","OnePlus",6.7,120,3],
-    ["OnePlus Nord 3","OnePlus",6.74,120,4],
-    ["OnePlus 11","OnePlus",6.7,120,4],
-    ["OnePlus 12R","OnePlus",6.78,120,4],
-    ["Samsung Galaxy M14","Samsung",6.6,90,1],
+    ["OnePlus Nord CE 4","OnePlus",6.7,120,3],
+    ["Samsung Galaxy A10","Samsung",6.2,60,1],
+    ["Samsung Galaxy A12","Samsung",6.5,60,1],
+    ["Samsung Galaxy A13","Samsung",6.6,60,1],
     ["Samsung Galaxy A14","Samsung",6.6,90,1],
-    ["Samsung Galaxy F14","Samsung",6.6,90,1],
-    ["Samsung Galaxy M34","Samsung",6.5,120,2],
+    ["Samsung Galaxy A15","Samsung",6.5,90,1],
+    ["Samsung Galaxy A21s","Samsung",6.5,60,1],
+    ["Samsung Galaxy A23","Samsung",6.6,90,2],
+    ["Samsung Galaxy A32","Samsung",6.4,90,2],
     ["Samsung Galaxy A34","Samsung",6.6,120,2],
-    ["Samsung Galaxy M35","Samsung",6.6,120,2],
+    ["Samsung Galaxy A35","Samsung",6.6,120,3],
+    ["Samsung Galaxy A50","Samsung",6.4,60,2],
+    ["Samsung Galaxy A51","Samsung",6.5,60,2],
+    ["Samsung Galaxy A52","Samsung",6.5,90,2],
+    ["Samsung Galaxy A53","Samsung",6.5,120,3],
     ["Samsung Galaxy A54","Samsung",6.4,120,3],
+    ["Samsung Galaxy A55","Samsung",6.6,120,3],
+    ["Samsung Galaxy F14","Samsung",6.6,90,1],
+    ["Samsung Galaxy F23","Samsung",6.6,120,2],
+    ["Samsung Galaxy F34","Samsung",6.6,120,2],
+    ["Samsung Galaxy F41","Samsung",6.4,60,2],
+    ["Samsung Galaxy F54","Samsung",6.7,120,3],
+    ["Samsung Galaxy M13","Samsung",6.6,90,1],
+    ["Samsung Galaxy M14","Samsung",6.6,90,1],
+    ["Samsung Galaxy M15","Samsung",6.5,90,1],
+    ["Samsung Galaxy M21","Samsung",6.4,60,2],
+    ["Samsung Galaxy M30","Samsung",6.4,60,2],
+    ["Samsung Galaxy M31","Samsung",6.4,60,2],
+    ["Samsung Galaxy M32","Samsung",6.4,90,2],
+    ["Samsung Galaxy M33","Samsung",6.6,120,2],
+    ["Samsung Galaxy M34","Samsung",6.5,120,2],
+    ["Samsung Galaxy M35","Samsung",6.6,120,2],
+    ["Samsung Galaxy M51","Samsung",6.7,60,2],
+    ["Samsung Galaxy M52","Samsung",6.7,120,3],
+    ["Samsung Galaxy S10","Samsung",6.1,60,3],
+    ["Samsung Galaxy S20 FE","Samsung",6.5,120,3],
     ["Samsung Galaxy S21 FE","Samsung",6.4,120,3],
     ["Samsung Galaxy S22","Samsung",6.1,120,4],
     ["Samsung Galaxy S23","Samsung",6.1,120,4],
+    ["Samsung Galaxy S23 Ultra","Samsung",6.8,120,4],
+    ["Samsung Galaxy S24","Samsung",6.2,120,4],
     ["Samsung Galaxy S24 Ultra","Samsung",6.8,120,4],
+    ["Samsung Galaxy S24 FE","Samsung",6.7,120,3],
+    ["Samsung Galaxy S25","Samsung",6.2,120,4],
+    ["Samsung Galaxy S25 Ultra","Samsung",6.9,120,4],
+    ["Samsung Galaxy Z Flip 5","Samsung",6.7,120,4],
+    ["Samsung Galaxy Z Fold 5","Samsung",7.6,120,4],
+    ["Vivo Y11","Vivo",6.35,60,1],
+    ["Vivo Y12","Vivo",6.35,60,1],
+    ["Vivo Y15","Vivo",6.35,60,1],
     ["Vivo Y16","Vivo",6.51,60,1],
+    ["Vivo Y17s","Vivo",6.56,60,1],
+    ["Vivo Y18","Vivo",6.56,90,1],
+    ["Vivo Y20","Vivo",6.51,60,1],
+    ["Vivo Y21","Vivo",6.51,60,1],
+    ["Vivo Y22","Vivo",6.55,60,1],
     ["Vivo Y27","Vivo",6.64,90,1],
+    ["Vivo Y28","Vivo",6.68,90,1],
+    ["Vivo Y36","Vivo",6.64,90,2],
+    ["Vivo Y56","Vivo",6.58,90,2],
+    ["Vivo Y100","Vivo",6.38,90,2],
+    ["Vivo Y200","Vivo",6.72,120,2],
+    ["Vivo T1","Vivo",6.58,120,2],
     ["Vivo T2x","Vivo",6.58,120,2],
+    ["Vivo T3","Vivo",6.67,120,3],
+    ["Vivo V21","Vivo",6.44,90,2],
+    ["Vivo V23","Vivo",6.44,90,3],
+    ["Vivo V25","Vivo",6.44,90,3],
+    ["Vivo V27","Vivo",6.78,120,3],
     ["Vivo V29","Vivo",6.78,120,3],
+    ["Vivo V30","Vivo",6.78,120,3],
+    ["Vivo X60","Vivo",6.56,120,4],
+    ["Vivo X70","Vivo",6.56,120,4],
+    ["Vivo X80","Vivo",6.78,120,4],
+    ["Vivo X90","Vivo",6.78,120,4],
     ["Vivo X100","Vivo",6.78,120,4],
+    ["Vivo X200","Vivo",6.67,120,4],
+    ["Oppo A3s","Oppo",6.2,60,1],
+    ["Oppo A5s","Oppo",6.2,60,1],
+    ["Oppo A12","Oppo",6.22,60,1],
+    ["Oppo A15","Oppo",6.52,60,1],
+    ["Oppo A16","Oppo",6.52,60,1],
     ["Oppo A17","Oppo",6.56,60,1],
+    ["Oppo A18","Oppo",6.56,90,1],
+    ["Oppo A31","Oppo",6.5,60,1],
+    ["Oppo A53","Oppo",6.5,90,1],
+    ["Oppo A54","Oppo",6.51,60,1],
+    ["Oppo A57","Oppo",6.56,60,1],
+    ["Oppo A58","Oppo",6.72,90,2],
     ["Oppo A78","Oppo",6.43,90,1],
+    ["Oppo A79","Oppo",6.72,90,2],
+    ["Oppo F17","Oppo",6.44,60,2],
+    ["Oppo F19","Oppo",6.43,60,2],
+    ["Oppo F21 Pro","Oppo",6.43,90,3],
     ["Oppo F23","Oppo",6.72,120,2],
+    ["Oppo F25 Pro","Oppo",6.7,120,3],
+    ["Oppo Reno 5","Oppo",6.43,90,3],
+    ["Oppo Reno 6","Oppo",6.43,90,3],
+    ["Oppo Reno 7","Oppo",6.43,90,3],
+    ["Oppo Reno 8","Oppo",6.43,90,3],
+    ["Oppo Reno 10","Oppo",6.7,120,3],
     ["Oppo Reno 11","Oppo",6.7,120,3],
+    ["Oppo Reno 12","Oppo",6.7,120,3],
+    ["Moto E7","Motorola",6.5,60,1],
+    ["Moto E13","Motorola",6.5,60,1],
+    ["Moto E14","Motorola",6.56,90,1],
+    ["Moto G10","Motorola",6.5,60,1],
+    ["Moto G20","Motorola",6.5,90,1],
+    ["Moto G30","Motorola",6.5,90,1],
+    ["Moto G32","Motorola",6.5,90,2],
     ["Moto G34","Motorola",6.5,120,2],
+    ["Moto G40","Motorola",6.8,90,2],
+    ["Moto G45","Motorola",6.5,120,2],
     ["Moto G54","Motorola",6.5,120,2],
+    ["Moto G60","Motorola",6.8,120,2],
+    ["Moto G62","Motorola",6.5,120,2],
+    ["Moto G64","Motorola",6.5,120,2],
+    ["Moto G71","Motorola",6.4,60,2],
+    ["Moto G72","Motorola",6.6,120,3],
+    ["Moto G73","Motorola",6.5,120,3],
     ["Moto G84","Motorola",6.55,120,3],
+    ["Moto G85","Motorola",6.67,120,3],
+    ["Moto Edge 20","Motorola",6.7,144,3],
+    ["Moto Edge 30","Motorola",6.55,144,4],
     ["Moto Edge 40","Motorola",6.55,144,4],
+    ["Moto Edge 40 Neo","Motorola",6.55,144,3],
+    ["Moto Edge 50","Motorola",6.67,120,4],
+    ["Moto Edge 50 Pro","Motorola",6.7,144,4],
+    ["Moto Razr 40","Motorola",6.9,144,4],
+    ["Infinix Smart 5","Infinix",6.6,60,1],
+    ["Infinix Smart 6","Infinix",6.6,60,1],
+    ["Infinix Smart 7","Infinix",6.6,60,1],
     ["Infinix Smart 8","Infinix",6.6,90,1],
+    ["Infinix Hot 9","Infinix",6.6,60,1],
+    ["Infinix Hot 10","Infinix",6.78,60,1],
+    ["Infinix Hot 11","Infinix",6.6,60,1],
+    ["Infinix Hot 12","Infinix",6.82,90,1],
+    ["Infinix Hot 20","Infinix",6.82,90,1],
     ["Infinix Hot 30","Infinix",6.78,120,1],
+    ["Infinix Hot 40","Infinix",6.78,120,1],
+    ["Infinix Hot 50","Infinix",6.7,120,2],
+    ["Infinix Note 10","Infinix",6.95,60,1],
+    ["Infinix Note 11","Infinix",6.7,60,2],
+    ["Infinix Note 12","Infinix",6.7,60,2],
     ["Infinix Note 30","Infinix",6.78,120,2],
+    ["Infinix Note 40","Infinix",6.78,120,2],
+    ["Infinix Zero 5G","Infinix",6.78,120,3],
     ["Infinix Zero 30","Infinix",6.78,144,3],
+    ["Infinix Zero 40","Infinix",6.78,144,3],
+    ["Infinix GT 10 Pro","Infinix",6.67,120,4],
+    ["Tecno Spark 6","Tecno",6.6,60,1],
+    ["Tecno Spark 7","Tecno",6.5,60,1],
+    ["Tecno Spark 8","Tecno",6.5,60,1],
+    ["Tecno Spark 9","Tecno",6.6,60,1],
+    ["Tecno Spark 10","Tecno",6.6,90,1],
     ["Tecno Spark 20","Tecno",6.6,90,1],
+    ["Tecno Camon 17","Tecno",6.6,90,1],
+    ["Tecno Camon 18","Tecno",6.7,90,2],
+    ["Tecno Camon 19","Tecno",6.8,60,2],
     ["Tecno Camon 20","Tecno",6.67,120,2],
+    ["Tecno Pova 2","Tecno",6.9,60,1],
+    ["Tecno Pova 3","Tecno",6.9,90,1],
+    ["Tecno Pova 4","Tecno",6.82,90,2],
     ["Tecno Pova 5","Tecno",6.78,120,2],
-    ["Nothing Phone 2a","Nothing",6.7,120,3],
+    ["Tecno Pova 6","Tecno",6.78,120,2],
+    ["Tecno Phantom X2","Tecno",6.8,120,4],
+    ["Lava Z2","Lava",6.5,60,1],
+    ["Lava Z3","Lava",6.5,60,1],
+    ["Lava Blaze","Lava",6.5,60,1],
+    ["Lava Blaze 2","Lava",6.5,90,1],
+    ["Lava Blaze 3","Lava",6.5,90,1],
+    ["Lava Agni 2","Lava",6.78,120,3],
+    ["Lava Agni 3","Lava",6.78,120,3],
+    ["Lava Yuva 2","Lava",6.5,60,1],
+    ["Lava Yuva 3","Lava",6.5,90,1],
+    ["Lava Storm 5G","Lava",6.78,120,2],
+    ["itel A23","itel",6.5,60,1],
+    ["itel A48","itel",6.5,60,1],
+    ["itel P40","itel",6.5,60,1],
+    ["itel P55","itel",6.6,60,1],
+    ["itel S23","itel",6.6,90,1],
+    ["itel Zeno 10","itel",6.6,90,1],
+    ["Nothing Phone 1","Nothing",6.55,120,3],
     ["Nothing Phone 2","Nothing",6.7,120,4],
-    ["iPhone SE 3","Apple",4.7,60,3],
+    ["Nothing Phone 2a","Nothing",6.7,120,3],
+    ["Nothing Phone 2a Plus","Nothing",6.7,120,3],
+    ["Nothing CMF Phone 1","Nothing",6.67,120,2],
+    ["Google Pixel 4a","Google",5.81,60,3],
+    ["Google Pixel 6a","Google",6.1,60,4],
+    ["Google Pixel 7","Google",6.3,90,4],
+    ["Google Pixel 7a","Google",6.1,90,4],
+    ["Google Pixel 8","Google",6.2,120,4],
+    ["Google Pixel 8a","Google",6.1,120,4],
+    ["Google Pixel 9","Google",6.3,120,4],
+    ["iPhone 7","Apple",4.7,60,2],
+    ["iPhone 8","Apple",4.7,60,2],
+    ["iPhone X","Apple",5.8,60,3],
+    ["iPhone XR","Apple",6.1,60,3],
     ["iPhone 11","Apple",6.1,60,3],
+    ["iPhone 11 Pro Max","Apple",6.5,60,3],
     ["iPhone 12","Apple",6.1,60,4],
+    ["iPhone 12 Pro Max","Apple",6.7,60,4],
     ["iPhone 13","Apple",6.1,60,4],
+    ["iPhone 13 Pro Max","Apple",6.7,120,4],
     ["iPhone 14","Apple",6.1,60,4],
-    ["iPhone 15","Apple",6.1,60,4]
+    ["iPhone 14 Pro","Apple",6.1,120,4],
+    ["iPhone 15","Apple",6.1,60,4],
+    ["iPhone 15 Pro","Apple",6.1,120,4],
+    ["iPhone 16","Apple",6.1,60,4],
+    ["iPhone 16 Pro","Apple",6.3,120,4],
+    ["iPhone SE 2","Apple",4.7,60,3],
+    ["iPhone SE 3","Apple",4.7,60,3],
+    ["Honor 90","Honor",6.7,120,3],
+    ["Honor X9b","Honor",6.78,120,3],
+    ["Nokia G21","Nokia",6.5,90,1],
+    ["Nokia C32","Nokia",6.5,60,1],
+    ["Asus ROG Phone 6","Asus",6.78,165,4],
+    ["Asus ROG Phone 8","Asus",6.78,165,4],
+    ["Asus Zenfone 10","Asus",5.9,144,4]
   ];
 
-  var PHONES = DB.map(function(r,i){
+  var PHONES = DB.map(function(r, i){
     return {id:i, name:r[0], brand:r[1], screen:r[2], refresh:r[3], tier:r[4]};
   });
 
-  /* ============ ENGINE ============ */
-  function clamp(v,lo,hi){ return Math.max(lo, Math.min(hi, Math.round(v))); }
+  /* ============================================================
+     ENGINE
+     ============================================================ */
+  function clamp(v, lo, hi){ return Math.max(lo, Math.min(hi, Math.round(v))); }
 
   function buildSens(p){
     var base = [0, 95, 90, 85, 80][p.tier] || 90;
@@ -623,8 +941,9 @@ footer a:hover{text-decoration:underline}
     else if (s > 6.75) base -= 3;
 
     if (r >= 120) base -= 2;
+    if (r >= 144) base -= 1;
 
-    if (p.style) base += p.style; /* playstyle offset */
+    if (p.style) base += p.style;
 
     var general = clamp(base, 58, 100);
     var reddot  = clamp(general - 5, 50, 100);
@@ -646,10 +965,8 @@ footer a:hover{text-decoration:underline}
       ? "Fire button 60–65% rakho aur uske upar kam se kam 1cm khali jagah chhodo — short drag me headshot lock hoga."
       : "Fire button 55–60% rakho, thumb rest position se ek line me. Drag lamba rakho, aim snap nahi.";
 
-    return {
-      general:general, reddot:reddot, scope2:scope2, scope4:scope4, awm:awm, free:free, fire:fire,
-      dpi:dpi, fps:fpsTxt, hud:hud
-    };
+    return {general:general, reddot:reddot, scope2:scope2, scope4:scope4,
+            awm:awm, free:free, fire:fire, dpi:dpi, fps:fpsTxt, hud:hud};
   }
 
   var ROWS = [
@@ -662,25 +979,134 @@ footer a:hover{text-decoration:underline}
     ["fire","Fire Button","HUD size"]
   ];
 
-  /* ============ STATE ============ */
-  var state = { phone:null, sens:null, unlocked:false };
-  var STORE_KEY = "fearsensiz_unlocked_v1";
+  /* ============================================================
+     NAME → SPECS (for phones not in the database)
+     ============================================================ */
+  var BRAND_RULES = [
+    [/redmi|poco|xiaomi|\bmi\b/, "Xiaomi"],
+    [/realme|narzo/, "Realme"],
+    [/iqoo/, "iQOO"],
+    [/vivo/, "Vivo"],
+    [/oppo/, "Oppo"],
+    [/samsung|galaxy/, "Samsung"],
+    [/moto|motorola/, "Motorola"],
+    [/oneplus|nord/, "OnePlus"],
+    [/infinix/, "Infinix"],
+    [/tecno/, "Tecno"],
+    [/lava/, "Lava"],
+    [/itel/, "itel"],
+    [/nothing|cmf/, "Nothing"],
+    [/iphone|apple/, "Apple"],
+    [/pixel|google/, "Google"],
+    [/honor/, "Honor"],
+    [/nokia/, "Nokia"],
+    [/asus|\brog\b/, "Asus"],
+    [/sony|xperia/, "Sony"],
+    [/lenovo/, "Lenovo"],
+    [/micromax/, "Micromax"],
+    [/huawei/, "Huawei"],
+    [/nubia|red magic/, "Nubia"],
+    [/tcl|alcatel/, "TCL"]
+  ];
 
+  var T4 = /(ultra|pro max|fold|flip|gt neo|gt 6|gt 2|iphone 1[2-6] pro|\bs2[2-5]\b|x1?00|x200|pixel [6-9]|edge 50 pro|rog phone|zenfone|neo 9|neo 7)/;
+  var T3 = /(pro|plus|\bneo\b|\bce\b|\bt[1-3]\b|\bv2\d\b|\bv3\d\b|reno|edge|agni|zero 3\d|note 1[3-4]|z[5-9]\b)/;
+  var T1 = /(smart|spark|\bhot\b|\by1\d\b|\by2\d\b|itel|blaze|yuva|pova [23]|redmi \d+a\b|redmi a\d|moto e|\be\d\d\b|\ba0\d\b|galaxy a1\d|c\d{1,2}\b|narzo 5\da|\b5a\b)/;
+
+  function titleCase(str){
+    return str.replace(/\s+/g, " ").trim().replace(/\S+/g, function(w){
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    });
+  }
+
+  function guessSpecs(raw){
+    var n = " " + (raw || "").toLowerCase().replace(/\s+/g, " ") + " ";
+    var brand = "Other";
+    for (var i = 0; i < BRAND_RULES.length; i++){
+      if (BRAND_RULES[i][0].test(n)){ brand = BRAND_RULES[i][1]; break; }
+    }
+
+    var tier = 2;
+    if (T4.test(n)) tier = 4;
+    else if (T3.test(n)) tier = 3;
+    else if (T1.test(n)) tier = 1;
+
+    var isApple = brand === "Apple";
+    if (isApple){
+      if (/\bse\b/.test(n)) tier = 3;
+      else if (/1[1-6]/.test(n)) tier = 4;
+    }
+
+    var screen = 6.6;
+    var refresh = tier >= 3 ? 120 : 90;
+
+    if (isApple){
+      if (/\bse\b/.test(n)) { screen = 4.7; refresh = 60; }
+      else if (/pro max|plus|xs max/.test(n)) { screen = 6.7; refresh = 120; }
+      else { screen = 6.1; refresh = /pro/.test(n) ? 120 : 60; }
+      return {brand:brand, screen:screen, refresh:refresh, tier:tier};
+    }
+
+    if (/fold/.test(n)) screen = 7.6;
+    else if (/flip|razr/.test(n)) screen = 6.7;
+    else if (/mini/.test(n)) screen = 5.4;
+    else if (/\b(a0\d|a1\d|c\d{1,2}|smart|spark|hot|itel|yuva|pova [23])\b/.test(n)) screen = 6.5;
+
+    if (tier === 1 && /(smart|spark|hot|\b9a\b|itel|yuva)/.test(n)) refresh = 60;
+
+    return {brand:brand, screen:screen, refresh:refresh, tier:tier};
+  }
+
+  /* ============================================================
+     STATE
+     ============================================================ */
+  var STORE_KEY = "fearsensiz_unlocked_v1";
+  var LAST_KEY  = "fearsensiz_last_phone_v1";
+  var state = {phone:null, sens:null, unlocked:false};
   try { state.unlocked = localStorage.getItem(STORE_KEY) === "1"; } catch(e){ state.unlocked = false; }
 
-  /* ============ RENDER GRID ============ */
   var grid = document.getElementById('phoneGrid');
   var gridNote = document.getElementById('gridNote');
   var searchInput = document.getElementById('searchInput');
+  var suggest = document.getElementById('suggest');
   var brandChips = document.getElementById('brandChips');
   var activeBrand = "all";
 
-  var brands = ["all"].concat(PHONES.map(function(p){return p.brand;}).filter(function(b,i,a){return a.indexOf(b)===i;}).sort());
+  var spScreen = document.getElementById('spScreen');
+  var spRefresh = document.getElementById('spRefresh');
+  var spTier = document.getElementById('spTier');
+  var spStyle = document.getElementById('spStyle');
 
+  /* ---- populate spec selects ---- */
+  [["4.7",'4.7"'],["5.4",'5.4"'],["5.8",'5.8"'],["6.1",'6.1"'],["6.2",'6.2"'],
+   ["6.3",'6.3"'],["6.4",'6.4"'],["6.5",'6.5"'],["6.6",'6.6"'],["6.7",'6.7"'],
+   ["6.8",'6.8"'],["6.9",'6.9"'],["7.6",'7.6"']].forEach(function(o){
+    var op = document.createElement('option');
+    op.value = o[0]; op.textContent = o[1];
+    spScreen.appendChild(op);
+  });
+  [[60,"60 Hz"],[90,"90 Hz"],[120,"120 Hz"],[144,"144 Hz"],[165,"165 Hz"]].forEach(function(o){
+    var op = document.createElement('option');
+    op.value = o[0]; op.textContent = o[1];
+    spRefresh.appendChild(op);
+  });
+  [[1,"Entry (30–45 FPS)"],[2,"Mid (45–60 FPS)"],[3,"Upper mid (60–90 FPS)"],[4,"Flagship (90+ FPS)"]].forEach(function(o){
+    var op = document.createElement('option');
+    op.value = o[0]; op.textContent = o[1];
+    spTier.appendChild(op);
+  });
+  [[0,"Balanced"],[6,"Rusher (+6)"],[-6,"Sniper (−6)"]].forEach(function(o){
+    var op = document.createElement('option');
+    op.value = o[0]; op.textContent = o[1];
+    spStyle.appendChild(op);
+  });
+
+  /* ---- brand chips ---- */
+  var brands = ["all"].concat(PHONES.map(function(p){return p.brand;})
+    .filter(function(b,i,a){ return a.indexOf(b) === i; }).sort());
   brands.forEach(function(b){
     var el = document.createElement('button');
-    el.className = 'chip';
-    el.type = 'button';
+    el.className = 'chip'; el.type = 'button';
     el.textContent = b === "all" ? "All" : b;
     el.setAttribute('aria-pressed', b === 'all' ? 'true' : 'false');
     el.addEventListener('click', function(){
@@ -692,44 +1118,161 @@ footer a:hover{text-decoration:underline}
     brandChips.appendChild(el);
   });
 
+  /* ============================================================
+     SEARCH + SUGGESTIONS
+     ============================================================ */
+  function tokens(q){
+    return q.toLowerCase().split(/\s+/).filter(Boolean);
+  }
+
+  function matchList(q){
+    var t = tokens(q);
+    if (!t.length) return [];
+    var out = PHONES.filter(function(p){
+      var n = p.name.toLowerCase();
+      return t.every(function(k){ return n.indexOf(k) !== -1; });
+    });
+    out.sort(function(a,b){
+      var an = a.name.toLowerCase(), bn = b.name.toLowerCase();
+      var as = an.indexOf(t[0]) === 0 ? 0 : 1;
+      var bs = bn.indexOf(t[0]) === 0 ? 0 : 1;
+      if (as !== bs) return as - bs;
+      return an.length - bn.length;
+    });
+    return out;
+  }
+
   function drawGrid(){
-    var q = (searchInput.value || "").toLowerCase().trim();
+    var q = (searchInput.value || "").trim();
+    var list = q ? matchList(q) : PHONES.filter(function(p){
+      return activeBrand === "all" || p.brand === activeBrand;
+    });
     grid.innerHTML = "";
-    var shown = 0;
-    PHONES.forEach(function(p){
-      if (activeBrand !== "all" && p.brand !== activeBrand) return;
-      if (q && p.name.toLowerCase().indexOf(q) === -1) return;
-      shown++;
+    list.forEach(function(p){
       var btn = document.createElement('button');
-      btn.className = 'pcard';
-      btn.type = 'button';
-      btn.setAttribute('aria-pressed', state.phone && state.phone.id === p.id ? 'true' : 'false');
+      btn.className = 'pcard'; btn.type = 'button';
+      btn.setAttribute('aria-pressed', state.phone && state.phone.name === p.name && state.phone.src === 'exact' ? 'true' : 'false');
       var n = document.createElement('span');
       n.className = 'pn'; n.textContent = p.name;
       var s = document.createElement('span');
       s.className = 'ps'; s.textContent = p.screen + '" · ' + p.refresh + 'Hz · T' + p.tier;
       btn.appendChild(n); btn.appendChild(s);
-      btn.addEventListener('click', function(){ selectPhone(p); });
+      btn.addEventListener('click', function(){ selectExact(p); });
       grid.appendChild(btn);
     });
-    gridNote.hidden = shown > 0;
+    gridNote.hidden = list.length > 0;
+    if (!list.length && q){
+      gridNote.innerHTML = "“<b>" + escapeHtml(q) + "</b>” list me exact nahi hai — par hum naam se specs nikaal sakte hain. Enter dabao ya upar suggestion me “naam se banao” chuno.";
+    }
   }
 
-  /* ============ RENDER RESULT ============ */
-  function selectPhone(p){
-    state.phone = p;
-    state.sens = buildSens(p);
-    Array.prototype.forEach.call(grid.children, function(c){ c.setAttribute('aria-pressed','false'); });
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function drawSuggest(){
+    var q = (searchInput.value || "").trim();
+    suggest.innerHTML = "";
+    if (!q){ suggest.hidden = true; searchInput.setAttribute('aria-expanded','false'); return; }
+
+    var list = matchList(q).slice(0, 7);
+    list.forEach(function(p){
+      var b = document.createElement('button');
+      b.type = 'button';
+      var nm = document.createElement('span');
+      nm.className = 'sname'; nm.textContent = p.name;
+      var mt = document.createElement('span');
+      mt.className = 'smeta'; mt.textContent = p.screen + '" · ' + p.refresh + 'Hz';
+      b.appendChild(nm); b.appendChild(mt);
+      b.addEventListener('click', function(){ selectExact(p); suggest.hidden = true; });
+      suggest.appendChild(b);
+    });
+
+    var isExact = list.some(function(p){ return p.name.toLowerCase() === q.toLowerCase(); });
+    if (!isExact){
+      var nb = document.createElement('button');
+      nb.type = 'button';
+      var lbl = document.createElement('span');
+      lbl.className = 'sname snew';
+      lbl.innerHTML = '“' + escapeHtml(titleCase(q)) + '” se sens banao<small>naam se specs estimate honge</small>';
+      nb.appendChild(lbl);
+      nb.addEventListener('click', function(){ selectByName(q); suggest.hidden = true; });
+      suggest.appendChild(nb);
+    }
+
+    suggest.hidden = false;
+    searchInput.setAttribute('aria-expanded','true');
+  }
+
+  /* ============================================================
+     SELECTION
+     ============================================================ */
+  function selectExact(p){
+    state.phone = {name:p.name, brand:p.brand, screen:p.screen, refresh:p.refresh, tier:p.tier, src:'exact'};
+    state.sens = buildSens(state.phone);
+    syncSelects();
     drawResult();
     drawGrid();
+    try { localStorage.setItem(LAST_KEY, JSON.stringify({name:p.name, src:'exact'})); } catch(e){}
+    scrollToResult();
+  }
+
+  function selectByName(raw){
+    var name = titleCase(raw);
+    if (!name) return;
+    var g = guessSpecs(name);
+    state.phone = {name:name, brand:g.brand, screen:g.screen, refresh:g.refresh, tier:g.tier, src:'name'};
+    state.sens = buildSens(state.phone);
+    syncSelects();
+    drawResult();
+    drawGrid();
+    try { localStorage.setItem(LAST_KEY, JSON.stringify({name:name, src:'name'})); } catch(e){}
+    scrollToResult();
+  }
+
+  function scrollToResult(){
     var el = document.getElementById('result');
     if (el && el.scrollIntoView) el.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
+  function syncSelects(){
+    var p = state.phone;
+    if (!p) return;
+    spScreen.value = String(p.screen);
+    spRefresh.value = String(p.refresh);
+    spTier.value = String(p.tier);
+  }
+
+  /* spec dropdowns edit the current phone live */
+  [spScreen, spRefresh, spTier].forEach(function(sel){
+    sel.addEventListener('change', function(){
+      if (!state.phone) return;
+      state.phone.screen = parseFloat(spScreen.value);
+      state.phone.refresh = parseInt(spRefresh.value, 10);
+      state.phone.tier = parseInt(spTier.value, 10);
+      state.phone.src = 'custom';
+      state.sens = buildSens(state.phone);
+      drawResult();
+    });
+  });
+
+  spStyle.addEventListener('change', function(){
+    if (!state.phone) return;
+    state.phone.style = parseInt(spStyle.value, 10);
+    state.sens = buildSens(state.phone);
+    drawResult();
+  });
+
+  /* ============================================================
+     RESULT
+     ============================================================ */
   function drawResult(){
     var p = state.phone, s = state.sens;
     var nameEl = document.getElementById('selName');
     var subEl = document.getElementById('selSub');
+    var badge = document.getElementById('matchBadge');
     var rowsEl = document.getElementById('srows');
     var metaEl = document.getElementById('metaCards');
 
@@ -738,13 +1281,26 @@ footer a:hover{text-decoration:underline}
 
     if (!p){
       nameEl.textContent = "Koi phone select nahi kiya";
-      subEl.textContent = "Upar list se apna phone chuno — uske hisaab se preset yahan ban jayega.";
+      subEl.textContent = "Upar apne phone ka naam likho — uske hisaab se preset yahan ban jayega.";
       rowsEl.innerHTML = ""; metaEl.innerHTML = "";
       return;
     }
 
     nameEl.textContent = p.name;
-    subEl.textContent = p.brand + " · " + p.screen + '" screen · ' + p.refresh + "Hz · performance tier " + p.tier + " — Free Fire India aur MAX dono ke liye.";
+
+    if (p.src === 'exact'){
+      badge.textContent = "exact model";
+      badge.className = "match-badge exact";
+      subEl.textContent = p.brand + " · " + p.screen + '" · ' + p.refresh + "Hz · tier " + p.tier + " — ye phone database me hai, specs uske hisaab se liye gaye hain.";
+    } else if (p.src === 'name'){
+      badge.textContent = "naam se estimate";
+      badge.className = "match-badge est";
+      subEl.textContent = p.brand + " · " + p.screen + '" · ' + p.refresh + "Hz · tier " + p.tier + " — ye model list me nahi tha, specs naam se estimate kiye hain. Neeche se correct kar lo.";
+    } else {
+      badge.textContent = "custom specs";
+      badge.className = "match-badge est";
+      subEl.textContent = p.brand + " · " + p.screen + '" · ' + p.refresh + "Hz · tier " + p.tier + " — aapne specs khud set kiye hain, sens usi par bani hai.";
+    }
 
     rowsEl.innerHTML = "";
     ROWS.forEach(function(r){
@@ -768,7 +1324,7 @@ footer a:hover{text-decoration:underline}
       ["FPS", "<b>" + s.fps + "</b> — is setting par hi sens consistent lagegi."],
       ["DPI", "<b>" + s.dpi + "</b> (phone/emulator level; game ke andar DPI slider nahi hota)."],
       ["HUD", s.hud],
-      ["Range", "Close range ke liye General <b>" + s.general + "</b>, long range ke liye 4x <b>" + s.scope4 + "</b> aur AWM <b>" + s.awm + "</b> — yahi ladder balance rakhta hai."]
+      ["Ladder", "Close range General <b>" + s.general + "</b> → 2x <b>" + s.scope2 + "</b> → 4x <b>" + s.scope4 + "</b> → AWM <b>" + s.awm + "</b>. Isi order me control girta hai, isliye har range alag feel hoti hai."]
     ];
     metaEl.innerHTML = "";
     metas.forEach(function(m){
@@ -783,7 +1339,9 @@ footer a:hover{text-decoration:underline}
     refreshLock();
   }
 
-  /* ============ LOCK / DOWNLOADS ============ */
+  /* ============================================================
+     LOCK / EXPORT
+     ============================================================ */
   var lockNote = document.getElementById('lockNote');
   var copyBtn = document.getElementById('copyBtn');
   var txtBtn = document.getElementById('txtBtn');
@@ -801,14 +1359,14 @@ footer a:hover{text-decoration:underline}
       : "Downloads unlock karne ke liye subscribe karo";
   }
 
-  /* ============ EXPORT: TEXT ============ */
   function settingsText(){
     var p = state.phone, s = state.sens;
     if (!p || !s) return "";
+    var src = p.src === 'exact' ? "database match" : (p.src === 'name' ? "naam se estimate" : "custom specs");
     return [
       "FEARSENSI Z — FREE FIRE INDIA / FREE FIRE MAX SENSITIVITY",
       "Phone: " + p.name + " (" + p.brand + ")",
-      "Screen: " + p.screen + '" · Refresh: ' + p.refresh + "Hz · Tier: " + p.tier,
+      "Specs: " + p.screen + '" · ' + p.refresh + "Hz · tier " + p.tier + " (" + src + ")",
       "",
       "General      : " + s.general,
       "Red Dot      : " + s.reddot,
@@ -836,20 +1394,47 @@ footer a:hover{text-decoration:underline}
     setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
   }
 
-  function slug(t){ return t.replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase(); }
+  function slug(t){ return String(t).replace(/[^a-z0-9]+/gi,'-').replace(/^-+|-+$/g,'').toLowerCase(); }
+
+  copyBtn.addEventListener('click', function(){
+    if (!state.unlocked){ openGate(); return; }
+    if (!state.phone){ lockNote.textContent = "Pehle phone select karo"; return; }
+    var text = settingsText();
+    function ok(){ lockNote.textContent = "Copied — game me paste karo"; }
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok).catch(fb);
+    } else { fb(); }
+    function fb(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); ok(); } catch(e){ lockNote.textContent = "Copy fail — manually likh lo"; }
+      document.body.removeChild(ta);
+    }
+  });
 
   txtBtn.addEventListener('click', function(){
     if (!state.unlocked){ openGate(); return; }
     if (!state.phone){ alert("Pehle phone select karo."); return; }
-    download(new Blob([settingsText()], {type:'text/plain;charset=utf-8'}), "fearsensiz-" + slug(state.phone.name) + ".txt");
+    download(new Blob([settingsText()], {type:'text/plain;charset=utf-8'}),
+      "fearsensiz-" + slug(state.phone.name) + ".txt");
   });
 
-  /* ============ EXPORT: PNG ============ */
   pngBtn.addEventListener('click', function(){
     if (!state.unlocked){ openGate(); return; }
     if (!state.phone){ alert("Pehle phone select karo."); return; }
     renderPNG();
   });
+
+  function roundRect(ctx, x0, y0, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x0+r, y0);
+    ctx.arcTo(x0+w, y0, x0+w, y0+h, r);
+    ctx.arcTo(x0+w, y0+h, x0, y0+h, r);
+    ctx.arcTo(x0, y0+h, x0, y0, r);
+    ctx.arcTo(x0, y0, x0+w, y0, r);
+    ctx.closePath();
+  }
 
   function renderPNG(){
     var p = state.phone, s = state.sens;
@@ -858,19 +1443,15 @@ footer a:hover{text-decoration:underline}
     c.width = W; c.height = H;
     var x = c.getContext('2d');
 
-    /* background */
-    var g = x.createLinearGradient(0,0,W,H);
-    g.addColorStop(0,'#0b1216'); g.addColorStop(1,'#122630');
-    x.fillStyle = g; x.fillRect(0,0,W,H);
+    var g = x.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#0b1216'); g.addColorStop(1, '#122630');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
 
-    /* grid lines */
     x.strokeStyle = 'rgba(255,255,255,0.045)'; x.lineWidth = 2;
-    for (var i=0;i<W;i+=72){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,H); x.stroke(); }
-    for (var j=0;j<H;j+=72){ x.beginPath(); x.moveTo(0,j); x.lineTo(W,j); x.stroke(); }
+    for (var i = 0; i < W; i += 72){ x.beginPath(); x.moveTo(i,0); x.lineTo(i,H); x.stroke(); }
+    for (var j = 0; j < H; j += 72){ x.beginPath(); x.moveTo(0,j); x.lineTo(W,j); x.stroke(); }
 
-    /* header */
-    x.fillStyle = '#e8622c';
-    x.fillRect(80, 84, 8, 56);
+    x.fillStyle = '#e8622c'; x.fillRect(80, 84, 8, 56);
     x.fillStyle = '#eaf2f4';
     x.font = '800 58px "Plus Jakarta Sans", sans-serif';
     x.fillText('FearSensiZ', 112, 132);
@@ -878,20 +1459,19 @@ footer a:hover{text-decoration:underline}
     x.font = '400 24px "Azeret Mono", monospace';
     x.fillText('FREE FIRE INDIA + FREE FIRE MAX', 112, 172);
 
-    /* phone card */
     x.fillStyle = 'rgba(255,255,255,0.05)';
     roundRect(x, 80, 230, W-160, 168, 22); x.fill();
     x.strokeStyle = 'rgba(255,255,255,0.13)'; x.lineWidth = 2;
     roundRect(x, 80, 230, W-160, 168, 22); x.stroke();
 
     x.fillStyle = '#eaf2f4';
-    x.font = '800 46px "Plus Jakarta Sans", sans-serif';
-    x.fillText(p.name, 112, 300);
+    x.font = '800 44px "Plus Jakarta Sans", sans-serif';
+    var nm = p.name.length > 26 ? p.name.slice(0, 25) + '…' : p.name;
+    x.fillText(nm, 112, 300);
     x.fillStyle = '#93a7ae';
     x.font = '400 24px "Azeret Mono", monospace';
     x.fillText(p.brand.toUpperCase() + '  ·  ' + p.screen + '"  ·  ' + p.refresh + 'Hz  ·  TIER ' + p.tier, 112, 346);
 
-    /* sensitivity rows */
     var y = 452;
     ROWS.forEach(function(r){
       var k = r[0], val = s[k];
@@ -904,7 +1484,7 @@ footer a:hover{text-decoration:underline}
       roundRect(x, barX, y-22, barW, 18, 9); x.fill();
 
       var gg = x.createLinearGradient(barX, 0, barX+barW, 0);
-      gg.addColorStop(0,'#e8622c'); gg.addColorStop(1,'#d8a13a');
+      gg.addColorStop(0, '#e8622c'); gg.addColorStop(1, '#d8a13a');
       x.fillStyle = gg;
       roundRect(x, barX, y-22, Math.max(18, barW*val/100), 18, 9); x.fill();
 
@@ -913,11 +1493,9 @@ footer a:hover{text-decoration:underline}
       x.textAlign = 'right';
       x.fillText(k === 'fire' ? val + '%' : String(val), W-80, y);
       x.textAlign = 'left';
-
       y += 84;
     });
 
-    /* footer notes */
     x.fillStyle = 'rgba(255,255,255,0.05)';
     roundRect(x, 80, 1110, W-160, 120, 18); x.fill();
     x.fillStyle = '#93a7ae';
@@ -940,45 +1518,9 @@ footer a:hover{text-decoration:underline}
     }, 'image/png');
   }
 
-  function roundRect(ctx, x0, y0, w, h, r){
-    ctx.beginPath();
-    ctx.moveTo(x0+r, y0);
-    ctx.arcTo(x0+w, y0, x0+w, y0+h, r);
-    ctx.arcTo(x0+w, y0+h, x0, y0+h, r);
-    ctx.arcTo(x0, y0+h, x0, y0, r);
-    ctx.arcTo(x0, y0, x0+w, y0, r);
-    ctx.closePath();
-  }
-
-  /* ============ COPY ============ */
-  copyBtn.addEventListener('click', function(){
-    if (!state.unlocked){ openGate(); return; }
-    if (!state.phone){ lockNote.textContent = "Pehle phone select karo"; return; }
-    var text = settingsText();
-    function ok(){ lockNote.textContent = "Copied — game me paste karo"; }
-    if (navigator.clipboard && navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text).then(ok).catch(fb);
-    } else { fb(); }
-    function fb(){
-      var ta = document.createElement('textarea');
-      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); ok(); } catch(e){ lockNote.textContent = "Copy fail — manually likh lo"; }
-      document.body.removeChild(ta);
-    }
-  });
-
-  /* ============ FALLBACK BUILDER ============ */
-  document.getElementById('fbBtn').addEventListener('click', function(){
-    var sc = parseFloat(document.getElementById('fbScreen').value);
-    var fps = parseInt(document.getElementById('fbFps').value, 10);
-    var style = parseInt(document.getElementById('fbStyle').value, 10);
-    var tier = fps <= 40 ? 1 : (fps <= 60 ? 2 : (fps <= 90 ? 3 : 4));
-    var fake = {id:-1, name:'Custom (' + sc + '" · ' + fps + ' FPS)', brand:'Custom', screen:sc, refresh:fps, tier:tier, style:style};
-    selectPhone(fake);
-  });
-
-  /* ============ SUBSCRIBE GATE ============ */
+  /* ============================================================
+     SUBSCRIBE GATE
+     ============================================================ */
   var gate = document.getElementById('gate');
   var gateBar = document.getElementById('gateBar');
   var gateUnlock = document.getElementById('gateUnlock');
@@ -1034,21 +1576,61 @@ footer a:hover{text-decoration:underline}
     if (e.target === gate && state.unlocked) closeGate();
   });
 
-  /* ============ INIT ============ */
+  /* ============================================================
+     EVENTS + INIT
+     ============================================================ */
+  searchInput.addEventListener('input', function(){
+    drawSuggest();
+    drawGrid();
+  });
+
+  searchInput.addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){
+      e.preventDefault();
+      var q = (searchInput.value || "").trim();
+      if (!q) return;
+      var exact = PHONES.filter(function(p){ return p.name.toLowerCase() === q.toLowerCase(); })[0];
+      if (exact) { selectExact(exact); }
+      else {
+        var m = matchList(q);
+        if (m.length) selectExact(m[0]);
+        else selectByName(q);
+      }
+      suggest.hidden = true;
+      searchInput.blur();
+    } else if (e.key === 'Escape'){
+      suggest.hidden = true;
+    }
+  });
+
+  document.addEventListener('click', function(e){
+    if (!suggest.hidden && !e.target.closest('.search-box')) suggest.hidden = true;
+  });
+
   drawGrid();
   refreshLock();
-  if (!state.unlocked) { setTimeout(openGate, 600); }
 
-  /* default: pick mid-range phone so page is never empty */
-  var def = PHONES.filter(function(p){ return p.name === 'Redmi Note 13'; })[0] || PHONES[0];
-  state.phone = def;
-  state.sens = buildSens(def);
-  drawResult();
-  drawGrid();
+  /* restore last phone, else default */
+  var restored = null;
+  try {
+    var last = JSON.parse(localStorage.getItem(LAST_KEY) || "null");
+    if (last && last.name){
+      if (last.src === 'exact'){
+        restored = PHONES.filter(function(p){ return p.name === last.name; })[0] || null;
+        if (restored) selectExact(restored);
+      }
+      if (!restored) selectByName(last.name);
+    }
+  } catch(e){}
 
-  /* search */
-  searchInput.addEventListener('input', drawGrid);
+  if (!restored && !state.phone){
+    var def = PHONES.filter(function(p){ return p.name === 'Redmi Note 13'; })[0] || PHONES[0];
+    selectExact(def);
+  }
+
+  if (!state.unlocked) setTimeout(openGate, 600);
 })();
+
 </script>
 </body>
 </html>
