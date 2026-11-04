@@ -811,6 +811,14 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   color:#41617f;background:none;border:0;cursor:pointer;z-index:3;
 }
 @media (prefers-reduced-motion: reduce){ #splash{display:none} }
+
+#gate.shake .modal-card{animation:gateShake .4s cubic-bezier(.36,.07,.19,.97) both}
+@keyframes gateShake{
+  10%,90%{transform:translateX(-2px)}
+  20%,80%{transform:translateX(4px)}
+  30%,50%,70%{transform:translateX(-6px)}
+  40%,60%{transform:translateX(6px)}
+}
 </style>
 </head>
 <body>
@@ -2996,6 +3004,8 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     gateUnlock.setAttribute('aria-disabled','true');
     if (gateBar) gateBar.style.width = '0%';
     renderChannels();
+    var cx = document.getElementById('gateClose');
+    if (cx) cx.style.display = state.unlocked ? '' : 'none';
     gate.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -3009,6 +3019,9 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     refreshLock();
     closeGate();
     lockNote.textContent = t("lock.unlocked");
+    var chosen = false;
+    try { chosen = !!localStorage.getItem(LANG_KEY); } catch(e){ chosen = false; }
+    if (!chosen) setTimeout(openLangModal, 320);
   }
 
   var CHANNELS = [
@@ -3080,8 +3093,10 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
   document.getElementById('gateClose').addEventListener('click', function(){
     if (state.unlocked){ closeGate(); return; }
-    gateHint.textContent = t("gate.hint2");
-    closeGate();
+    gateHint.textContent = t("gate.hint");
+    gate.classList.remove('shake');
+    void gate.offsetWidth;
+    gate.classList.add('shake');
   });
 
   gate.addEventListener('click', function(e){
@@ -3489,16 +3504,16 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
   routeFromHash();
 
+  function startFlow(){
+    if (!state.unlocked){ openGate(); return; }
+    if (!storedLang){ openLangModal(); return; }
+  }
   setTimeout(function(){
     var sp = document.getElementById('splash');
     if (sp) return;
-    if (!storedLang) openLangModal();
-    else if (!state.unlocked) openGate();
+    startFlow();
   }, 450);
-  setTimeout(function(){
-    if (!storedLang) openLangModal();
-    else if (!state.unlocked) openGate();
-  }, 3300);
+  setTimeout(startFlow, 3300);
 })();
 
 </script>
