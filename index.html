@@ -847,6 +847,20 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
 .suggest{z-index:80;border-color:rgba(79,195,255,.35);box-shadow:0 30px 60px -28px #000, 0 0 40px -22px var(--glow)}
 .suggest button.hl{background:rgba(58,160,255,.18)}
+
+/* ---------- background motion ---------- */
+#snow{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  opacity:.75;mix-blend-mode:screen;
+}
+.bg-orbs i{animation-name:drift1, bob;animation-duration:26s, 11s;animation-timing-function:ease-in-out, ease-in-out;animation-iteration-count:infinite, infinite}
+.bg-orbs i:nth-child(2){animation-duration:32s, 14s}
+.bg-orbs i:nth-child(3){animation-duration:38s, 17s}
+@keyframes bob{0%,100%{margin-top:0}50%{margin-top:-26px}}
+@media (prefers-reduced-motion: reduce){
+  #snow{display:none}
+  .bg-orbs i{animation:none}
+}
 </style>
 </head>
 <body>
@@ -864,6 +878,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
 
 <div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
+<canvas id="snow" aria-hidden="true"></canvas>
 <div class="scrim" id="scrim"></div>
 
 <aside id="sidebar" aria-label="Main navigation">
@@ -3590,6 +3605,74 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
     if (skip) skip.addEventListener('click', finish);
     sp.addEventListener('click', function(e){ if (e.target === sp) finish(); });
+  })();
+
+
+  /* ---------- soft snow ---------- */
+  (function snow(){
+    var cv = document.getElementById('snow');
+    if (!cv) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ctx = cv.getContext('2d');
+    var flakes = [], w = 0, h = 0, raf = null, running = true;
+
+    function size(){
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = window.innerWidth; h = window.innerHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      cv.style.width = w + 'px'; cv.style.height = h + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var count = Math.round(Math.min(90, Math.max(28, (w * h) / 26000)));
+      flakes = [];
+      for (var i = 0; i < count; i++){
+        flakes.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: 0.6 + Math.random() * 1.9,
+          vy: 0.18 + Math.random() * 0.55,
+          vx: -0.18 + Math.random() * 0.36,
+          a: 0.18 + Math.random() * 0.5,
+          p: Math.random() * Math.PI * 2
+        });
+      }
+    }
+
+    function draw(){
+      if (!running) return;
+      ctx.clearRect(0, 0, w, h);
+      for (var i = 0; i < flakes.length; i++){
+        var f = flakes[i];
+        f.p += 0.01;
+        f.y += f.vy;
+        f.x += f.vx + Math.sin(f.p) * 0.25;
+        if (f.y > h + 4){ f.y = -4; f.x = Math.random() * w; }
+        if (f.x < -6) f.x = w + 6;
+        if (f.x > w + 6) f.x = -6;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(190, 228, 255,' + f.a + ')';
+        ctx.shadowColor = 'rgba(120, 200, 255, .8)';
+        ctx.shadowBlur = 6;
+        ctx.fill();
+      }
+      ctx.shadowBlur = 0;
+      raf = requestAnimationFrame(draw);
+    }
+
+    document.addEventListener('visibilitychange', function(){
+      running = !document.hidden;
+      if (running){ raf = requestAnimationFrame(draw); }
+      else if (raf){ cancelAnimationFrame(raf); raf = null; }
+    });
+
+    var rt;
+    window.addEventListener('resize', function(){
+      clearTimeout(rt);
+      rt = setTimeout(size, 180);
+    });
+
+    size();
+    raf = requestAnimationFrame(draw);
   })();
 
   /* ============================================================
