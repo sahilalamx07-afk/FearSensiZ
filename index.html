@@ -824,6 +824,26 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .dpi-label{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim-2)}
 .dpi-row .seg{flex:1 1 200px;max-width:320px}
 .dpi-row .seg button{font-size:11px;padding:8px 6px}
+
+.dpi-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
+.dpi-card{
+  display:grid;gap:3px;text-align:left;cursor:pointer;padding:12px 14px;border-radius:13px;
+  border:1px solid rgba(120,195,255,.18);color:var(--dim);font-family:inherit;
+  background:linear-gradient(180deg, rgba(10,22,40,.92), rgba(5,10,20,.92));
+  box-shadow:0 0 0 1px rgba(120,195,255,.05), 0 0 26px -22px var(--glow);
+  transition:border-color .22s, box-shadow .25s, transform .2s, color .22s;
+}
+.dpi-card:hover{border-color:rgba(79,195,255,.5);transform:translateY(-2px);color:var(--text)}
+.dpi-card .dc-k{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--text)}
+.dpi-card .dc-v{font-family:var(--font-mono);font-size:13px;color:#9ed8ff;text-shadow:0 0 16px rgba(79,195,255,.45)}
+.dpi-card .dc-s{font-size:11px;color:var(--dim-2)}
+.dpi-card.on{
+  border-color:rgba(58,160,255,.6);color:var(--text);
+  background:linear-gradient(180deg, rgba(24,64,124,.95), rgba(8,18,34,.95));
+  box-shadow:0 0 0 1px rgba(79,195,255,.28), 0 0 34px -12px var(--glow);
+}
+.dpi-card.on .dc-k{color:#8fd0ff}
+.sub-cta{width:100%;justify-content:center;margin-top:10px;background:linear-gradient(135deg,#2f7dff,#4fc3ff);border-color:transparent;color:#03121f;font-weight:700}
 </style>
 </head>
 <body>
@@ -1014,12 +1034,17 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
           </div>
           <p class="sel-sub" id="selSub"></p>
 
-          <div class="dpi-row">
-            <span class="dpi-label">DPI MODE</span>
-            <div class="seg" id="dpiSeg">
-              <button type="button" data-dpi="with" class="on">DPI ON</button>
-              <button type="button" data-dpi="without">DPI OFF</button>
-            </div>
+          <div class="dpi-cards" id="dpiCards">
+            <button type="button" class="dpi-card on" data-dpi="with">
+              <span class="dc-k">DPI ON</span>
+              <span class="dc-v" id="dpiWithVal">—</span>
+              <span class="dc-s">Custom DPI set</span>
+            </button>
+            <button type="button" class="dpi-card" data-dpi="without">
+              <span class="dc-k">DPI OFF</span>
+              <span class="dc-v" id="dpiWithoutVal">—</span>
+              <span class="dc-s">No custom DPI</span>
+            </button>
           </div>
 
           <div class="spec-grid">
@@ -1056,6 +1081,9 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
           <button class="btn dl" id="txtBtn" aria-disabled="true" data-i18n="btn.txt">Download .txt</button>
           <button class="btn dl" id="pngBtn" aria-disabled="true" data-i18n="btn.png">Download .png</button>
         </div>
+        <a class="btn sub-cta" id="subCta" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">
+          <span class="play"></span>Subscribe
+        </a>
         <div class="lock-note" id="lockNote"></div>
       </aside>
     </div>
@@ -3019,11 +3047,19 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     });
   });
 
-  var dpiSeg = document.getElementById('dpiSeg');
-  if (dpiSeg){
-    Array.prototype.forEach.call(dpiSeg.querySelectorAll('button'), function(b){
+  var dpiCards = document.getElementById('dpiCards');
+  function sensFor(mode){
+    if (!state.phone) return null;
+    var prev = state.dpiMode;
+    state.dpiMode = mode;
+    var out = buildSens(state.phone);
+    state.dpiMode = prev;
+    return out;
+  }
+  if (dpiCards){
+    Array.prototype.forEach.call(dpiCards.querySelectorAll('.dpi-card'), function(b){
       b.addEventListener('click', function(){
-        Array.prototype.forEach.call(dpiSeg.querySelectorAll('button'), function(x){ x.classList.remove('on'); });
+        Array.prototype.forEach.call(dpiCards.querySelectorAll('.dpi-card'), function(x){ x.classList.remove('on'); });
         b.classList.add('on');
         state.dpiMode = b.getAttribute('data-dpi');
         if (state.phone) state.sens = buildSens(state.phone);
@@ -3120,6 +3156,16 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
     if (typeof refreshVerdict === 'function') refreshVerdict();
     if (typeof syncApply === 'function') syncApply();
+    if (typeof sensFor === 'function'){
+      var sWith = sensFor('with'), sWithout = sensFor('without');
+      var elW = document.getElementById('dpiWithVal');
+      var elO = document.getElementById('dpiWithoutVal');
+      if (elW && sWith) elW.textContent = 'General ' + sWith.general;
+      if (elO && sWithout) elO.textContent = 'General ' + sWithout.general;
+      Array.prototype.forEach.call(document.querySelectorAll('.dpi-card'), function(c){
+        c.classList.toggle('on', c.getAttribute('data-dpi') === state.dpiMode);
+      });
+    }
     var tc = document.querySelectorAll('.tier-card');
     Array.prototype.forEach.call(tc, function(c){
       c.classList.toggle('on', c.getAttribute('data-tier') === String(p.tier));
@@ -3654,6 +3700,11 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       applyModal.classList.remove('open');
       document.body.style.overflow = '';
     }
+  });
+
+  var subCta = document.getElementById('subCta');
+  if (subCta) subCta.addEventListener('click', function(e){
+    if (!state.unlocked){ e.preventDefault(); openGate(); }
   });
 
   /* ---------- FPS target + graphics verdict ---------- */
