@@ -607,6 +607,68 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .fps-item input:checked + .box::after{content:"✓";font-size:12px;color:#03121f;font-weight:700;line-height:1}
 .fps-item:has(input:checked){border-color:rgba(58,160,255,.45);color:var(--text);background:rgba(58,160,255,.08)}
 .fps-note{margin:14px 0 0;font-size:12.5px;color:var(--dim-2);border-top:1px dashed var(--border);padding-top:12px}
+
+/* ---------- play now + segmented controls ---------- */
+.play-block{
+  margin-top:26px;border:1px solid var(--border);border-radius:16px;padding:16px;
+  background:linear-gradient(160deg, rgba(47,125,255,.10), rgba(4,7,15,.6) 60%);
+  box-shadow:0 0 0 1px rgba(120,195,255,.08), 0 26px 60px -40px #000, 0 0 44px -22px var(--glow);
+}
+.play-head{font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#6cc4ff;margin-bottom:12px}
+.play-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.play-btn{
+  position:relative;display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--text);
+  padding:13px 14px;border-radius:13px;overflow:hidden;
+  background:linear-gradient(180deg,#0a1526,#050a14);
+  border:1px solid transparent;
+  background-clip:padding-box;
+  transition:transform .22s cubic-bezier(.2,.8,.3,1), box-shadow .25s, filter .25s;
+}
+.play-btn::before{
+  content:"";position:absolute;inset:0;border-radius:13px;padding:1px;pointer-events:none;
+  background:linear-gradient(135deg, rgba(79,195,255,.85), rgba(47,125,255,.25) 45%, rgba(34,211,238,.6));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+}
+.play-btn:hover{transform:translateY(-3px);box-shadow:0 0 34px -10px var(--glow), 0 18px 34px -24px #000}
+.play-btn:active{transform:translateY(-1px) scale(.99)}
+.play-btn .pico{
+  width:34px;height:34px;border-radius:10px;flex:none;display:grid;place-items:center;
+  background:linear-gradient(135deg,#2f7dff,#4fc3ff);color:#03121f;font-weight:800;
+  font-family:var(--font-mono);font-size:12px;box-shadow:0 0 18px -6px var(--glow);
+}
+.play-btn .ptx{min-width:0}
+.play-btn .ptx b{display:block;font-size:13.5px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.play-btn .ptx small{display:block;font-family:var(--font-mono);font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--dim-2)}
+.play-btn .arrow{margin-left:auto;color:#6cc4ff;font-family:var(--font-mono);font-size:14px;transition:transform .22s}
+.play-btn:hover .arrow{transform:translateX(3px)}
+.play-hint{margin:12px 0 0;font-size:11.5px;color:var(--dim-2)}
+
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{
+  flex:1 1 64px;min-width:64px;padding:10px 8px;border-radius:11px;cursor:pointer;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--dim);
+  background:linear-gradient(180deg,#0a1526,#050a14);border:1px solid rgba(120,195,255,.16);
+  transition:color .2s, border-color .2s, box-shadow .25s, transform .2s;
+}
+.seg button:hover{color:var(--text);border-color:rgba(120,195,255,.45);transform:translateY(-1px)}
+.seg button.on{
+  color:#03121f;border-color:transparent;
+  background:linear-gradient(135deg,#2f7dff,#4fc3ff);
+  box-shadow:0 0 24px -6px var(--glow), inset 0 1px 0 rgba(255,255,255,.4);
+}
+.fps-verdict{
+  margin:14px 0 0;padding:11px 13px;border-radius:11px;font-size:12.5px;line-height:1.5;
+  border:1px solid rgba(120,195,255,.2);background:rgba(58,160,255,.07);color:var(--dim);
+}
+.fps-verdict b{color:#8fd0ff}
+.fps-verdict.warn{border-color:rgba(255,190,90,.35);background:rgba(255,190,90,.08)}
+.fps-verdict.warn b{color:#ffd08a}
+
+/* blue glow border on every interactive button */
+.btn,.chip,.preset,.lang-opt,.pcard{position:relative}
+.btn{box-shadow:0 0 0 1px rgba(120,195,255,.08), 0 0 22px -16px var(--glow)}
+.btn:hover{box-shadow:0 0 0 1px rgba(120,195,255,.25), 0 0 28px -8px var(--glow)}
 </style>
 </head>
 <body>
@@ -702,6 +764,29 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
           <h3 data-i18n="tune.head">After you apply the preset</h3>
           <p data-i18n="tune.desc">Four things that turn a preset into consistent headshots.</p>
         </a>
+      </div>
+
+
+      <div class="play-block">
+        <div class="play-head">Play Now</div>
+        <div class="play-row">
+          <a class="play-btn" data-pkg="com.dts.freefireth" href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" rel="noopener">
+            <span class="pico">FF</span>
+            <span class="ptx"><b>Free Fire</b><small>Open game</small></span>
+            <span class="arrow">→</span>
+          </a>
+          <a class="play-btn" data-pkg="com.dts.freefiremax" href="https://play.google.com/store/apps/details?id=com.dts.freefiremax" target="_blank" rel="noopener">
+            <span class="pico">MX</span>
+            <span class="ptx"><b>Free Fire MAX</b><small>Open game</small></span>
+            <span class="arrow">→</span>
+          </a>
+          <a class="play-btn" href="https://play.google.com/store/search?q=free%20fire%20india&c=apps" target="_blank" rel="noopener">
+            <span class="pico">IN</span>
+            <span class="ptx"><b>Free Fire India</b><small>Open store</small></span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+        <p class="play-hint">A browser can open one app at a time. On Android the button tries the game first, then the store.</p>
       </div>
 
       <div class="stat-row">
@@ -856,6 +941,29 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
       <div class="callout" style="margin-top:0">
         <b data-i18n="nav.fps">FPS Boost</b> — <span data-i18n="fps.reality">No website can add frames to your phone. What works: the right graphics settings, High FPS on, and a phone that is not overheating.</span>
+      </div>
+
+
+      <div class="panel" style="margin-bottom:18px">
+        <div class="panel-head">
+          <span class="t">FPS target</span>
+          <span class="right">Hz</span>
+        </div>
+        <div class="panel-body">
+          <div class="seg" id="fpsSeg">
+            <button type="button" data-hz="60">60</button>
+            <button type="button" data-hz="90">90</button>
+            <button type="button" data-hz="120" class="on">120</button>
+            <button type="button" data-hz="144">144</button>
+          </div>
+          <div class="seg" id="gfxSeg" style="margin-top:10px">
+            <button type="button" data-gfx="Smooth" class="on">Smooth</button>
+            <button type="button" data-gfx="Standard">Standard</button>
+            <button type="button" data-gfx="High">High</button>
+            <button type="button" data-gfx="Ultra">Ultra</button>
+          </div>
+          <p class="fps-verdict" id="fpsVerdict"></p>
+        </div>
       </div>
 
       <div class="tier-grid" style="margin-top:18px">
@@ -2310,6 +2418,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       metaEl.appendChild(d);
     });
 
+    if (typeof refreshVerdict === 'function') refreshVerdict();
     var tc = document.querySelectorAll('.tier-card');
     Array.prototype.forEach.call(tc, function(c){
       c.classList.toggle('on', c.getAttribute('data-tier') === String(p.tier));
@@ -2696,6 +2805,65 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   burger.addEventListener('click', function(){ setSidebar(!sidebar.classList.contains('open')); });
   scrim.addEventListener('click', function(){ setSidebar(false); });
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape') setSidebar(false); });
+
+
+  /* ---------- FPS target + graphics verdict ---------- */
+  var fpsHz = 120, fpsGfx = "Smooth";
+  var fpsSeg = document.getElementById('fpsSeg');
+  var gfxSeg = document.getElementById('gfxSeg');
+  var verdict = document.getElementById('fpsVerdict');
+
+  function refreshVerdict(){
+    if (!verdict) return;
+    var p = state.phone;
+    var hz = p ? p.refresh : 60;
+    var tier = p ? p.tier : 2;
+    var msg = "", warn = false;
+
+    if (fpsHz > hz){
+      warn = true;
+      msg = "<b>" + hz + "Hz screen.</b> " + fpsHz + " FPS will not show on this phone. Pick " + hz + " FPS for a true match.";
+    } else if (fpsGfx !== "Smooth" && fpsGfx !== "Standard" && fpsHz >= 120 && tier <= 2){
+      warn = true;
+      msg = "<b>Not realistic.</b> " + fpsGfx + " graphics with " + fpsHz + " FPS needs a flagship chip. Use Smooth or Standard on this phone.";
+    } else if (fpsGfx === "Ultra" && tier < 4){
+      warn = true;
+      msg = "<b>Too heavy.</b> Ultra graphics on a tier " + tier + " phone drops frames. " + (tier >= 3 ? "High" : "Standard") + " is the safe pick.";
+    } else {
+      msg = "<b>Realistic.</b> " + fpsGfx + " graphics with " + fpsHz + " FPS suits this phone. Keep High FPS on and shadows off.";
+    }
+    verdict.className = "fps-verdict" + (warn ? " warn" : "");
+    verdict.innerHTML = msg;
+  }
+
+  function bindSeg(el, attr, apply){
+    if (!el) return;
+    Array.prototype.forEach.call(el.querySelectorAll('button'), function(b){
+      b.addEventListener('click', function(){
+        Array.prototype.forEach.call(el.querySelectorAll('button'), function(x){ x.classList.remove('on'); });
+        b.classList.add('on');
+        apply(b.getAttribute(attr));
+      });
+    });
+  }
+
+  bindSeg(fpsSeg, 'data-hz', function(v){ fpsHz = parseInt(v, 10); refreshVerdict(); });
+  bindSeg(gfxSeg, 'data-gfx', function(v){ fpsGfx = v; refreshVerdict(); });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.play-btn'), function(a){
+    a.addEventListener('click', function(e){
+      var pkg = a.getAttribute('data-pkg');
+      if (!pkg) return;
+      if (/Android/i.test(navigator.userAgent)){
+        e.preventDefault();
+        var t0 = Date.now();
+        window.location.href = 'intent://#Intent;package=' + pkg + ';end';
+        setTimeout(function(){
+          if (Date.now() - t0 < 1600) window.open(a.href, '_blank');
+        }, 900);
+      }
+    });
+  });
 
   var fpsChecks = document.querySelectorAll('.fps-check');
   function updateScore(){
