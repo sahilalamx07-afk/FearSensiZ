@@ -997,6 +997,77 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   opacity:0;transition:opacity .12s linear;
 }
 #pixelFx.on{opacity:1}
+
+/* ---------- 3D rounded reveal on the dashboard ---------- */
+.rail{perspective:1100px}
+.ch-card,.feat-card,.stat-box,.play-block,.dash-head{transform-style:preserve-3d}
+
+.page[data-page="home"].active .dash-head,
+.page[data-page="home"].active .ch-card,
+.page[data-page="home"].active .feat-card,
+.page[data-page="home"].active .stat-box,
+.page[data-page="home"].active .play-block{
+  animation:card3dIn 1.05s cubic-bezier(.16,.86,.28,1) backwards;
+}
+.page[data-page="home"].active .ch-card:nth-child(1){animation-delay:.10s}
+.page[data-page="home"].active .ch-card:nth-child(2){animation-delay:.20s}
+.page[data-page="home"].active .feat-card:nth-child(1){animation-delay:.16s}
+.page[data-page="home"].active .feat-card:nth-child(2){animation-delay:.22s}
+.page[data-page="home"].active .feat-card:nth-child(3){animation-delay:.28s}
+.page[data-page="home"].active .feat-card:nth-child(4){animation-delay:.34s}
+.page[data-page="home"].active .feat-card:nth-child(5){animation-delay:.40s}
+.page[data-page="home"].active .feat-card:nth-child(6){animation-delay:.46s}
+.page[data-page="home"].active .feat-card:nth-child(7){animation-delay:.52s}
+.page[data-page="home"].active .stat-box:nth-child(1){animation-delay:.30s}
+.page[data-page="home"].active .stat-box:nth-child(2){animation-delay:.36s}
+.page[data-page="home"].active .stat-box:nth-child(3){animation-delay:.42s}
+.page[data-page="home"].active .stat-box:nth-child(4){animation-delay:.48s}
+.page[data-page="home"].active .play-block{animation-delay:.54s}
+
+@keyframes card3dIn{
+  0%{
+    opacity:0;
+    transform:perspective(1000px) rotateY(-24deg) rotateX(10deg) translateY(26px) scale(.88);
+    filter:blur(7px);
+  }
+  55%{opacity:1;filter:blur(0)}
+  100%{
+    opacity:1;
+    transform:perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0) scale(1);
+    filter:blur(0);
+  }
+}
+
+.ch-card,.feat-card{
+  border-radius:20px;
+  transition:transform .55s cubic-bezier(.2,.8,.3,1), box-shadow .5s ease, border-color .4s ease;
+  will-change:transform;
+}
+.ch-card:hover{
+  transform:perspective(900px) rotateX(4deg) rotateY(-5deg) translateY(-6px) scale(1.02);
+  box-shadow:0 26px 54px -28px #000, 0 0 46px -16px var(--glow);
+}
+.feat-card:hover{
+  transform:perspective(900px) rotateX(4deg) rotateY(5deg) translateY(-6px) scale(1.02);
+}
+.stat-box{transition:transform .5s cubic-bezier(.2,.8,.3,1), box-shadow .45s ease}
+.stat-box:hover{transform:perspective(800px) translateY(-4px) rotateX(4deg);box-shadow:0 20px 40px -28px #000, 0 0 34px -16px var(--glow)}
+
+@media (max-width: 900px), (pointer: coarse){
+  .page[data-page="home"].active .dash-head,
+  .page[data-page="home"].active .ch-card,
+  .page[data-page="home"].active .feat-card,
+  .page[data-page="home"].active .stat-box,
+  .page[data-page="home"].active .play-block{animation:none}
+  .ch-card:hover,.feat-card:hover,.stat-box:hover{transform:none}
+}
+@media (prefers-reduced-motion: reduce){
+  .page[data-page="home"].active .dash-head,
+  .page[data-page="home"].active .ch-card,
+  .page[data-page="home"].active .feat-card,
+  .page[data-page="home"].active .stat-box,
+  .page[data-page="home"].active .play-block{animation:none}
+}
 </style>
 </head>
 <body>
