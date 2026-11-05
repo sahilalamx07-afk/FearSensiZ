@@ -865,40 +865,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .sub-pair{display:flex;gap:8px;flex-wrap:wrap}
 .sub-pair .sub-pill{padding:8px 14px}
 
-.hud-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin-top:16px}
-.hud-card{
-  border:1px solid rgba(120,195,255,.16);border-radius:14px;padding:14px;background:var(--surface);
-  box-shadow:0 0 0 1px rgba(120,195,255,.05), 0 22px 46px -34px #000, 0 0 30px -22px var(--glow);
-  transition:border-color .22s, box-shadow .25s, transform .22s;
-}
-.hud-card:hover{border-color:rgba(79,195,255,.5);transform:translateY(-3px);box-shadow:0 0 0 1px rgba(79,195,255,.18), 0 26px 50px -34px #000, 0 0 40px -14px var(--glow)}
-.hud-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
-.hud-top h3{font-family:var(--font-display);font-size:14.5px;margin:0;letter-spacing:-.01em}
-.hud-fing{margin-left:auto;font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;padding:2px 7px;border-radius:999px;border:1px solid rgba(79,195,255,.45);color:#8fd0ff}
-.hud-phone{
-  position:relative;width:100%;aspect-ratio:9/15;border-radius:14px;overflow:hidden;
-  background:radial-gradient(circle at 50% 30%, rgba(20,52,96,.85), rgba(4,9,18,.98) 75%);
-  border:1px solid rgba(120,195,255,.2);margin-bottom:10px;
-}
-.hud-dot{position:absolute;border-radius:50%;display:grid;place-items:center;font-family:var(--font-mono);font-size:8px;color:#03121f;transform:translate(-50%,-50%);box-shadow:0 0 14px -2px rgba(79,195,255,.8)}
-.hud-dot.fire{background:linear-gradient(135deg,#2f7dff,#4fc3ff)}
-.hud-dot.scope{background:rgba(34,211,238,.85)}
-.hud-dot.jump{background:rgba(139,212,255,.85)}
-.hud-dot.crouch{background:rgba(96,165,250,.8)}
-.hud-dot.gloo{background:rgba(59,130,246,.75)}
-.hud-specs{display:grid;gap:4px;font-size:11.5px;color:var(--dim)}
-.hud-specs b{color:var(--text);font-family:var(--font-mono);font-size:11.5px}
-.hud-code{
-  margin-top:10px;display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:9px;
-  border:1px dashed rgba(120,195,255,.35);background:rgba(58,160,255,.07);
-  font-family:var(--font-mono);font-size:10px;color:#9ed8ff;overflow:hidden;
-}
-.hud-code span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.hud-code button{margin-left:auto;background:none;border:0;color:#8fd0ff;font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;cursor:pointer;text-transform:uppercase}
-.code-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}
-.code-row{display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:10px;border:1px solid rgba(120,195,255,.16);background:rgba(10,22,40,.9);font-size:12.5px}
-.code-row b{font-weight:600;color:var(--text)}
-.code-row code{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;color:#9ed8ff;background:none}
 </style>
 </head>
 <body>
@@ -931,10 +897,9 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   <a class="side-link" href="#/sens" data-nav="sens"><span class="ico">03</span><span data-i18n="nav.sens">Sensitivity</span></a>
   <a class="side-link" href="#/how" data-nav="how"><span class="ico">04</span><span data-i18n="nav.how">How it works</span></a>
   <a class="side-link" href="#/tune" data-nav="tune"><span class="ico">05</span><span data-i18n="nav.tune">Tuning</span></a>
-  <a class="side-link" href="#/hud" data-nav="hud"><span class="ico">07</span><span>HUD Lab</span></a>
   <a class="side-link" href="#/fps" data-nav="fps"><span class="ico">06</span><span data-i18n="nav.fps">FPS Boost</span></a>
-  <a class="side-link" href="#/faq" data-nav="faq"><span class="ico">08</span><span data-i18n="nav.faq">FAQ</span></a>
-  <a class="side-link" href="#/settings" data-nav="settings"><span class="ico">09</span><span data-i18n="nav.settings">Settings</span></a>
+  <a class="side-link" href="#/faq" data-nav="faq"><span class="ico">07</span><span data-i18n="nav.faq">FAQ</span></a>
+  <a class="side-link" href="#/settings" data-nav="settings"><span class="ico">08</span><span data-i18n="nav.settings">Settings</span></a>
 
   <div class="side-foot">
     <a class="sub-pill" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">
@@ -1296,43 +1261,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       </div>
     </div>
 
-
-    <div class="page" data-page="hud">
-      <div class="page-head">
-        <div class="kicker">HUD Lab</div>
-        <h2>Pro-style HUD layouts</h2>
-        <p>Button sizes and positions used in competitive play. Pick a layout, copy its share code, then adjust it to your hand in Training Ground.</p>
-      </div>
-
-      <div class="callout" style="margin-top:0">
-        <b>Rule of thumb</b> — fire button size: 2-finger 58–68%, 3-finger 52–62%, 4-finger claw 45–55%. Keep 55–65% opacity on combat buttons so you can still see enemies behind them.
-      </div>
-
-      <div class="hud-grid" id="hudGrid"></div>
-
-      <div class="panel" style="margin-top:18px">
-        <div class="panel-head"><span class="t">About HUD share codes</span></div>
-        <div class="panel-body">
-          <p class="fps-note" style="border:0;padding:0;margin:0">
-            Share codes are tied to the creator's account and break with almost every game update, so this page does not publish codes it cannot verify.
-            Use the layout specs above and build the same HUD yourself in <b>Settings &rarr; Custom HUD</b> — it takes about two minutes and it will not expire.
-          </p>
-        </div>
-      </div>
-
-      <div class="panel" style="margin-top:18px">
-        <div class="panel-head"><span class="t">5 rules that matter more than the code</span></div>
-        <div class="panel-body">
-          <div class="steps">
-            <div class="step"><span class="n">01</span><h3>Clear the fire button</h3><p>Leave empty space above it for the drag. A crowded edge is why headshots slip.</p></div>
-            <div class="step"><span class="n">02</span><h3>Lock the 5 core buttons</h3><p>Joystick, fire, scope, jump, crouch. Place these first, everything else works around them.</p></div>
-            <div class="step"><span class="n">03</span><h3>Drop opacity on the rest</h3><p>Bag, map and settings at 30–40% so they stop blocking your view in fights.</p></div>
-            <div class="step"><span class="n">04</span><h3>Match your hand, not a video</h3><p>Bigger hands or a bigger screen: nudge sizes up 5%. Small phone: shrink 10% and spread buttons out.</p></div>
-            <div class="step"><span class="n">05</span><h3>10 minutes before ranked</h3><p>Any new layout needs Training Ground plus 3–5 Clash Squad matches before you trust it.</p></div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <div class="page" data-page="faq">
       <div class="page-head">
@@ -3758,103 +3686,10 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   })();
 
 
-  /* ---------- HUD lab ---------- */
-  var HUD_PRESETS = [
-    {n:"2-Finger Starter", f:"2F", fire:[78,80,58], scope:[88,64,58], jump:[88,90,52], crouch:null, gloo:[12,74,70], note:"Clean screen, fire button where the right thumb rests."},
-    {n:"2-Finger Aggressive", f:"2F", fire:[80,78,66], scope:[90,60,60], jump:[86,92,56], crouch:[70,92,50], gloo:[14,72,72], note:"Bigger fire button for close-range shotgun fights."},
-    {n:"2-Finger Sniper", f:"2F", fire:[76,82,55], scope:[90,66,62], jump:[88,92,52], crouch:null, gloo:[12,76,68], note:"Smaller fire button, scope kept close for quick ADS."},
-    {n:"2-Finger Safe", f:"2F", fire:[78,82,62], scope:[90,68,58], jump:[88,92,50], crouch:null, gloo:[12,76,68], note:"Less mis-taps for new players, buttons kept far apart."},
-    {n:"3-Finger Hybrid", f:"3F", fire:[78,80,56], scope:[88,62,58], jump:[20,18,60], crouch:[20,34,55], gloo:[12,72,72], note:"Left index handles jump and crouch, right thumb keeps aiming."},
-    {n:"3-Finger Pro Meta", f:"3F", fire:[80,80,52], scope:[90,64,56], jump:[18,16,62], crouch:[18,32,56], gloo:[12,70,74], note:"Most popular ranked layout, crouch-fire combo ready."},
-    {n:"3-Finger Gloo Rusher", f:"3F", fire:[78,80,58], scope:[88,64,56], jump:[20,16,60], crouch:[20,30,54], gloo:[16,58,78], note:"Gloo wall closer to the thumb for faster sit-up walls."},
-    {n:"3-Finger Crouch-Fire", f:"3F", fire:[80,82,55], scope:[90,66,55], jump:[18,18,58], crouch:[18,36,58], gloo:[12,72,72], note:"Crouch under the index finger, fire under the thumb."},
-    {n:"3-Finger Lone Wolf", f:"3F", fire:[78,78,57], scope:[88,62,58], jump:[20,18,58], crouch:[20,34,52], gloo:[14,70,72], note:"Fast respawn practice layout, quick weapon swaps."},
-    {n:"4-Finger Claw", f:"4F", fire:[78,82,48], scope:[86,20,58], jump:[82,16,60], crouch:[86,34,56], gloo:[14,68,74], note:"Both indexes on the top corners, thumbs free to aim."},
-    {n:"4-Finger Tournament", f:"4F", fire:[80,82,45], scope:[86,18,60], jump:[80,14,62], crouch:[86,32,58], gloo:[16,56,78], note:"Low opacity combat buttons, built for scrims."},
-    {n:"4-Finger Double Sniper", f:"4F", fire:[80,84,46], scope:[88,22,62], jump:[82,16,58], crouch:[86,34,54], gloo:[14,70,72], note:"Right index works the scope for AWM and M82B swaps."},
-    {n:"4-Finger Jump-Shot", f:"4F", fire:[80,84,50], scope:[88,24,56], jump:[84,14,64], crouch:[86,32,58], gloo:[14,68,74], note:"Jump, aim and fire at the same time in shotgun duels."},
-    {n:"4-Finger AWM Switch", f:"4F", fire:[80,84,47], scope:[88,20,60], jump:[82,14,58], crouch:[86,32,54], gloo:[14,72,70], note:"Quick weapon switch below the left fire button."},
-    {n:"4-Finger Tablet Wide", f:"4F", fire:[80,84,42], scope:[88,18,54], jump:[80,12,56], crouch:[88,30,52], gloo:[12,64,70], note:"Bigger screens: smaller percentages, wider spacing."},
-    {n:"Thumb-Only Clash Squad", f:"2F", fire:[78,80,60], scope:[90,66,58], jump:[88,92,54], crouch:[70,92,50], gloo:[14,72,72], note:"Everything within thumb reach, no claw needed."}
-  ];
-
-  function hudDot(cls, pos, label, size){
-    if (!pos) return '';
-    var d = document.createElement('div');
-    d.className = 'hud-dot ' + cls;
-    d.style.left = pos[0] + '%';
-    d.style.top = pos[1] + '%';
-    d.style.width = (pos[2] * 0.42) + 'px';
-    d.style.height = (pos[2] * 0.42) + 'px';
-    d.textContent = label;
-    return d;
-  }
-
-  function renderHud(){
-    var grid = document.getElementById('hudGrid');
-    if (!grid) return;
-    grid.innerHTML = "";
-    HUD_PRESETS.forEach(function(p){
-      var card = document.createElement('div');
-      card.className = 'hud-card';
-
-      var top = document.createElement('div');
-      top.className = 'hud-top';
-      var h3 = document.createElement('h3');
-      h3.textContent = p.n;
-      var fg = document.createElement('span');
-      fg.className = 'hud-fing';
-      fg.textContent = p.f;
-      top.appendChild(h3); top.appendChild(fg);
-
-      var phone = document.createElement('div');
-      phone.className = 'hud-phone';
-      phone.appendChild(hudDot('fire', p.fire, 'FIRE', p.fire[2]));
-      phone.appendChild(hudDot('scope', p.scope, 'SC', p.scope[2]));
-      phone.appendChild(hudDot('jump', p.jump, 'J', p.jump[2]));
-      phone.appendChild(hudDot('crouch', p.crouch, 'C', p.crouch ? p.crouch[2] : 0));
-      phone.appendChild(hudDot('gloo', p.gloo, 'G', p.gloo[2]));
-
-      var specs = document.createElement('div');
-      specs.className = 'hud-specs';
-      specs.innerHTML = 'Fire button <b>' + p.fire[2] + '%</b> · Scope <b>' + p.scope[2] + '%</b><br>' + p.note;
-
-      card.appendChild(top);
-      card.appendChild(phone);
-      card.appendChild(specs);
-
-      var cd = document.createElement('div');
-      cd.className = 'hud-code';
-      var sp = document.createElement('span');
-      sp.textContent = p.f + ' · fire ' + p.fire[2] + '% · scope ' + p.scope[2] + '%';
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.textContent = 'copy';
-      btn.addEventListener('click', function(){
-        var nl = String.fromCharCode(10);
-        var txt = p.n + ' (' + p.f + ')' + nl +
-          'Fire button: ' + p.fire[2] + '%  at x' + p.fire[0] + ' y' + p.fire[1] + nl +
-          'Scope: ' + p.scope[2] + '%  at x' + p.scope[0] + ' y' + p.scope[1] + nl +
-          'Jump: ' + p.jump[2] + '%  at x' + p.jump[0] + ' y' + p.jump[1] + nl +
-          (p.crouch ? 'Crouch: ' + p.crouch[2] + '%  at x' + p.crouch[0] + ' y' + p.crouch[1] + nl : '') +
-          'Gloo: ' + p.gloo[2] + '%  at x' + p.gloo[0] + ' y' + p.gloo[1] + nl +
-          'Opacity: 55-65% for combat buttons, 30-40% for the rest.';
-        if (navigator.clipboard) navigator.clipboard.writeText(txt);
-        btn.textContent = 'copied';
-        setTimeout(function(){ btn.textContent = 'copy'; }, 1600);
-      });
-      cd.appendChild(sp); cd.appendChild(btn);
-      card.appendChild(cd);
-      grid.appendChild(card);
-    });
-
-  }
-  renderHud();
-
   /* ============================================================
      ROUTER + SIDEBAR
      ============================================================ */
-  var PAGES = ["home","finder","sens","how","tune","fps","hud","faq","settings"];
+  var PAGES = ["home","finder","sens","how","tune","fps","faq","settings"];
   var sidebar = document.getElementById('sidebar');
   var scrim = document.getElementById('scrim');
   var burger = document.getElementById('burger');
