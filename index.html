@@ -4015,7 +4015,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   /* ---------- pixel dissolve ---------- */
   var pixelCanvas = document.getElementById('pixelFx');
   var pctx = pixelCanvas ? pixelCanvas.getContext('2d') : null;
-  var pW = 0, pH = 0, pCell = 22, pCols = 0, pRows = 0, pCells = [], pBusy = false, pSwapped = false;
+  var pW = 0, pH = 0, pCell = 20, pCols = 0, pRows = 0, pCells = [], pJag = [], pBusy = false, pSwapped = false;
 
   function pixelSetup(){
     var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
@@ -4023,36 +4023,58 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     pixelCanvas.width = pW * dpr; pixelCanvas.height = pH * dpr;
     pixelCanvas.style.width = pW + 'px'; pixelCanvas.style.height = pH + 'px';
     pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    pCell = pW < 700 ? 26 : 22;
+    pCell = pW < 700 ? 24 : 20;
     pCols = Math.ceil(pW / pCell); pRows = Math.ceil(pH / pCell);
     pCells = [];
+    pJag = [];
+    for (var x = 0; x < pCols; x++){
+      /* jagged front: every column sits at a slightly different position */
+      pJag.push((Math.random() - 0.5) * 1.7);
+    }
     for (var y = 0; y < pRows; y++){
-      for (var x = 0; x < pCols; x++){
+      for (var xx = 0; xx < pCols; xx++){
         pCells.push({
-          x: x, y: y,
+          x: xx, y: y,
           r: Math.random(),
-          d: (x / Math.max(1, pCols - 1)) * 0.88 + Math.random() * 0.09
+          s: 0.82 + Math.random() * 0.18
         });
       }
     }
   }
 
-  function pixelPaint(mode, p){
+  function pixelPaint(phase, t){
     pctx.clearRect(0, 0, pW, pH);
-    var edge = p * 1.1;                 /* leading column of the wipe */
+    var front = t * (pCols + 4) - 2;
+    var trail = pCols * 0.30;
     for (var i = 0; i < pCells.length; i++){
       var c = pCells[i];
-      var local = (p - c.d * 0.9) / 0.34;   /* each column resolves quickly */
-      if (local <= 0) continue;
-      if (local > 1) local = 1;
-      var shown = (mode === 'in') ? local : 1 - local;
-      if (shown <= 0.01) continue;
-      var size = pCell * (0.35 + 0.65 * shown);
-      var lift = (mode === 'out') ? (1 - shown) * 34 * (0.4 + c.r) : 0;
-      var nearEdge = Math.abs((c.x / Math.max(1, pCols - 1)) - edge) < 0.05;
-      pctx.globalAlpha = shown;
-      pctx.fillStyle = nearEdge ? '#7fd3ff' : ((c.r > 0.95) ? '#3aa0ff' : '#050b14');
-      pctx.fillRect(c.x * pCell + (pCell - size) / 2, c.y * pCell + (pCell - size) / 2 - lift, size, size);
+      var d = (front + pJag[c.x]) - c.x;      /* columns already passed */
+      if (d <= 0) continue;
+
+      var alpha;
+      if (phase === 'in'){
+        alpha = Math.min(1, d / 1.1);
+      } else {
+        alpha = Math.max(0, 1 - d / trail);   /* fades the further the line goes */
+      }
+      if (alpha <= 0.02) continue;
+
+      var size = pCell * c.s;
+      var px = c.x * pCell + (pCell - size) / 2;
+      var py = c.y * pCell + (pCell - size) / 2;
+      var nearFront = d < 1.4;
+
+      if (nearFront){
+        /* glow pass behind the bright core */
+        pctx.globalAlpha = alpha * 0.35;
+        pctx.fillStyle = '#3aa0ff';
+        var g = size * 2.1;
+        pctx.fillRect(px - (g - size) / 2, py - (g - size) / 2, g, g);
+      }
+
+      pctx.globalAlpha = alpha;
+      pctx.fillStyle = nearFront ? '#bfe8ff' : (c.r > 0.94 ? '#1d5fa8' : '#050b14');
+      pctx.fillRect(px, py, size, size);
     }
     pctx.globalAlpha = 1;
   }
@@ -4066,14 +4088,14 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     pBusy = true; pSwapped = false;
     pixelSetup();
     pixelCanvas.classList.add('on');
-    var t0 = performance.now(), DUR = 700;
+    var t0 = performance.now(), DUR = 780;
     function frame(now){
       var t = Math.min(1, (now - t0) / DUR);
-      if (t < 0.45){
-        pixelPaint('in', t / 0.45);
+      if (t < 0.48){
+        pixelPaint('in', t / 0.48);
       } else {
         if (!pSwapped){ pSwapped = true; apply(); }
-        pixelPaint('out', (t - 0.45) / 0.55);
+        pixelPaint('out', (t - 0.48) / 0.52);
       }
       if (t < 1){
         requestAnimationFrame(frame);
