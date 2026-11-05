@@ -1766,6 +1766,19 @@ main{max-width:1240px;margin:0 auto}
 .p3-body.cam-bar .p3-cam{width:70%;height:26px;border-radius:13px;left:15%;top:12px;grid-template-columns:repeat(3,1fr)}
 .p3-body.punch .p3-notch{width:9px;height:9px;border-radius:50%;top:8px}
 .p3-body.notch-wide .p3-notch{width:52px;height:8px;border-radius:0 0 10px 10px}
+
+/* ================= GAME BADGES ================= */
+.g-badge{
+  display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;
+  font-family:var(--font-display);font-weight:800;font-size:8px;letter-spacing:-.02em;
+  color:#0a0616;vertical-align:-4px;margin-right:5px;flex:none;
+  box-shadow:0 0 14px -4px rgba(139,108,255,.9), inset 0 0 0 1px rgba(255,255,255,.28);
+}
+.g-badge.ff{background:linear-gradient(135deg,#ffb066,#ff7a45)}
+.g-badge.max{background:linear-gradient(135deg,#b9a6ff,#7c5cff)}
+.g-badge.in{background:linear-gradient(135deg,#7ee0a8,#3ec98a)}
+.g-badge.lg{width:28px;height:28px;border-radius:8px;font-size:10px;vertical-align:-8px;margin-right:7px}
+.pico{font-family:var(--font-display);font-weight:800}
 </style>
 </head>
 <body>
@@ -1940,17 +1953,17 @@ main{max-width:1240px;margin:0 auto}
         <div class="play-head" data-i18n="play.now">Play Now</div>
         <div class="play-row">
           <a class="play-btn" data-pkg="com.dts.freefireth" href="https://play.google.com/store/apps/details?id=com.dts.freefireth" target="_blank" rel="noopener">
-            <span class="pico">FF</span>
+            <span class="pico g-badge ff lg">FF</span>
             <span class="ptx"><b>Free Fire</b><small data-i18n="play.open">Open game</small></span>
             <span class="arrow">→</span>
           </a>
           <a class="play-btn" data-pkg="com.dts.freefiremax" href="https://play.google.com/store/apps/details?id=com.dts.freefiremax" target="_blank" rel="noopener">
-            <span class="pico">MX</span>
+            <span class="pico g-badge max lg">MX</span>
             <span class="ptx"><b>Free Fire MAX</b><small data-i18n="play.open">Open game</small></span>
             <span class="arrow">→</span>
           </a>
           <a class="play-btn" href="https://play.google.com/store/search?q=free%20fire%20india&c=apps" target="_blank" rel="noopener">
-            <span class="pico">IN</span>
+            <span class="pico g-badge in lg">IN</span>
             <span class="ptx"><b>Free Fire India</b><small>Open store</small></span>
             <span class="arrow">→</span>
           </a>
@@ -2255,7 +2268,7 @@ main{max-width:1240px;margin:0 auto}
       </div>
       <div class="panel"><div class="panel-body">
         <p>Every value on this site comes from your phone's screen size, refresh rate, power tier and RAM, kept inside the 0-200 range used by competitive players. Nothing here is random: change a spec and the numbers move with it.</p>
-        <p>The site is free, works offline after the first load, and is not affiliated with Garena. Free Fire, Free Fire MAX and Free Fire India are trademarks of their owners.</p>
+        <p>The site is free, works offline after the first load, and is not affiliated with Garena. <span class="g-badge ff">FF</span>Free Fire, <span class="g-badge max">MAX</span>Free Fire MAX and <span class="g-badge in">IN</span>Free Fire India are trademarks of their owners.</p>
         <p><b>Author:</b> Crown X FF · <a href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">@Crownxv2</a> · <a href="https://www.youtube.com/@Crownxff07" target="_blank" rel="noopener">@Crownxff07</a></p>
       </div></div>
     </div>
@@ -2342,7 +2355,7 @@ main{max-width:1240px;margin:0 auto}
       <a href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">@Crownxv2</a>
       <a href="https://www.youtube.com/@Crownxff07" target="_blank" rel="noopener">@Crownxff07</a>
     </div>
-    <p class="foot-note">Fan-made tool. Not affiliated with Garena. Free Fire, Free Fire MAX and Free Fire India are trademarks of their owners.</p>
+    <p class="foot-note">Fan-made tool. Not affiliated with Garena. <span class="g-badge ff">FF</span>Free Fire, <span class="g-badge max">MAX</span>Free Fire MAX and <span class="g-badge in">IN</span>Free Fire India are trademarks of their owners.</p>
   </footer>
 </div>
 
