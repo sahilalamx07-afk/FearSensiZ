@@ -948,6 +948,72 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   .bg-orbs i{animation:none}
   .panel::after{display:none}
 }
+
+/* ---------- dashboard + swipe rails ---------- */
+.dash-head{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.dash-head h2{font-family:var(--font-display);font-size:clamp(22px,3.4vw,32px);letter-spacing:-.025em;margin:0 0 6px}
+.dash-head p{margin:0;color:var(--dim);font-size:14px;max-width:58ch}
+.dash-head .kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--signal);margin-bottom:8px}
+.dash-chip{
+  margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+  border:1px solid rgba(79,195,255,.35);background:rgba(58,160,255,.10);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#8fd0ff;
+}
+.dash-chip .dot{width:7px;height:7px;border-radius:50%;background:#4fc3ff;box-shadow:0 0 10px #4fc3ff}
+
+.rail-block{margin-top:26px}
+.rail-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.rail-head h3{font-family:var(--font-display);font-size:16px;margin:0;letter-spacing:-.01em}
+.rail-nav{margin-left:auto;display:flex;gap:6px}
+.rail-nav button{
+  width:32px;height:32px;border-radius:9px;border:1px solid var(--border);background:var(--surface);
+  color:var(--text);font-size:16px;line-height:1;cursor:pointer;transition:background .18s,border-color .18s;
+}
+.rail-nav button:hover{background:var(--surface-3);border-color:var(--border-strong)}
+.rail{
+  display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:2px 2px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch;cursor:grab;
+}
+.rail::-webkit-scrollbar{display:none}
+.rail.dragging{cursor:grabbing;scroll-snap-type:none}
+.rail > *{scroll-snap-align:start;flex:0 0 clamp(230px, 62vw, 300px);min-width:0}
+
+.ch-card{
+  display:flex;gap:12px;align-items:center;text-decoration:none;color:var(--text);
+  padding:16px;border-radius:16px;border:1px solid rgba(120,195,255,.2);
+  background:linear-gradient(160deg, rgba(24,64,124,.85), rgba(6,14,28,.95));
+  box-shadow:0 0 0 1px rgba(120,195,255,.05), 0 20px 40px -30px #000, 0 0 34px -20px var(--glow);
+  transition:transform .2s, border-color .2s, box-shadow .25s;
+}
+.ch-card:hover{transform:translateY(-3px);border-color:rgba(79,195,255,.55);box-shadow:0 0 0 1px rgba(79,195,255,.2), 0 24px 44px -30px #000, 0 0 44px -14px var(--glow)}
+.ch-ava{
+  width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;
+  background:linear-gradient(135deg,#2f7dff,#4fc3ff);color:#03121f;font-weight:800;font-size:19px;
+  font-family:var(--font-display);box-shadow:0 0 20px -6px var(--glow);
+}
+.ch-ava.alt{background:linear-gradient(135deg,#22d3ee,#4fc3ff)}
+.ch-body{min-width:0;display:grid;gap:2px}
+.ch-body b{font-size:14.5px;letter-spacing:-.01em}
+.ch-body small{font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim-2)}
+.ch-go{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:#8fd0ff;margin-top:6px}
+
+.feat-card{
+  display:grid;gap:6px;text-decoration:none;color:var(--text);padding:16px;border-radius:16px;
+  border:1px solid var(--border);background:var(--surface);
+  box-shadow:0 0 0 1px rgba(120,195,255,.04), 0 20px 40px -34px #000;
+  transition:transform .2s, border-color .2s, box-shadow .25s;
+}
+.feat-card:hover{transform:translateY(-3px);border-color:rgba(79,195,255,.5);box-shadow:0 0 0 1px rgba(79,195,255,.16), 0 24px 44px -34px #000, 0 0 36px -18px var(--glow)}
+.feat-card .fi{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;color:var(--signal)}
+.feat-card b{font-family:var(--font-display);font-size:15px;letter-spacing:-.01em}
+.feat-card p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.5}
+
+.rail-progress{height:3px;border-radius:3px;background:rgba(120,195,255,.14);overflow:hidden;margin-top:2px}
+.rail-progress i{display:block;height:100%;width:12%;border-radius:3px;background:linear-gradient(90deg,#2f7dff,#4fc3ff);transition:width .15s linear}
+
+@media (max-width: 640px){
+  .dash-chip{margin-left:0}
+}
 </style>
 </head>
 <body>
@@ -1060,56 +1126,92 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   <main id="main">
 
     <div class="page" data-page="home">
-      <header class="hero" style="padding:8px 0 0">
 
-    <div>
-      <div class="eyebrow reveal" data-i18n="hero.eyebrow">Free Fire India &amp; Free Fire MAX</div>
-      <h1 class="reveal" data-i18n="hero.title">Your phone's sensitivity, tuned for headshots.</h1>
-      <p class="lead reveal" data-i18n="hero.lead">Pick your phone and get a sensitivity preset built from its screen size, refresh rate and power tier.</p>
-      <div class="hero-cta reveal">
-        <a class="btn primary" href="#finder" data-i18n="hero.cta1">Choose my phone</a>
-        <a class="btn ghost" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener" data-i18n="hero.cta2">YouTube channel</a>
-      </div>
-      <div class="hero-badges reveal">
-        <span class="badge hot" data-i18n="badge.1">349 phone models</span>
-        <span class="badge" data-i18n="badge.2">0 to 200 scale</span>
-        <span class="badge" data-i18n="badge.3">FF India + MAX</span>
-        <span class="badge" data-i18n="badge.4">Free downloads</span>
-      </div>
-    </div>
-    <div class="phone-mock reveal">
-      <div class="bar"><span>Preview · mid-range 6.6"</span><span>FF / MAX</span></div>
-      <div class="rows">
-        <div class="mrow"><span>General</span><span class="track"><i style="width:84.5%"></i></span><b>169</b></div>
-        <div class="mrow"><span>Red Dot</span><span class="track"><i style="width:86.5%"></i></span><b>173</b></div>
-        <div class="mrow"><span>2x Scope</span><span class="track"><i style="width:75.5%"></i></span><b>151</b></div>
-        <div class="mrow"><span>4x Scope</span><span class="track"><i style="width:67%"></i></span><b>134</b></div>
-        <div class="mrow"><span>AWM</span><span class="track"><i style="width:46.5%"></i></span><b>93</b></div>
-        <div class="mrow"><span>Free Look</span><span class="track"><i style="width:42.5%"></i></span><b>85</b></div>
-        <div class="mrow"><span>Fire btn</span><span class="track"><i style="width:42%"></i></span><b>42%</b></div>
-      </div>
-    </div>
-  
-      </header>
+      <section class="dash-head">
+        <div>
+          <div class="kicker">Dashboard</div>
+          <h2>Everything for your Free Fire sensitivity</h2>
+          <p>Phone-wise sens, DPI and RAM tuning, FPS settings and downloads — all in one place.</p>
+        </div>
+        <div class="dash-chip"><span class="dot"></span>engine v3 · live</div>
+      </section>
 
-      <div class="quick-grid">
-        <a class="quick" href="#/finder">
-          <span class="qi">01</span>
-          <h3 data-i18n="nav.find">Find phone</h3>
-          <p data-i18n="find.desc">Type your model and pick from the suggestions.</p>
-        </a>
-        <a class="quick" href="#/sens">
-          <span class="qi">02</span>
-          <h3 data-i18n="nav.sens">Sensitivity</h3>
-          <p data-i18n="res.desc">These values come from your phone's specs.</p>
-        </a>
-        <a class="quick" href="#/tune">
-          <span class="qi">03</span>
-          <h3 data-i18n="tune.head">After you apply the preset</h3>
-          <p data-i18n="tune.desc">Four things that turn a preset into consistent headshots.</p>
-        </a>
+      <div class="rail-block">
+        <div class="rail-head">
+          <h3>My channels</h3>
+          <div class="rail-nav">
+            <button type="button" data-rail="channels" data-dir="-1" aria-label="Previous">‹</button>
+            <button type="button" data-rail="channels" data-dir="1" aria-label="Next">›</button>
+          </div>
+        </div>
+        <div class="rail" id="railChannels">
+          <a class="ch-card" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">
+            <span class="ch-ava">C</span>
+            <span class="ch-body">
+              <b>@Crownxv2</b>
+              <small>Main channel · sens updates</small>
+              <span class="ch-go">Open YouTube →</span>
+            </span>
+          </a>
+          <a class="ch-card" href="https://www.youtube.com/@Crownxff07" target="_blank" rel="noopener">
+            <span class="ch-ava alt">C</span>
+            <span class="ch-body">
+              <b>@Crownxff07</b>
+              <small>Second channel · gameplay</small>
+              <span class="ch-go">Open YouTube →</span>
+            </span>
+          </a>
+        </div>
+        <div class="rail-progress"><i id="progChannels"></i></div>
       </div>
 
+      <div class="rail-block">
+        <div class="rail-head">
+          <h3>Features</h3>
+          <div class="rail-nav">
+            <button type="button" data-rail="features" data-dir="-1" aria-label="Previous">‹</button>
+            <button type="button" data-rail="features" data-dir="1" aria-label="Next">›</button>
+          </div>
+        </div>
+        <div class="rail" id="railFeatures">
+          <a class="feat-card" href="#/finder">
+            <span class="fi">01</span><b>Find your phone</b>
+            <p>Type a model, pick a suggestion, get its own sens.</p>
+          </a>
+          <a class="feat-card" href="#/sens">
+            <span class="fi">02</span><b>Sensitivity</b>
+            <p>Six sliders on the real 0–200 scale, fire button under 50%.</p>
+          </a>
+          <a class="feat-card" href="#/sens">
+            <span class="fi">03</span><b>DPI &amp; RAM modes</b>
+            <p>Separate values with custom DPI and without it.</p>
+          </a>
+          <a class="feat-card" href="#/fps">
+            <span class="fi">04</span><b>FPS Boost</b>
+            <p>Graphics preset and target FPS check for your phone.</p>
+          </a>
+          <a class="feat-card" href="#/how">
+            <span class="fi">05</span><b>How it works</b>
+            <p>Screen size, refresh rate and tier behind every value.</p>
+          </a>
+          <a class="feat-card" href="#/tune">
+            <span class="fi">06</span><b>Tuning guide</b>
+            <p>What to change after your first three matches.</p>
+          </a>
+          <a class="feat-card" href="#/settings">
+            <span class="fi">07</span><b>14 languages</b>
+            <p>Hindi, Bengali, Tamil, Spanish, Arabic and more.</p>
+          </a>
+        </div>
+        <div class="rail-progress"><i id="progFeatures"></i></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box"><span class="n" id="statPhones">0</span><span class="l">Phone models</span></div>
+        <div class="stat-box"><span class="n">0-200</span><span class="l">Sens scale</span></div>
+        <div class="stat-box"><span class="n">&lt;50%</span><span class="l">Fire button</span></div>
+        <div class="stat-box"><span class="n">14</span><span class="l">Languages</span></div>
+      </div>
 
       <div class="play-block">
         <div class="play-head">Play Now</div>
@@ -1133,12 +1235,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
         <p class="play-hint">A browser can open one app at a time. On Android the button tries the game first, then the store.</p>
       </div>
 
-      <div class="stat-row">
-        <div class="stat-box"><span class="n" id="statPhones">0</span><span class="l" data-i18n="nav.find">Find phone</span></div>
-        <div class="stat-box"><span class="n">0-200</span><span class="l" data-i18n="badge.2">0 to 200 scale</span></div>
-        <div class="stat-box"><span class="n">&lt;50%</span><span class="l">Fire Button</span></div>
-        <div class="stat-box"><span class="n">7</span><span class="l" data-i18n="ui.language">Language</span></div>
-      </div>
     </div>
 
     <div class="page" data-page="finder">
@@ -3843,6 +3939,62 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     raf = requestAnimationFrame(draw);
   })();
 
+
+
+  /* ---------- swipe rails ---------- */
+  (function rails(){
+    var map = {
+      channels: [document.getElementById('railChannels'), document.getElementById('progChannels')],
+      features: [document.getElementById('railFeatures'), document.getElementById('progFeatures')]
+    };
+
+    function update(rail, prog){
+      var max = rail.scrollWidth - rail.clientWidth;
+      if (prog) prog.style.width = (max > 4 ? (rail.scrollLeft / max) * 100 : 100) + '%';
+    }
+
+    Object.keys(map).forEach(function(key){
+      var rail = map[key][0], prog = map[key][1];
+      if (!rail) return;
+      rail.addEventListener('scroll', function(){ update(rail, prog); }, { passive: true });
+      update(rail, prog);
+
+      var down = false, startX = 0, startLeft = 0, moved = false;
+      rail.addEventListener('pointerdown', function(e){
+        if (e.pointerType === 'touch') return;
+        down = true; moved = false;
+        startX = e.clientX; startLeft = rail.scrollLeft;
+        rail.classList.add('dragging');
+      });
+      rail.addEventListener('pointermove', function(e){
+        if (!down) return;
+        var dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        rail.scrollLeft = startLeft - dx;
+      });
+      function end(){
+        if (!down) return;
+        down = false;
+        rail.classList.remove('dragging');
+      }
+      rail.addEventListener('pointerup', end);
+      rail.addEventListener('pointerleave', end);
+      rail.addEventListener('pointercancel', end);
+      rail.addEventListener('click', function(e){
+        if (moved){ e.preventDefault(); moved = false; }
+      }, true);
+    });
+
+    Array.prototype.forEach.call(document.querySelectorAll('.rail-nav button'), function(btn){
+      btn.addEventListener('click', function(){
+        var pair = map[btn.getAttribute('data-rail')];
+        if (!pair || !pair[0]) return;
+        var card = pair[0].querySelector('*');
+        var step = card ? card.getBoundingClientRect().width + 12 : 260;
+        pair[0].scrollBy({ left: step * parseInt(btn.getAttribute('data-dir'), 10), behavior: 'smooth' });
+      });
+    });
+  })();
 
   /* ============================================================
      ROUTER + SIDEBAR
