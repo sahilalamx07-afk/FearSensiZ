@@ -1582,9 +1582,12 @@ body::before,body::after,.bg-orbs,#snow,.tree-wrap{transform:translateZ(0);backf
 .space,.bg-orbs{transform:translate3d(0, calc(var(--sy, 0px) * .06), 0);will-change:transform}
 
 /* ---------- springy reveal (elastic feel) ---------- */
-.reveal-el{opacity:0;transform:translateY(26px) scale(.97);
-  transition:opacity .7s cubic-bezier(.22,.9,.3,1), transform .8s cubic-bezier(.34,1.42,.5,1);}
-.reveal-el.in{opacity:1;transform:none}
+.reveal-el{opacity:0;transform:translateY(28px) scale(.9);
+  transition:opacity .55s cubic-bezier(.22,.9,.3,1), transform .75s cubic-bezier(.3,1.55,.45,1);
+  will-change:transform,opacity}
+.reveal-el.in{opacity:1;transform:translateY(0) scale(1)}
+.reveal-el.in{animation:popSettle .55s cubic-bezier(.3,1.6,.45,1)}
+@keyframes popSettle{0%{transform:translateY(10px) scale(.94)}60%{transform:translateY(0) scale(1.015)}100%{transform:none}}
 
 /* page heads: arc + moon accent on every page */
 .page-head::after{
@@ -1669,13 +1672,22 @@ main{max-width:1240px;margin:0 auto}
     radial-gradient(1px 1px at 24% 84%, rgba(215,205,255,.75), transparent 60%);}
 @keyframes inStars{0%{opacity:0;transform:scale(1.06)}100%{opacity:.9;transform:scale(1)}}
 
-.in-moon{position:absolute;left:50%;top:52%;width:min(64vw,320px);aspect-ratio:1;border-radius:50%;
-  transform:translate(-50%,-50%);opacity:0;
-  background:
-    radial-gradient(circle at 36% 32%, rgba(226,216,255,.95), rgba(178,158,255,.55) 34%, rgba(88,62,160,.85) 62%, rgba(20,12,44,.98) 82%);
-  box-shadow:0 0 120px -20px rgba(139,108,255,.95), inset -26px -18px 70px rgba(0,0,0,.8);
-  animation:inMoon 2.8s cubic-bezier(.22,.9,.3,1) .15s both;}
-@keyframes inMoon{0%{opacity:0;transform:translate(-50%,-38%) scale(.55)}55%{opacity:1}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
+.in-moon{position:absolute;left:50%;top:52%;width:min(60vw,300px);aspect-ratio:1;
+  transform:translate(-50%,-50%);opacity:0;animation:inMoon 3s cubic-bezier(.22,.9,.3,1) .15s both}
+.in-moon::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 62% 38%, rgba(238,232,255,1), rgba(190,172,255,.92) 42%, rgba(120,92,230,.75) 68%, rgba(60,38,120,.2) 82%, transparent 88%);
+  box-shadow:0 0 90px -10px rgba(160,132,255,.95), 0 0 190px -40px rgba(139,108,255,.9);
+}
+.in-moon::after{
+  content:"";position:absolute;left:16%;top:-6%;width:100%;height:100%;border-radius:50%;
+  background:#07051a;box-shadow:-14px 6px 40px rgba(7,5,26,.9);
+}
+@keyframes inMoon{
+  0%{opacity:0;transform:translate(-50%,-38%) scale(.6) rotate(-12deg)}
+  55%{opacity:1}
+  100%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(0)}
+}}
 
 .in-arc{position:absolute;left:50%;top:50%;width:min(120vw,860px);aspect-ratio:1;border-radius:50%;
   transform:translate(-50%,-50%);opacity:0;
@@ -2195,12 +2207,12 @@ main{max-width:1240px;margin:0 auto}
       <span class="sec-num">05</span>
       <h2 data-i18n="faq.head">Quick answers</h2>
     </div>
-    <details><summary data-i18n="faq.q1"></summary><p data-i18n="faq.a1"></p></details>
-    <details><summary data-i18n="faq.q2"></summary><p data-i18n="faq.a2"></p></details>
-    <details><summary data-i18n="faq.q3"></summary><p data-i18n="faq.a3"></p></details>
-    <details><summary data-i18n="faq.q4"></summary><p data-i18n="faq.a4"></p></details>
-    <details><summary data-i18n="faq.q5"></summary><p data-i18n="faq.a5"></p></details>
-    <details><summary data-i18n="faq.q6"></summary><p data-i18n="faq.a6"></p></details>
+    <details><summary data-i18n="faq.q1">Will one preset work in both FF India and FF MAX?</summary><p data-i18n="faq.a1">Yes. Both use the same six sliders on a 0 to 200 scale. MAX is heavier, so on weaker phones keep General about 10 points higher.</p></details>
+    <details><summary data-i18n="faq.q2">Does this guarantee headshots?</summary><p data-i18n="faq.a2">No sensitivity guarantees headshots. It matches the game to your hand speed. Fire button placement and practice do the rest.</p></details>
+    <details><summary data-i18n="faq.q3">What DPI should I use?</summary><p data-i18n="faq.a3">Free Fire has no in-game DPI slider. DPI is a phone or emulator setting, and the suggested range for your phone is shown above.</p></details>
+    <details><summary data-i18n="faq.q4">Can I aim with the gyroscope?</summary><p data-i18n="faq.a4">No. Neither FF India nor FF MAX supports gyroscope aiming. Aiming is thumb and finger drag only.</p></details>
+    <details><summary data-i18n="faq.q5">My phone is not in the list. Now what?</summary><p data-i18n="faq.a5">Type the name and press Enter. The engine reads the brand, series and suffix to estimate the specs, and you can correct them in the dropdowns.</p></details>
+    <details><summary data-i18n="faq.q6">Will the popup appear again?</summary><p data-i18n="faq.a6">No. Once unlocked it stays unlocked in this browser. Clearing browser data resets it.</p></details>
   
     </div>
 
