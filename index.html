@@ -1466,6 +1466,78 @@ html{scrollbar-width:thin;scrollbar-color:rgba(139,108,255,.45) transparent}
   .btn{min-height:42px}
   .rail-nav button{min-height:34px}
 }
+
+/* ================= POLISH PASS ================= */
+
+/* --- 1. solid dark base so nothing can flash white while scrolling --- */
+html{background:#05040f}
+body{background-color:#05040f;overscroll-behavior-y:none}
+body::before,body::after,.bg-orbs,#snow,.tree-wrap{transform:translateZ(0);backface-visibility:hidden}
+
+/* --- 2. hamburger: clearer, bigger, glowing --- */
+.burger{
+  width:46px;height:46px;border-radius:13px;gap:5px;
+  border:1px solid rgba(170,150,255,.45);
+  background:linear-gradient(180deg, rgba(30,22,64,.95), rgba(12,9,28,.95));
+  box-shadow:0 0 22px -10px var(--glow), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.burger span{
+  width:20px;height:2.6px;border-radius:3px;
+  background:linear-gradient(90deg,#b9a6ff,#8b6cff);
+  box-shadow:0 0 10px rgba(185,166,255,.8);
+}
+.burger:hover{border-color:rgba(200,184,255,.8);box-shadow:0 0 30px -6px var(--glow)}
+.burger:active{transform:scale(.96)}
+
+/* --- 3. bigger UI on desktop only --- */
+@media (min-width: 1024px){
+  body{font-size:17px}
+  .side-link{font-size:15.5px;padding:12px 13px}
+  .side-link .ico{width:24px;height:24px;font-size:11px}
+  .side-label{font-size:10px}
+  .brand{font-size:17px}
+  .appbar{padding:12px 22px}
+  .appbar .crumb{font-size:11.5px}
+  .lang-select{font-size:12px;padding:8px 10px}
+  .page-head h2{font-size:clamp(26px,3vw,38px)}
+  .page-head p{font-size:15.5px}
+  .rail > *{flex:0 0 320px}
+  .ch-card{padding:18px}
+  .ch-body b{font-size:16px}
+  .feat-card{padding:18px}
+  .feat-card b{font-size:16.5px}
+  .feat-card p{font-size:13.5px}
+  .panel-body{padding:18px}
+  .panel-head{padding:14px 18px}
+  .srow{padding:13px 15px}
+  .srow .l{font-size:14px}
+  .srow .v{font-size:15px}
+  .field label{font-size:10px}
+  .field select,.spec-grid select{font-size:14px;padding:9px 10px}
+  .btn{font-size:12px;padding:12px 16px}
+  .meta .mv{font-size:13.5px}
+  .step{padding:18px}
+  .step h3{font-size:16px}
+  .step p{font-size:13.5px}
+  details summary{font-size:15px}
+  details p{font-size:14px}
+  .hero-stats b{font-size:20px}
+  .wordmark{font-size:clamp(26px,4.4vw,52px)}
+}
+
+/* --- 4. soft fade-in for inner UI after the page transition --- */
+.reveal-el{opacity:0;transform:translateY(14px);
+  transition:opacity .55s cubic-bezier(.22,.8,.3,1), transform .55s cubic-bezier(.22,.8,.3,1)}
+.reveal-el.in{opacity:1;transform:none}
+.page.active .rail-head,.page.active .hero-cta,.page.active .hero-stats,.page.active .dash-chip{
+  animation:softIn .55s cubic-bezier(.22,.8,.3,1) both;
+}
+@keyframes softIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+@media (prefers-reduced-motion: reduce){
+  .reveal-el{opacity:1;transform:none;transition:none}
+  .page.active .rail-head,.page.active .hero-cta,.page.active .hero-stats,.page.active .dash-chip{animation:none}
+}
 </style>
 </head>
 <body>
@@ -4698,7 +4770,7 @@ html{scrollbar-width:thin;scrollbar-color:rgba(139,108,255,.45) transparent}
   (function scrollReveal(){
     if (!('IntersectionObserver' in window)) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    var els = document.querySelectorAll('.page .panel, .page .card, .page .step, .page .field, .page details, .page .table-wrap, .page .settings-row, .page .dpi-card, .page .fps-list');
+    var els = document.querySelectorAll('.page .panel, .page .card, .page .step, .page .field, .page details, .page .table-wrap, .page .settings-row, .page .dpi-card, .page .fps-list, .page .callout, .page .play-block, .page .stat-box, .page .ch-card, .page .feat-card, .page .srow, .page .meta, .page .fps-item, .page .lang-opt');
     if (!els.length) return;
     var io = new IntersectionObserver(function(entries){
       for (var i = 0; i < entries.length; i++){
