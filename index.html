@@ -865,6 +865,75 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .sub-pair{display:flex;gap:8px;flex-wrap:wrap}
 .sub-pair .sub-pill{padding:8px 14px}
 
+
+/* ---------- japanese sakura tree ---------- */
+.tree-wrap{
+  position:fixed;right:-30px;bottom:0;width:min(44vw,400px);z-index:0;pointer-events:none;
+  opacity:0;transform-origin:bottom center;will-change:opacity, transform;
+  animation:treeCycle 5s ease-in-out infinite;
+}
+.tree{width:100%;height:auto;display:block;filter:drop-shadow(0 0 26px rgba(58,160,255,.35))}
+@keyframes treeCycle{
+  0%{opacity:0;transform:translateY(14px) scale(.985)}
+  18%{opacity:.55;transform:translateY(0) scale(1)}
+  62%{opacity:.55;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-8px) scale(1.01)}
+}
+.trunk{fill:url(#trunkG)}
+.br path{fill:none;stroke:#1d5c8e;stroke-width:5;stroke-linecap:round;opacity:.85}
+.br.br1 path{stroke-width:4}
+.br.br2 path{stroke-width:4.5}
+.br.br3 path{stroke-width:3.6}
+.br.br4 path{stroke-width:3}
+.br{transform-origin:200px 330px;animation:brSway 6s ease-in-out infinite}
+.br2{animation-delay:-1.4s}
+.br3{animation-delay:-2.8s}
+.br4{animation-delay:-4.2s}
+@keyframes brSway{0%,100%{transform:rotate(0)}50%{transform:rotate(1.1deg)}}
+
+.bloom circle{fill:url(#bloomG);animation:bloomPulse 4.5s ease-in-out infinite}
+.bloom.pink circle{fill:url(#bloomP)}
+.bloom:nth-child(2n){animation-delay:-1.6s}
+.bloom:nth-child(3n){animation-delay:-3.1s}
+.bloom{animation:bloomPulse 5s ease-in-out infinite}
+@keyframes bloomPulse{0%,100%{opacity:.82;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+
+.petal{fill:#bfe6ff;opacity:.85;animation:petalFall 7s linear infinite}
+.petal.p2{fill:#ffc9de;animation-duration:9s;animation-delay:-2s}
+.petal.p3{animation-duration:8s;animation-delay:-4s}
+.petal.p4{fill:#ffc9de;animation-duration:10s;animation-delay:-1s}
+.petal.p5{animation-duration:7.5s;animation-delay:-5s}
+.petal.p6{fill:#ffc9de;animation-duration:8.5s;animation-delay:-3s}
+@keyframes petalFall{
+  0%{transform:translate(0,0) rotate(0);opacity:0}
+  10%{opacity:.9}
+  100%{transform:translate(-40px,320px) rotate(220deg);opacity:0}
+}
+@media (max-width: 700px){ .tree-wrap{width:min(62vw,300px);opacity:0} }
+
+/* ---------- gentle float + shine on cards ---------- */
+.panel,.card,.step,.quick,.stat-box,.field,.settings-row,.dpi-card,.pcard{
+  animation:cardFloat 7s ease-in-out infinite;
+}
+.panel:nth-of-type(2n),.step:nth-child(2n),.quick:nth-child(2n){animation-delay:-2.4s}
+.step:nth-child(3n),.quick:nth-child(3n){animation-delay:-4.8s}
+@keyframes cardFloat{0%,100%{translate:0 0}50%{translate:0 -3px}}
+
+.panel{position:relative;overflow:hidden}
+.panel::after{
+  content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(105deg, transparent 42%, rgba(160,225,255,.10) 50%, transparent 58%);
+  background-size:260% 100%;background-position:180% 0;
+  animation:cardShine 8s ease-in-out infinite;
+}
+@keyframes cardShine{0%,55%{background-position:180% 0}100%{background-position:-80% 0}}
+
+@media (prefers-reduced-motion: reduce){
+  .tree-wrap{display:none}
+  .panel,.card,.step,.quick,.stat-box,.field,.settings-row,.dpi-card,.pcard{animation:none}
+  .panel::after{display:none}
+  .br,.bloom,.petal{animation:none}
+}
 </style>
 </head>
 <body>
@@ -881,6 +950,58 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 </div>
 
 
+
+<div class="tree-wrap" aria-hidden="true">
+  <svg class="tree" viewBox="0 0 420 620" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="trunkG" x1="0" y1="1" x2="0" y2="0">
+        <stop offset="0%" stop-color="#0d2743"/>
+        <stop offset="60%" stop-color="#17456e"/>
+        <stop offset="100%" stop-color="#256a9e"/>
+      </linearGradient>
+      <radialGradient id="bloomG">
+        <stop offset="0%" stop-color="#e6f6ff" stop-opacity=".95"/>
+        <stop offset="70%" stop-color="#8fd0ff" stop-opacity=".75"/>
+        <stop offset="100%" stop-color="#4aa8e8" stop-opacity=".15"/>
+      </radialGradient>
+      <radialGradient id="bloomP">
+        <stop offset="0%" stop-color="#ffe3ef" stop-opacity=".9"/>
+        <stop offset="100%" stop-color="#ff9dc4" stop-opacity=".1"/>
+      </radialGradient>
+    </defs>
+
+    <g class="trunk-g">
+      <path class="trunk" d="M206 618 C199 540 196 470 190 402 C185 340 176 292 158 246 C150 226 140 208 126 192 C150 206 168 226 180 250 C176 220 178 190 186 162 C190 200 196 232 204 262 C210 226 220 196 234 170 C228 206 222 240 220 272 C232 240 250 214 272 194 C252 224 238 254 230 288 C232 320 230 352 224 384 C220 430 218 480 220 618 Z"/>
+      <g class="br br1"><path d="M190 330 C150 316 116 300 88 276"/><path d="M188 360 C150 352 118 340 92 322"/></g>
+      <g class="br br2"><path d="M212 300 C248 286 282 268 308 244"/><path d="M210 332 C248 326 280 312 306 292"/></g>
+      <g class="br br3"><path d="M176 258 C150 240 128 216 114 190"/><path d="M228 250 C254 232 276 208 290 182"/></g>
+      <g class="br br4"><path d="M196 210 C176 190 162 166 156 140"/><path d="M214 202 C236 184 252 160 260 134"/></g>
+    </g>
+
+    <g class="blossoms">
+      <g class="bloom"><circle cx="86" cy="272" r="13"/><circle cx="70" cy="258" r="9"/><circle cx="102" cy="256" r="8"/><circle cx="92" cy="290" r="7"/></g>
+      <g class="bloom"><circle cx="92" cy="320" r="11"/><circle cx="74" cy="308" r="7"/><circle cx="108" cy="334" r="8"/></g>
+      <g class="bloom"><circle cx="308" cy="242" r="14"/><circle cx="324" cy="226" r="9"/><circle cx="292" cy="222" r="8"/><circle cx="312" cy="262" r="7"/></g>
+      <g class="bloom"><circle cx="306" cy="292" r="11"/><circle cx="324" cy="304" r="8"/><circle cx="290" cy="306" r="7"/></g>
+      <g class="bloom"><circle cx="114" cy="188" r="12"/><circle cx="98" cy="172" r="8"/><circle cx="130" cy="170" r="7"/></g>
+      <g class="bloom"><circle cx="290" cy="180" r="13"/><circle cx="306" cy="164" r="8"/><circle cx="274" cy="162" r="7"/></g>
+      <g class="bloom pink"><circle cx="156" cy="138" r="11"/><circle cx="140" cy="124" r="7"/><circle cx="170" cy="122" r="7"/></g>
+      <g class="bloom pink"><circle cx="260" cy="132" r="12"/><circle cx="276" cy="118" r="8"/><circle cx="244" cy="116" r="7"/></g>
+      <g class="bloom"><circle cx="206" cy="120" r="9"/><circle cx="192" cy="108" r="6"/><circle cx="220" cy="106" r="6"/></g>
+      <g class="bloom"><circle cx="232" cy="392" r="8"/><circle cx="218" cy="410" r="6"/></g>
+      <g class="bloom pink"><circle cx="168" cy="420" r="7"/><circle cx="154" cy="404" r="5"/></g>
+    </g>
+
+    <g class="petals">
+      <ellipse class="petal p1" cx="120" cy="200" rx="4" ry="7"/>
+      <ellipse class="petal p2" cx="300" cy="180" rx="4" ry="7"/>
+      <ellipse class="petal p3" cx="250" cy="240" rx="3" ry="6"/>
+      <ellipse class="petal p4" cx="150" cy="300" rx="3" ry="6"/>
+      <ellipse class="petal p5" cx="280" cy="330" rx="4" ry="7"/>
+      <ellipse class="petal p6" cx="200" cy="150" rx="3" ry="5"/>
+    </g>
+  </svg>
+</div>
 <div class="bg-orbs" aria-hidden="true"><i></i><i></i><i></i></div>
 <canvas id="snow" aria-hidden="true"></canvas>
 <div class="scrim" id="scrim"></div>
