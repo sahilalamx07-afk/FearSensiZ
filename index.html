@@ -83,7 +83,7 @@ body::after{
 .mono{font-family:var(--font-mono)}
 
 /* ---------- topbar ---------- */
-.topbar{position:sticky;top:0;z-index:30;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 84%,transparent);border-bottom:1px solid var(--border)}
+.topbar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--bg) 84%,transparent);border-bottom:1px solid var(--border)}
 .topbar-in{max-width:1200px;margin:0 auto;padding:11px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:-.01em;font-size:16px}
 .brand .mark{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--signal),var(--gold));display:grid;place-items:center;font-family:var(--font-mono);font-size:12px;color:#101a1e;font-weight:700}
@@ -238,7 +238,7 @@ footer a:hover{text-decoration:underline}
 /* ---------- modal ---------- */
 .modal{
   position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:18px;
-  background:rgba(6,12,15,.82);backdrop-filter:blur(7px);
+  background:rgba(4,9,16,.88);
 }
 .modal.open{display:grid}
 .modal-card{
@@ -313,10 +313,10 @@ footer a:hover{text-decoration:underline}
 body{overflow-x:hidden}
 
 .bg-orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
-.bg-orbs i{position:absolute;display:block;border-radius:50%;filter:blur(80px);opacity:.34;will-change:transform}
-.bg-orbs i:nth-child(1){width:420px;height:420px;left:-90px;top:-80px;background:var(--signal);animation:drift1 26s ease-in-out infinite}
-.bg-orbs i:nth-child(2){width:360px;height:360px;right:-70px;top:12%;background:var(--sky);animation:drift2 32s ease-in-out infinite}
-.bg-orbs i:nth-child(3){width:480px;height:480px;left:32%;bottom:-160px;background:var(--gold);animation:drift3 38s ease-in-out infinite}
+.bg-orbs i{position:absolute;display:block;border-radius:50%;opacity:.34;background:radial-gradient(circle, rgba(47,125,255,.55), rgba(47,125,255,0) 70%)}
+.bg-orbs i:nth-child(1){width:420px;height:420px;left:-90px;top:-80px;background:radial-gradient(circle, rgba(47,125,255,.5), rgba(47,125,255,0) 70%);animation:drift1 26s ease-in-out infinite}
+.bg-orbs i:nth-child(2){width:360px;height:360px;right:-70px;top:12%;background:radial-gradient(circle, rgba(34,211,238,.45), rgba(34,211,238,0) 70%);animation:drift2 32s ease-in-out infinite}
+.bg-orbs i:nth-child(3){width:480px;height:480px;left:32%;bottom:-160px;background:radial-gradient(circle, rgba(139,212,255,.4), rgba(139,212,255,0) 70%);animation:drift3 38s ease-in-out infinite}
 @keyframes drift1{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(70px,60px,0) scale(1.15)}}
 @keyframes drift2{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-80px,70px,0) scale(1.1)}}
 @keyframes drift3{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(60px,-70px,0) scale(1.12)}}
@@ -324,7 +324,7 @@ body{overflow-x:hidden}
 #sidebar{
   position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);z-index:70;
   background:color-mix(in srgb,var(--surface) 94%,transparent);
-  border-right:1px solid var(--border);backdrop-filter:blur(18px);
+  border-right:1px solid var(--border);
   padding:18px 14px 22px;display:flex;flex-direction:column;gap:6px;overflow-y:auto;
   transform:translateX(-102%);transition:transform .34s cubic-bezier(.22,.9,.28,1);
 }
@@ -346,7 +346,7 @@ body{overflow-x:hidden}
 .side-foot{margin-top:auto;padding-top:16px;border-top:1px solid var(--border)}
 .side-foot .sub-pill{width:100%;justify-content:center}
 
-.scrim{position:fixed;inset:0;background:rgba(4,10,13,.62);backdrop-filter:blur(3px);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s}
+.scrim{position:fixed;inset:0;background:rgba(3,8,14,.72);z-index:65;opacity:0;pointer-events:none;transition:opacity .3s}
 .scrim.show{opacity:1;pointer-events:auto}
 
 .main-area{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
@@ -355,7 +355,7 @@ body{overflow-x:hidden}
 .appbar{
   position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:12px;
   padding:11px 18px;border-bottom:1px solid var(--border);
-  background:color-mix(in srgb,var(--bg) 84%,transparent);backdrop-filter:blur(14px);
+  background:color-mix(in srgb,var(--bg) 84%,transparent);
 }
 .burger{
   width:40px;height:40px;border-radius:11px;border:1px solid var(--border);background:var(--surface);
@@ -451,10 +451,8 @@ body::after{opacity:.22}
 }
 
 /* glowing orbs in blue */
-.bg-orbs i:nth-child(1){background:#2f7dff}
-.bg-orbs i:nth-child(2){background:#22d3ee}
-.bg-orbs i:nth-child(3){background:#5b6bff}
-.bg-orbs i{opacity:.26;filter:blur(95px)}
+
+.bg-orbs i{opacity:.30}
 
 /* surfaces get a soft inner glow */
 .panel,.dl-card,.card,.step,.quick,.stat-box,.pcard,.field,.settings-row,details,.phone-mock{
@@ -872,7 +870,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   opacity:0;transform-origin:bottom center;will-change:opacity, transform;
   animation:treeCycle 5s ease-in-out infinite;
 }
-.tree{width:100%;height:auto;display:block;filter:drop-shadow(0 0 26px rgba(58,160,255,.35))}
+.tree{width:100%;height:auto;display:block}
 @keyframes treeCycle{
   0%{opacity:0;transform:translateY(14px) scale(.985)}
   18%{opacity:.55;transform:translateY(0) scale(1)}
@@ -933,6 +931,22 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   .panel,.card,.step,.quick,.stat-box,.field,.settings-row,.dpi-card,.pcard{animation:none}
   .panel::after{display:none}
   .br,.bloom,.petal{animation:none}
+}
+
+/* ---------- performance: lighter on phones ---------- */
+@media (max-width: 900px), (pointer: coarse){
+  .tree-wrap{display:none}
+  #snow{mix-blend-mode:normal;opacity:.45}
+  .bg-orbs{opacity:.6}
+  .panel,.card,.step,.quick,.stat-box,.field,.settings-row,.dpi-card,.pcard{animation:none}
+  .panel::after{display:none}
+  .bg-orbs i{animation:none}
+  .bg-orbs i:nth-child(3){display:none}
+  #snow{opacity:.5}
+}
+@media (prefers-reduced-motion: reduce){
+  .bg-orbs i{animation:none}
+  .panel::after{display:none}
 }
 </style>
 </head>
@@ -3768,12 +3782,13 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     var flakes = [], w = 0, h = 0, raf = null, running = true;
 
     function size(){
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = window.innerWidth; h = window.innerHeight;
       cv.width = w * dpr; cv.height = h * dpr;
       cv.style.width = w + 'px'; cv.style.height = h + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var count = Math.round(Math.min(90, Math.max(28, (w * h) / 26000)));
+      var small = w < 760;
+      var count = Math.round(Math.min(small ? 26 : 55, Math.max(16, (w * h) / (small ? 42000 : 34000))));
       flakes = [];
       for (var i = 0; i < count; i++){
         flakes.push({
@@ -3788,8 +3803,12 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       }
     }
 
-    function draw(){
+    var last = 0;
+    function draw(ts){
       if (!running) return;
+      raf = requestAnimationFrame(draw);
+      if (ts && ts - last < 32) return;
+      last = ts || 0;
       ctx.clearRect(0, 0, w, h);
       for (var i = 0; i < flakes.length; i++){
         var f = flakes[i];
@@ -3802,18 +3821,16 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
         ctx.beginPath();
         ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
         ctx.fillStyle = 'rgba(190, 228, 255,' + f.a + ')';
-        ctx.shadowColor = 'rgba(120, 200, 255, .8)';
-        ctx.shadowBlur = 6;
         ctx.fill();
       }
-      ctx.shadowBlur = 0;
-      raf = requestAnimationFrame(draw);
     }
 
     document.addEventListener('visibilitychange', function(){
       running = !document.hidden;
-      if (running){ raf = requestAnimationFrame(draw); }
-      else if (raf){ cancelAnimationFrame(raf); raf = null; }
+      if (running){
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(draw);
+      } else if (raf){ cancelAnimationFrame(raf); raf = null; }
     });
 
     var rt;
