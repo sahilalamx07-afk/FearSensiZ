@@ -514,32 +514,9 @@ input[type=range]::-webkit-slider-thumb{border-color:#4fc3ff;box-shadow:0 0 14px
 .lang-opt[aria-pressed="true"]{box-shadow:0 0 22px -10px var(--glow);border-color:rgba(58,160,255,.5);color:#8fd0ff}
 .chip[aria-pressed="true"]{box-shadow:0 0 20px -12px var(--glow)}
 
-/* ---------- crack transition ---------- */
-#fx{
-  position:fixed;inset:0;z-index:96;pointer-events:none;opacity:0;
-  background:
-    linear-gradient(118deg, transparent 47.6%, rgba(180,225,255,.95) 48.2%, rgba(120,190,255,.35) 48.7%, transparent 49.4%),
-    linear-gradient(-63deg, transparent 47.6%, rgba(150,215,255,.8) 48.3%, transparent 49.2%),
-    linear-gradient(74deg, transparent 68%, rgba(120,190,255,.6) 68.6%, transparent 69.3%);
-  mix-blend-mode:screen;
-}
-#fx.crack{animation:crackFlash .44s cubic-bezier(.2,.7,.3,1)}
-@keyframes crackFlash{
-  0%{opacity:0;transform:scale(1.03)}
-  6%{opacity:.95}
-  16%{opacity:.12}
-  26%{opacity:.65}
-  42%{opacity:.08}
-  100%{opacity:0;transform:scale(1)}
-}
 
-.page.active{animation:crackIn .5s cubic-bezier(.22,.8,.28,1) both}
-@keyframes crackIn{
-  0%{opacity:0;clip-path:polygon(0 0,100% 0,100% 6%,0 11%)}
-  30%{opacity:1;clip-path:polygon(0 0,100% 0,100% 44%,0 51%)}
-  62%{clip-path:polygon(0 0,100% 0,100% 79%,0 86%)}
-  100%{opacity:1;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
-}
+.page.active{animation:pageIn .38s cubic-bezier(.22,.8,.28,1) both}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* shimmer sweep on primary actions */
 .btn.primary{position:relative;overflow:hidden}
@@ -551,7 +528,6 @@ input[type=range]::-webkit-slider-thumb{border-color:#4fc3ff;box-shadow:0 0 14px
 @keyframes sweep{0%,70%{left:-60%}88%,100%{left:130%}}
 
 @media (prefers-reduced-motion: reduce){
-  #fx{display:none}
   .page.active{animation:none}
   .btn.primary::after{animation:none;display:none}
   .bg-orbs i{animation:none}
@@ -1025,7 +1001,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 </head>
 <body>
 <canvas id="pixelFx" aria-hidden="true"></canvas>
-<div id="fx" aria-hidden="true"></div>
 <div id="splash" aria-hidden="true">
   <div class="sp-bg"><i></i><i></i></div>
   <div class="sp-wrap">
@@ -4036,14 +4011,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     requestAnimationFrame(step);
   }
 
-  var fx = document.getElementById('fx');
-  function crack(){
-    if (!fx) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    fx.classList.remove('crack');
-    void fx.offsetWidth;
-    fx.classList.add('crack');
-  }
 
   /* ---------- pixel dissolve ---------- */
   var pixelCanvas = document.getElementById('pixelFx');
@@ -4064,7 +4031,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
         pCells.push({
           x: x, y: y,
           r: Math.random(),
-          d: (x / pCols) * 0.55 + Math.random() * 0.35
+          d: (x / Math.max(1, pCols - 1)) * 0.88 + Math.random() * 0.09
         });
       }
     }
@@ -4072,17 +4039,19 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
   function pixelPaint(mode, p){
     pctx.clearRect(0, 0, pW, pH);
+    var edge = p * 1.1;                 /* leading column of the wipe */
     for (var i = 0; i < pCells.length; i++){
       var c = pCells[i];
-      var local = (p - c.d * 0.45) / 0.45;
+      var local = (p - c.d * 0.9) / 0.34;   /* each column resolves quickly */
       if (local <= 0) continue;
       if (local > 1) local = 1;
       var shown = (mode === 'in') ? local : 1 - local;
       if (shown <= 0.01) continue;
       var size = pCell * (0.35 + 0.65 * shown);
-      var lift = (mode === 'out') ? (1 - shown) * 30 * (0.4 + c.r) : 0;
+      var lift = (mode === 'out') ? (1 - shown) * 34 * (0.4 + c.r) : 0;
+      var nearEdge = Math.abs((c.x / Math.max(1, pCols - 1)) - edge) < 0.05;
       pctx.globalAlpha = shown;
-      pctx.fillStyle = (c.r > 0.93) ? '#3aa0ff' : '#050b14';
+      pctx.fillStyle = nearEdge ? '#7fd3ff' : ((c.r > 0.95) ? '#3aa0ff' : '#050b14');
       pctx.fillRect(c.x * pCell + (pCell - size) / 2, c.y * pCell + (pCell - size) / 2 - lift, size, size);
     }
     pctx.globalAlpha = 1;
@@ -4097,14 +4066,14 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     pBusy = true; pSwapped = false;
     pixelSetup();
     pixelCanvas.classList.add('on');
-    var t0 = performance.now(), DUR = 620;
+    var t0 = performance.now(), DUR = 700;
     function frame(now){
       var t = Math.min(1, (now - t0) / DUR);
-      if (t < 0.42){
-        pixelPaint('in', t / 0.42);
+      if (t < 0.45){
+        pixelPaint('in', t / 0.45);
       } else {
         if (!pSwapped){ pSwapped = true; apply(); }
-        pixelPaint('out', (t - 0.42) / 0.58);
+        pixelPaint('out', (t - 0.45) / 0.55);
       }
       if (t < 1){
         requestAnimationFrame(frame);
@@ -4138,7 +4107,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
   function go(page, push){
     if (PAGES.indexOf(page) === -1) page = 'home';
-    crack();
     pixelSwap(function(){ applyPage(page, push); });
   }
 
