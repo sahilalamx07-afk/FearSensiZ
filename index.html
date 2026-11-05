@@ -1715,6 +1715,47 @@ main{max-width:1240px;margin:0 auto}
   animation:inWord 1s ease-out 1.6s both}
 .in-skip:hover{color:#cdbcff}
 @media (prefers-reduced-motion: reduce){ #splash{display:none} }
+
+/* ================= 3D PHONE VIEWER ================= */
+.p3-wrap{display:grid;justify-items:center;gap:8px;margin:4px 0 16px}
+.p3-stage{perspective:1000px;width:100%;display:grid;place-items:center;padding:12px 0}
+.p3-body{
+  position:relative;width:132px;height:270px;transform-style:preserve-3d;
+  transform:rotateX(-8deg) rotateY(-22deg);cursor:grab;touch-action:pan-y;
+  transition:transform .12s linear;
+}
+.p3-body.dragging{cursor:grabbing}
+.p3-face{position:absolute;inset:0;border-radius:20px;backface-visibility:hidden;
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.95), 0 0 40px -18px var(--glow)}
+.p3-front{transform:translateZ(7px);background:linear-gradient(160deg,#2a2340,#120d24);
+  border:1px solid rgba(160,140,255,.35);padding:7px}
+.p3-back{transform:rotateY(180deg) translateZ(7px);
+  background:linear-gradient(160deg,var(--p3c1,#2a2340),var(--p3c2,#0d0a1a));
+  border:1px solid rgba(160,140,255,.28);display:grid;place-items:center}
+.p3-screen{position:relative;width:100%;height:100%;border-radius:14px;overflow:hidden;
+  background:radial-gradient(circle at 50% 28%, #241a52 0%, #0b0820 62%, #05040f 100%);
+  display:grid;place-items:center}
+.p3-notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:38px;height:7px;
+  border-radius:0 0 8px 8px;background:#05040f}
+.p3-inner{display:grid;gap:3px;justify-items:center;text-align:center;padding:0 8px}
+.p3-inner b{font-family:var(--font-display);font-size:10px;color:#e9e3ff;letter-spacing:-.01em}
+.p3-inner span{font-family:var(--font-mono);font-size:7.5px;color:#a99fd0}
+.p3-bars{display:flex;gap:2px;margin-top:4px}
+.p3-bars i{width:14px;height:2.5px;border-radius:2px;background:linear-gradient(90deg,#b9a6ff,#7c5cff)}
+.p3-cam{position:absolute;top:12px;left:12px;width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(150deg,rgba(255,255,255,.16),rgba(0,0,0,.6));
+  border:1px solid rgba(255,255,255,.14);display:grid;grid-template-columns:1fr 1fr;gap:3px;padding:4px}
+.p3-cam i{border-radius:50%;background:radial-gradient(circle at 35% 30%, #6d5cff, #05040f 72%);
+  box-shadow:inset 0 0 4px rgba(255,255,255,.35)}
+.p3-brand{position:absolute;bottom:14px;font-family:var(--font-mono);font-size:8px;letter-spacing:.2em;
+  color:rgba(230,225,255,.45)}
+.p3-side{position:absolute;background:linear-gradient(180deg,#1b1636,#0b0818);border-radius:3px}
+.p3-sL{left:-6px;top:8px;width:7px;height:calc(100% - 16px);transform:rotateY(90deg) translateZ(3px)}
+.p3-sR{right:-6px;top:8px;width:7px;height:calc(100% - 16px);transform:rotateY(90deg) translateZ(-3px)}
+.p3-sT{top:-6px;left:8px;width:calc(100% - 16px);height:7px;transform:rotateX(90deg) translateZ(3px)}
+.p3-sB{bottom:-6px;left:8px;width:calc(100% - 16px);height:7px;transform:rotateX(90deg) translateZ(-3px)}
+.p3-hint{margin:0;font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim-2)}
+@media (max-width: 760px){ .p3-body{width:112px;height:230px} }
 </style>
 </head>
 <body>
@@ -1970,6 +2011,32 @@ main{max-width:1240px;margin:0 auto}
               <span class="dc-v" id="dpiWithoutVal">—</span>
               <span class="dc-s" data-i18n="dpi.none">No custom DPI</span>
             </button>
+          </div>
+
+          <div class="p3-wrap" id="p3Wrap">
+            <div class="p3-stage">
+              <div class="p3-body" id="p3Body">
+                <div class="p3-face p3-front">
+                  <div class="p3-screen">
+                    <span class="p3-notch"></span>
+                    <div class="p3-inner">
+                      <b id="p3Name">Phone</b>
+                      <span id="p3Specs">6.6" · 120Hz</span>
+                      <div class="p3-bars"><i></i><i></i><i></i></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="p3-face p3-back">
+                  <div class="p3-cam"><i></i><i></i><i></i></div>
+                  <span class="p3-brand" id="p3Brand">FF</span>
+                </div>
+                <div class="p3-side p3-sL"></div>
+                <div class="p3-side p3-sR"></div>
+                <div class="p3-side p3-sT"></div>
+                <div class="p3-side p3-sB"></div>
+              </div>
+            </div>
+            <p class="p3-hint">Drag to rotate</p>
           </div>
 
           <div class="spec-grid">
@@ -4318,6 +4385,7 @@ main{max-width:1240px;margin:0 auto}
     }
 
     nameEl.textContent = p.name;
+    if (typeof syncPhone3d === 'function') syncPhone3d(p);
 
     var specLine = p.brand + " · " + p.screen + '" · ' + p.refresh + "Hz · tier " + p.tier + " · RAM " + (p.ram || "-") + "GB — ";
     if (p.src === 'exact'){
@@ -4969,6 +5037,67 @@ main{max-width:1240px;margin:0 auto}
     }, { passive: true });
     apply();
   })();
+
+
+  /* ---------- 3D phone viewer ---------- */
+  (function phone3d(){
+    var body = document.getElementById('p3Body');
+    if (!body) return;
+    var rotX = -8, rotY = -22, dragging = false, lastX = 0, lastY = 0, idle = null;
+
+    function apply(){ body.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)'; }
+    function startIdle(){
+      clearInterval(idle);
+      idle = setInterval(function(){
+        if (dragging) return;
+        rotY += 0.35;
+        apply();
+      }, 40);
+    }
+
+    body.addEventListener('pointerdown', function(e){
+      dragging = true; lastX = e.clientX; lastY = e.clientY;
+      body.classList.add('dragging');
+      if (body.setPointerCapture) body.setPointerCapture(e.pointerId);
+    });
+    body.addEventListener('pointermove', function(e){
+      if (!dragging) return;
+      rotY += (e.clientX - lastX) * 0.6;
+      rotX -= (e.clientY - lastY) * 0.4;
+      if (rotX > 28) rotX = 28;
+      if (rotX < -28) rotX = -28;
+      lastX = e.clientX; lastY = e.clientY;
+      apply();
+    });
+    function end(){ dragging = false; body.classList.remove('dragging'); }
+    body.addEventListener('pointerup', end);
+    body.addEventListener('pointerleave', end);
+    body.addEventListener('pointercancel', end);
+    apply();
+    startIdle();
+  })();
+
+  function syncPhone3d(p){
+    var nameEl = document.getElementById('p3Name');
+    if (!nameEl || !p) return;
+    nameEl.textContent = p.name.length > 22 ? p.name.slice(0, 21) + '…' : p.name;
+    var specs = document.getElementById('p3Specs');
+    if (specs) specs.textContent = p.screen + '" · ' + p.refresh + 'Hz';
+    var brand = document.getElementById('p3Brand');
+    if (brand) brand.textContent = (p.brand || 'FF').toUpperCase().slice(0, 6);
+    var body = document.getElementById('p3Body');
+    if (body){
+      var pal = {
+        Xiaomi: ['#2b2340','#0e0a1c'], Realme: ['#3a2440','#120a1c'], Samsung: ['#232a44','#0a0d1a'],
+        Vivo: ['#233a4a','#0a1420'], Oppo: ['#2a3448','#0b1020'], Apple: ['#2a2a32','#0d0d12'],
+        iQOO: ['#2a2440','#0d0a1c'], Motorola: ['#24303a','#0a1014'], Infinix: ['#302440','#100a18'],
+        Tecno: ['#2c2440','#0d0a1a'], OnePlus: ['#33243a','#120a14']
+      };
+      var c = pal[p.brand] || ['#2a2340','#0d0a1a'];
+      body.style.setProperty('--p3c1', c[0]);
+      body.style.setProperty('--p3c2', c[1]);
+    }
+  }
 
   /* ============================================================
      ROUTER + SIDEBAR
