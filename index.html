@@ -4023,20 +4023,20 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     pixelCanvas.width = pW * dpr; pixelCanvas.height = pH * dpr;
     pixelCanvas.style.width = pW + 'px'; pixelCanvas.style.height = pH + 'px';
     pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    pCell = pW < 700 ? 24 : 20;
+    pCell = pW < 700 ? 22 : 18;
     pCols = Math.ceil(pW / pCell); pRows = Math.ceil(pH / pCell);
     pCells = [];
-    pJag = [];
-    for (var x = 0; x < pCols; x++){
-      /* jagged front: every column sits at a slightly different position */
-      pJag.push((Math.random() - 0.5) * 1.7);
-    }
     for (var y = 0; y < pRows; y++){
-      for (var xx = 0; xx < pCols; xx++){
+      for (var x = 0; x < pCols; x++){
+        /* scattered dissolve: loose left-to-right wave, but every pixel has its own moment */
+        var wave = (x / Math.max(1, pCols - 1)) * 0.58;
         pCells.push({
-          x: xx, y: y,
+          x: x, y: y,
           r: Math.random(),
-          s: 0.82 + Math.random() * 0.18
+          s: 0.78 + Math.random() * 0.26,
+          t: wave + Math.random() * 0.40,
+          jy: (Math.random() - 0.5) * pCell * 0.35,
+          jx: (Math.random() - 0.5) * pCell * 0.3
         });
       }
     }
@@ -4044,36 +4044,30 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
   function pixelPaint(phase, t){
     pctx.clearRect(0, 0, pW, pH);
-    var front = t * (pCols + 4) - 2;
-    var trail = pCols * 0.30;
     for (var i = 0; i < pCells.length; i++){
       var c = pCells[i];
-      var d = (front + pJag[c.x]) - c.x;      /* columns already passed */
-      if (d <= 0) continue;
+      var local = (t - c.t) / 0.13;
+      if (local <= 0) continue;
 
-      var alpha;
-      if (phase === 'in'){
-        alpha = Math.min(1, d / 1.1);
-      } else {
-        alpha = Math.max(0, 1 - d / trail);   /* fades the further the line goes */
-      }
+      var alpha = phase === 'in'
+        ? Math.min(1, local)
+        : Math.max(0, 1 - Math.min(1, local));
       if (alpha <= 0.02) continue;
 
       var size = pCell * c.s;
-      var px = c.x * pCell + (pCell - size) / 2;
-      var py = c.y * pCell + (pCell - size) / 2;
-      var nearFront = d < 1.4;
+      var px = c.x * pCell + (pCell - size) / 2 + c.jx;
+      var py = c.y * pCell + (pCell - size) / 2 + c.jy;
+      var nearFront = Math.abs(t - c.t) < 0.06;
 
       if (nearFront){
-        /* glow pass behind the bright core */
-        pctx.globalAlpha = alpha * 0.35;
+        pctx.globalAlpha = alpha * 0.32;
         pctx.fillStyle = '#3aa0ff';
-        var g = size * 2.1;
+        var g = size * 2.3;
         pctx.fillRect(px - (g - size) / 2, py - (g - size) / 2, g, g);
       }
 
       pctx.globalAlpha = alpha;
-      pctx.fillStyle = nearFront ? '#bfe8ff' : (c.r > 0.94 ? '#1d5fa8' : '#050b14');
+      pctx.fillStyle = nearFront ? '#c8ecff' : (c.r > 0.9 ? '#123f6b' : '#050b14');
       pctx.fillRect(px, py, size, size);
     }
     pctx.globalAlpha = 1;
@@ -4088,14 +4082,14 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
     pBusy = true; pSwapped = false;
     pixelSetup();
     pixelCanvas.classList.add('on');
-    var t0 = performance.now(), DUR = 780;
+    var t0 = performance.now(), DUR = 820;
     function frame(now){
       var t = Math.min(1, (now - t0) / DUR);
-      if (t < 0.48){
-        pixelPaint('in', t / 0.48);
+      if (t < 0.5){
+        pixelPaint('in', t / 0.5);
       } else {
         if (!pSwapped){ pSwapped = true; apply(); }
-        pixelPaint('out', (t - 0.48) / 0.52);
+        pixelPaint('out', (t - 0.5) / 0.5);
       }
       if (t < 1){
         requestAnimationFrame(frame);
