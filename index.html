@@ -1084,6 +1084,124 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .ch-ava-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2}
 .ch-ic{position:relative;overflow:hidden}
 .ch-ic-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2}
+
+/* ================= ARGUS-STYLE DARK VIOLET THEME ================= */
+:root{
+  --bg:#050410;
+  --bg-2:#08061a;
+  --surface:#0b0918;
+  --surface-2:#100c24;
+  --surface-3:#171130;
+  --border:rgba(140,120,255,.16);
+  --border-strong:rgba(160,140,255,.34);
+  --text:#ece9ff;
+  --dim:#9c94c4;
+  --dim-2:#6b6392;
+  --signal:#8b6cff;
+  --signal-soft:rgba(139,108,255,.14);
+  --mint:#59e0ff;
+  --mint-soft:rgba(89,224,255,.12);
+  --sky:#7c5cff;
+  --sky-soft:rgba(124,92,255,.14);
+  --gold:#c8b8ff;
+  --gold-soft:rgba(200,184,255,.12);
+  --glow:rgba(124,92,255,.55);
+  --glow-soft:rgba(124,92,255,.22);
+}
+body{background:radial-gradient(1200px 800px at 50% -12%, #150c33 0%, #05040f 62%)}
+body::before{
+  background:
+    radial-gradient(900px 620px at 12% -6%, rgba(124,92,255,.22), transparent 66%),
+    radial-gradient(760px 520px at 92% 6%, rgba(89,224,255,.10), transparent 70%),
+    linear-gradient(180deg, transparent 58%, rgba(2,1,8,.75));
+}
+body::after{opacity:.14}
+
+/* soft violet ambience instead of the sakura tree */
+.tree-wrap{display:none!important}
+.bg-orbs i:nth-child(1){background:radial-gradient(circle, rgba(124,92,255,.55), rgba(124,92,255,0) 70%)}
+.bg-orbs i:nth-child(2){background:radial-gradient(circle, rgba(89,224,255,.30), rgba(89,224,255,0) 70%)}
+.bg-orbs i:nth-child(3){background:radial-gradient(circle, rgba(200,184,255,.30), rgba(200,184,255,0) 70%)}
+
+/* ---- hero stage: glowing arc + spread wordmark ---- */
+.hero-stage{
+  position:relative;display:grid;justify-items:center;text-align:center;
+  padding:34px 12px 30px;margin-bottom:8px;overflow:hidden;
+}
+.hero-orb{position:absolute;top:-40%;left:50%;transform:translateX(-50%);width:min(120vw,760px);aspect-ratio:1;pointer-events:none}
+.hero-orb .ring{
+  position:absolute;inset:0;border-radius:50%;
+  background:conic-gradient(from 180deg, transparent 0 30%, rgba(139,108,255,.85) 46%, rgba(200,184,255,1) 50%, rgba(139,108,255,.85) 54%, transparent 70% 100%);
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  mask:radial-gradient(farthest-side, transparent calc(100% - 5px), #000 calc(100% - 4px));
+  filter:blur(.4px);
+  animation:orbSpin 22s linear infinite;
+  opacity:.95;
+}
+.hero-orb .core{
+  position:absolute;inset:6%;border-radius:50%;
+  background:radial-gradient(circle at 50% 78%, rgba(124,92,255,.55), rgba(124,92,255,.12) 42%, transparent 68%);
+  filter:blur(26px);
+}
+@keyframes orbSpin{to{transform:rotate(360deg)}}
+
+.wordmark{
+  position:relative;z-index:2;
+  font-family:var(--font-display);font-weight:800;letter-spacing:.42em;text-transform:uppercase;
+  font-size:clamp(20px,5.6vw,44px);color:#f3f0ff;
+  text-shadow:0 0 30px rgba(139,108,255,.85), 0 0 80px rgba(124,92,255,.5);
+  animation:wordIn 1.1s cubic-bezier(.16,.86,.28,1) both;
+}
+.wordmark span{color:#b9a6ff}
+@keyframes wordIn{0%{opacity:0;letter-spacing:.9em;filter:blur(10px)}100%{opacity:1;letter-spacing:.42em;filter:blur(0)}}
+
+.hero-sub{
+  position:relative;z-index:2;margin:14px 0 0;color:var(--dim);
+  font-family:var(--font-mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  animation:wordIn 1.2s cubic-bezier(.16,.86,.28,1) .12s both;
+}
+.hero-cta{position:relative;z-index:2;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px}
+.pill-light,.pill-ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 22px;border-radius:999px;text-decoration:none;font-size:13.5px;font-weight:600;
+  transition:transform .3s cubic-bezier(.2,.8,.3,1), box-shadow .35s, background .3s;
+}
+.pill-light{background:#f2efff;color:#120a2c;box-shadow:0 0 30px -8px rgba(200,184,255,.85)}
+.pill-light:hover{transform:translateY(-2px);box-shadow:0 0 44px -6px rgba(200,184,255,1)}
+.pill-ghost{color:var(--text);border:1px solid var(--border-strong);background:rgba(20,14,44,.6)}
+.pill-ghost:hover{transform:translateY(-2px);background:rgba(38,26,80,.7)}
+
+.hero-stats{position:relative;z-index:2;display:flex;gap:26px;margin-top:24px;flex-wrap:wrap;justify-content:center}
+.hero-stats div{display:grid;gap:2px}
+.hero-stats b{font-family:var(--font-mono);font-size:18px;color:#e7e1ff}
+.hero-stats small{font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim-2)}
+
+/* ---- cards: dark glass with violet edge ---- */
+.ch-card,.feat-card,.stat-box,.panel,.play-block,.step,.field,.settings-row,.dpi-card,.quick{
+  background:linear-gradient(170deg, rgba(20,14,44,.92), rgba(7,5,18,.96));
+  border-color:rgba(140,120,255,.18);
+  box-shadow:0 0 0 1px rgba(140,120,255,.06), 0 26px 60px -40px #000, 0 0 40px -26px var(--glow);
+}
+.ch-card:hover,.feat-card:hover{border-color:rgba(160,140,255,.5);box-shadow:0 0 0 1px rgba(160,140,255,.22), 0 30px 60px -40px #000, 0 0 52px -18px var(--glow)}
+.ch-ava,.ch-ava-wrap{background:linear-gradient(135deg,#7c5cff,#b9a6ff)}
+.panel-head{background:rgba(18,12,38,.9);border-bottom-color:rgba(140,120,255,.2)}
+
+/* ---- buttons ---- */
+.btn.primary{background:#f2efff;color:#120a2c;border-color:transparent;box-shadow:0 0 26px -8px rgba(200,184,255,.9)}
+.btn.primary:hover{box-shadow:0 0 40px -6px rgba(200,184,255,1)}
+.sub-pill{background:#f2efff;color:#120a2c;box-shadow:0 0 22px -8px rgba(200,184,255,.9)}
+.side-link.active{background:linear-gradient(90deg, rgba(124,92,255,.24), rgba(124,92,255,.02));border-color:rgba(139,108,255,.5);color:#cdbcff}
+.side-link.active .ico{background:linear-gradient(135deg,#7c5cff,#b9a6ff);color:#120a2c}
+h1 em,.page-head .kicker,.eyebrow,.sec-num,.side-label,.feat-card .fi{color:#b9a6ff}
+.srow .track i,.mrow .track i,.rail-progress i,.fps-bar i{background:linear-gradient(90deg,#7c5cff,#b9a6ff)}
+.dash-chip{border-color:rgba(139,108,255,.45);background:rgba(124,92,255,.12);color:#cdbcff}
+.dash-chip .dot{background:#b9a6ff;box-shadow:0 0 10px #b9a6ff}
+.match-badge.exact,.ch-item.done{border-color:rgba(89,224,255,.55)}
+
+@media (prefers-reduced-motion: reduce){
+  .hero-orb .ring{animation:none}
+  .wordmark,.hero-sub{animation:none}
+}
 </style>
 </head>
 <body>
@@ -1197,6 +1315,21 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
     <div class="page" data-page="home">
 
+      <section class="hero-stage">
+        <div class="hero-orb" aria-hidden="true"><span class="ring"></span><span class="core"></span></div>
+        <div class="wordmark" aria-label="FearSensiZ">FEARSENSI<span>Z</span></div>
+        <p class="hero-sub">Phone-wise sensitivity · DPI · RAM · FPS</p>
+        <div class="hero-cta">
+          <a class="pill-light" href="#/finder">Get my sens</a>
+          <a class="pill-ghost" href="#/how">How it works</a>
+        </div>
+        <div class="hero-stats">
+          <div><b id="statPhones">0</b><small>phones</small></div>
+          <div><b>0-200</b><small>scale</small></div>
+          <div><b>&lt;50%</b><small>fire btn</small></div>
+        </div>
+      </section>
+
       <section class="dash-head">
         <div>
           <div class="kicker">Dashboard</div>
@@ -1274,13 +1407,6 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
           </a>
         </div>
         <div class="rail-progress"><i id="progFeatures"></i></div>
-      </div>
-
-      <div class="stat-row">
-        <div class="stat-box"><span class="n" id="statPhones">0</span><span class="l">Phone models</span></div>
-        <div class="stat-box"><span class="n">0-200</span><span class="l">Sens scale</span></div>
-        <div class="stat-box"><span class="n">&lt;50%</span><span class="l">Fire button</span></div>
-        <div class="stat-box"><span class="n">14</span><span class="l">Languages</span></div>
       </div>
 
       <div class="play-block">
@@ -4155,13 +4281,13 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 
       if (nearFront){
         pctx.globalAlpha = alpha * 0.32;
-        pctx.fillStyle = '#3aa0ff';
+        pctx.fillStyle = '#8b6cff';
         var g = size * 2.3;
         pctx.fillRect(px - (g - size) / 2, py - (g - size) / 2, g, g);
       }
 
       pctx.globalAlpha = alpha;
-      pctx.fillStyle = nearFront ? '#c8ecff' : (c.r > 0.9 ? '#123f6b' : '#050b14');
+      pctx.fillStyle = nearFront ? '#d8ccff' : (c.r > 0.9 ? '#241a4a' : '#05040f');
       pctx.fillRect(px, py, size, size);
     }
     pctx.globalAlpha = 1;
