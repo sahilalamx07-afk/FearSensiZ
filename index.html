@@ -1756,6 +1756,16 @@ main{max-width:1240px;margin:0 auto}
 .p3-sB{bottom:-6px;left:8px;width:calc(100% - 16px);height:7px;transform:rotateX(90deg) translateZ(-3px)}
 .p3-hint{margin:0;font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim-2)}
 @media (max-width: 760px){ .p3-body{width:112px;height:230px} }
+
+/* camera + notch variants so each brand looks different */
+.p3-body.cam-square .p3-cam{width:52px;height:52px;border-radius:14px;left:10px;top:10px}
+.p3-body.cam-circle .p3-cam{width:54px;height:54px;border-radius:50%;left:50%;top:12px;transform:translateX(-50%);
+  grid-template-columns:1fr;place-items:center;padding:6px}
+.p3-body.cam-circle .p3-cam i:nth-child(2){display:none}
+.p3-body.cam-vertical .p3-cam{width:26px;height:64px;border-radius:13px;left:12px;top:12px;grid-template-columns:1fr}
+.p3-body.cam-bar .p3-cam{width:70%;height:26px;border-radius:13px;left:15%;top:12px;grid-template-columns:repeat(3,1fr)}
+.p3-body.punch .p3-notch{width:9px;height:9px;border-radius:50%;top:8px}
+.p3-body.notch-wide .p3-notch{width:52px;height:8px;border-radius:0 0 10px 10px}
 </style>
 </head>
 <body>
@@ -5096,6 +5106,18 @@ main{max-width:1240px;margin:0 auto}
       var c = pal[p.brand] || ['#2a2340','#0d0a1a'];
       body.style.setProperty('--p3c1', c[0]);
       body.style.setProperty('--p3c2', c[1]);
+
+      body.classList.remove('cam-square','cam-circle','cam-vertical','cam-bar','punch','notch-wide');
+      var cam = 'cam-vertical', cut = 'punch';
+      if (p.brand === 'Apple') { cam = 'cam-square'; cut = 'notch-wide'; }
+      else if (p.brand === 'Samsung') { cam = 'cam-vertical'; cut = 'punch'; }
+      else if (p.brand === 'Xiaomi' || p.brand === 'Realme' || p.brand === 'iQOO') { cam = (p.tier >= 3 ? 'cam-square' : 'cam-circle'); cut = 'punch'; }
+      else if (p.brand === 'Vivo' || p.brand === 'Oppo') { cam = 'cam-circle'; cut = 'punch'; }
+      else if (p.brand === 'Motorola') { cam = 'cam-square'; cut = 'punch'; }
+      else if (p.brand === 'OnePlus') { cam = 'cam-circle'; cut = 'punch'; }
+      else { cam = 'cam-bar'; cut = 'notch-wide'; }
+      if (p.screen && p.screen < 5.6) cut = 'notch-wide';
+      body.classList.add(cam, cut);
     }
   }
 
