@@ -1054,12 +1054,20 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
 .stat-box:hover{transform:perspective(800px) translateY(-4px) rotateX(4deg);box-shadow:0 20px 40px -28px #000, 0 0 34px -16px var(--glow)}
 
 @media (max-width: 900px), (pointer: coarse){
+  /* keep the 3D entrance on phones, only drop the hover tilt */
+  .ch-card:hover,.feat-card:hover,.stat-box:hover{transform:none}
   .page[data-page="home"].active .dash-head,
   .page[data-page="home"].active .ch-card,
   .page[data-page="home"].active .feat-card,
   .page[data-page="home"].active .stat-box,
-  .page[data-page="home"].active .play-block{animation:none}
-  .ch-card:hover,.feat-card:hover,.stat-box:hover{transform:none}
+  .page[data-page="home"].active .play-block{
+    animation-name:card3dInLite;
+    animation-duration:.9s;
+  }
+}
+@keyframes card3dInLite{
+  0%{opacity:0;transform:perspective(900px) rotateY(-20deg) rotateX(8deg) translateY(22px) scale(.9)}
+  100%{opacity:1;transform:perspective(900px) rotateY(0) rotateX(0) translateY(0) scale(1)}
 }
 @media (prefers-reduced-motion: reduce){
   .page[data-page="home"].active .dash-head,
