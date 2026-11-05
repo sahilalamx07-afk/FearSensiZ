@@ -1076,6 +1076,14 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
   .page[data-page="home"].active .stat-box,
   .page[data-page="home"].active .play-block{animation:none}
 }
+
+.ch-ava-wrap{position:relative;width:46px;height:46px;flex:none;border-radius:50%;overflow:hidden;
+  background:linear-gradient(135deg,#2f7dff,#4fc3ff);display:grid;place-items:center;
+  box-shadow:0 0 20px -6px var(--glow)}
+.ch-ava-wrap .ch-ava{background:none;box-shadow:none;width:100%;height:100%}
+.ch-ava-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2}
+.ch-ic{position:relative;overflow:hidden}
+.ch-ic-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:50%;z-index:2}
 </style>
 </head>
 <body>
@@ -1208,7 +1216,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
         </div>
         <div class="rail" id="railChannels">
           <a class="ch-card" href="https://www.youtube.com/@Crownxv2" target="_blank" rel="noopener">
-            <span class="ch-ava">C</span>
+            <span class="ch-ava-wrap"><span class="ch-ava">C</span><img class="ch-ava-img" src="https://unavatar.io/youtube/@Crownxv2" alt="Crownxv2 logo" loading="lazy" onerror="this.remove()"></span>
             <span class="ch-body">
               <b>@Crownxv2</b>
               <small>Main channel · sens updates</small>
@@ -1216,7 +1224,7 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
             </span>
           </a>
           <a class="ch-card" href="https://www.youtube.com/@Crownxff07" target="_blank" rel="noopener">
-            <span class="ch-ava alt">C</span>
+            <span class="ch-ava-wrap"><span class="ch-ava alt">C</span><img class="ch-ava-img" src="https://unavatar.io/youtube/@Crownxff07" alt="Crownxff07 logo" loading="lazy" onerror="this.remove()"></span>
             <span class="ch-body">
               <b>@Crownxff07</b>
               <small>Second channel · gameplay</small>
@@ -3753,6 +3761,13 @@ h2,.page-head h2{text-shadow:0 0 30px rgba(58,160,255,.25)}
       var ic = document.createElement('span');
       ic.className = 'ch-ic';
       ic.textContent = ch.name.replace('@','').charAt(0).toUpperCase();
+      var logo = document.createElement('img');
+      logo.className = 'ch-ic-img';
+      logo.loading = 'lazy';
+      logo.alt = ch.name + ' logo';
+      logo.src = 'https://unavatar.io/youtube/' + ch.name;
+      logo.onerror = function(){ logo.remove(); };
+      ic.appendChild(logo);
       var tx = document.createElement('span');
       tx.className = 'ch-tx';
       tx.innerHTML = '<b>' + ch.name + '</b><small>' + (i + 1) + ' of ' + CHANNELS.length + '</small>';
